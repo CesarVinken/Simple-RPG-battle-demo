@@ -24,10 +24,7 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        // use DataHandler
-        GameData gameData = new GameData();
-
-        GameData = gameData;
+        GameData = DataHandler.GetInstance().LoadGameData();
 
         IHero hero1 = HeroFactory.CreateRandomHero();
         _playerHeroes.Add(hero1.Id, hero1);

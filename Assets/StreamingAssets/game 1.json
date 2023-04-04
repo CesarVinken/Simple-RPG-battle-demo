@@ -1,0 +1,16 @@
+{
+    "Heroes": [
+        {
+            "Id": 0,
+            "Name": "Billy"
+        },
+        {
+            "Id": 1,
+            "Name": "Gretl"
+        },
+        {
+            "Id": 2,
+            "Name": "Jacques"
+        }
+    ]
+}

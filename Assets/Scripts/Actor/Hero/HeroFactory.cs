@@ -12,7 +12,6 @@ public static class HeroFactory
         List<int> excludedIds = GameManager.Instance.GetHeroes().Keys.ToList();
         List<int> heroIds = heroData.Keys.Where(k => !excludedIds.Contains(k)).ToList();
 
-        //_random = new System.Random();
         int randomId = heroIds[_random.Next(heroIds.Count)];
 
         HeroBlueprint heroBlueprint = heroData[randomId];

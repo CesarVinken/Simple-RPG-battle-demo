@@ -3,22 +3,12 @@ using UnityEngine;
 
 public class GameData
 {
-    public Dictionary<int, HeroBlueprint> Heroes = new Dictionary<int, HeroBlueprint>()
-    {
-        { 0, new HeroBlueprint(0, "Hans") },
-        { 1, new HeroBlueprint(1, "Alice") },
-        { 2, new HeroBlueprint(2, "David") },
-    };
-}
+    public Dictionary<int, HeroBlueprint> Heroes = new Dictionary<int, HeroBlueprint>();
 
-public class HeroBlueprint
-{
-    public int Id { get; private set; }
-    public string Name { get; private set; }
-
-    public HeroBlueprint(int id, string name)
+    public GameData WithHeroes(Dictionary<int, HeroBlueprint> heroes)
     {
-        Id = id;
-        Name = name;
+        Heroes = heroes;
+
+        return this;
     }
 }
