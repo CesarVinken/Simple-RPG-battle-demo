@@ -24,7 +24,6 @@ public class ToBattleButton : MonoBehaviour
 
     public void OnClick()
     {
-        GameManager.Instance.SetPreviousScene(SceneType.HeroSelection);
-        SceneManager.LoadScene("Battle");
+        GameManager.Instance.ToScene(SceneType.Battle);
     }
 }

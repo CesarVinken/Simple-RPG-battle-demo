@@ -23,10 +23,11 @@ public class Hero : IHero
         AttackPower = 10;
     }
 
-    public Hero WithXP(int xp)
+    public void Initialise(int xp)
     {
+        XP = xp;
+
         // calculate level, xp, attack
-        return this;
     }
 
     public void SetAvatar(Sprite avatar)
@@ -34,3 +35,4 @@ public class Hero : IHero
         Avatar = avatar;
     }
 }
+

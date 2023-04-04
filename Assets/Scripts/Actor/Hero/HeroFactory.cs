@@ -6,6 +6,15 @@ public static class HeroFactory
 {
     private static readonly System.Random _random = new System.Random();
 
+    public static IHero CreateHero(int id)
+    {
+        Dictionary<int, HeroBlueprint> heroData = GameManager.Instance.GameData.Heroes;
+
+        HeroBlueprint heroBlueprint = heroData[id];
+        IHero hero = new Hero(heroBlueprint);
+        return hero;
+    }
+
     public static IHero CreateRandomHero()
     {
         Dictionary<int, HeroBlueprint> heroData = GameManager.Instance.GameData.Heroes;

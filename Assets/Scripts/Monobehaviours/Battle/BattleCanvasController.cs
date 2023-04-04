@@ -18,7 +18,7 @@ public class BattleCanvasController : MonoBehaviour
 
     private void Start()
     {
-        // We came back from the battle scene
+        // We came back from the hero selection scene
         if (GameManager.Instance.PreviousScene != SceneType.None)
         {
             Setup();

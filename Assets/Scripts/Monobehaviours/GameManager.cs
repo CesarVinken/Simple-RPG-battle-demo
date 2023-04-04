@@ -31,25 +31,67 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         GameData = DataHandler.GetInstance().LoadGameData();
+        PlayerData playerData = DataHandler.GetInstance().LoadPlayerData();
+        
 
-        string sceneName = SceneManager.GetActiveScene().name;
+        SetUpPlayerHeroes(playerData);
 
+
+        // We need to make sure that we load all the data, and only than initialise the ui canvas controller
+        if (PreviousScene == SceneType.None) 
+        {
+            string sceneName = SceneManager.GetActiveScene().name;
+
+            if (sceneName == "HeroSelection")
+            {
+                if (HeroSelectionCanvasController.Instance == null)
+                {
+                    ConsoleLog.Error(LogCategory.General, $"Could not find the Instance of the HeroSelectionCanvasController");
+                }
+
+                HeroSelectionCanvasController.Instance.Setup();
+                HeroSelectionCanvasController.Instance.Initialise();
+            }
+            else
+            {
+                if (BattleCanvasController.Instance == null)
+                {
+                    ConsoleLog.Error(LogCategory.General, $"Could not find the Instance of the BattleCanvasController");
+                }
+
+                BattleCanvasController.Instance.Setup();
+                BattleCanvasController.Instance.Initialise();
+            }
+
+        }
+    }
+
+    private void CreateInitialHeroes()
+    {
+        ConsoleLog.Log(LogCategory.Initialisation, $"Create the player's first 3 heroes");
         IHero hero1 = HeroFactory.CreateRandomHero();
         _playerHeroes.Add(hero1.Id, hero1);
         IHero hero2 = HeroFactory.CreateRandomHero();
         _playerHeroes.Add(hero2.Id, hero2);
         IHero hero3 = HeroFactory.CreateRandomHero();
         _playerHeroes.Add(hero3.Id, hero3);
+    }
 
-        if (PreviousScene == SceneType.None && sceneName == "HeroSelection") // this means this is a start up of the Level scene directly in Unity and we never selected a current level in the menu
+    private void SetUpPlayerHeroes(PlayerData playerData)
+    {
+        // if we cannot find player data heroes, then it is the first time we load the game. In that case we will load the player's initial 3 heroes.
+        if (playerData.Heroes == null)
         {
-            if (HeroSelectionCanvasController.Instance == null)
-            {
-                ConsoleLog.Error(LogCategory.General, $"Could not find the Instance of the HeroSelectionCanvasController");
-            }
+            CreateInitialHeroes();
+            return;
+        }
 
-            HeroSelectionCanvasController.Instance.Setup();
-            HeroSelectionCanvasController.Instance.Initialise();
+        for (int i = 0; i < playerData.Heroes.Count; i++)
+        {
+            PlayerHeroData playerHeroData = playerData.Heroes[i];
+            IHero hero = HeroFactory.CreateHero(playerHeroData.Id);
+            hero.Initialise(playerHeroData.XP);
+            _playerHeroes.Add(hero.Id, hero);
         }
     }
 
@@ -67,8 +109,26 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
-    public void SetPreviousScene(SceneType sceneType)
+    private void SetPreviousScene(SceneType sceneType)
     {
         PreviousScene = sceneType;
+    }
+
+    public void ToScene(SceneType sceneType)
+    {
+        switch (sceneType)
+        {
+            case SceneType.HeroSelection:
+                SetPreviousScene(SceneType.Battle);
+                DataHandler.GetInstance().SavePlayerData();
+                SceneManager.LoadScene("HeroSelection");
+                break;
+            case SceneType.Battle:
+                SetPreviousScene(SceneType.HeroSelection);
+                SceneManager.LoadScene("Battle");
+                break;
+            default:
+                throw new NotImplementedException("SceneType", sceneType.ToString());
+        }
     }
 }

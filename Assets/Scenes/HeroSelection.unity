@@ -726,6 +726,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _heroTileContainer: {fileID: 959391541}
+  _toBattleButton: {fileID: 998704168}
 --- !u!114 &1116709693
 MonoBehaviour:
   m_ObjectHideFlags: 0
