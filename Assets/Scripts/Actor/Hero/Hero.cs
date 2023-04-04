@@ -9,6 +9,7 @@ public class Hero : IHero
     public float AttackPower { get; private set; }
     public int XP { get; private set; }
     public int Level { get; private set; }
+    public Sprite Avatar { get; private set; }
 
     public Hero(HeroBlueprint heroBlueprint)
     {
@@ -26,5 +27,10 @@ public class Hero : IHero
     {
         // calculate level, xp, attack
         return this;
+    }
+
+    public void SetAvatar(Sprite avatar)
+    {
+        Avatar = avatar;
     }
 }

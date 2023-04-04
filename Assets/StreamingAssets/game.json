@@ -2,15 +2,123 @@
     "Heroes": [
         {
             "Id": 0,
-            "Name": "Billy"
+            "Name": "Lordship"
         },
         {
             "Id": 1,
-            "Name": "Gretl"
+            "Name": "Baron K."
         },
         {
             "Id": 2,
-            "Name": "Jacques"
+            "Name": "Garreth the Understanding"
+        },
+        {
+            "Id": 3,
+            "Name": "Valery the Shadow"
+        },
+        {
+            "Id": 4,
+            "Name": "Issobella the Fearless"
+        },
+        {
+            "Id": 5,
+            "Name": "Sir Stainless Steel"
+        },
+        {
+            "Id": 6,
+            "Name": "Blake the Confused"
+        },
+        {
+            "Id": 7,
+            "Name": "Steve"
+        },
+        {
+            "Id": 8,
+            "Name": "Pointy Dave"
+        },
+        {
+            "Id": 9,
+            "Name": "Hugo Burlyman"
+        },
+        {
+            "Id": 10,
+            "Name": "Sniny Mike"
+        },
+        {
+            "Id": 11,
+            "Name": "Eudora"
+        },
+        {
+            "Id": 12,
+            "Name": "J. Jacques"
+        },
+        {
+            "Id": 13,
+            "Name": "Elwin the Cold"
+        },
+        {
+            "Id": 14,
+            "Name": "Elas Cloudbox"
+        },
+        {
+            "Id": 15,
+            "Name": "Clunky Carol"
+        },
+        {
+            "Id": 16,
+            "Name": "Buddy"
+        },
+        {
+            "Id": 17,
+            "Name": "Narbeth the Concerned"
+        },
+        {
+            "Id": 18,
+            "Name": "Gregory Pencil"
+        },
+        {
+            "Id": 19,
+            "Name": "Sema Shadeheart"
+        },
+        {
+            "Id": 20,
+            "Name": "The Enigma"
+        },
+        {
+            "Id": 21,
+            "Name": "Eric Starface"
+        },
+        {
+            "Id": 22,
+            "Name": "Stu Eaglemerger"
+        },
+        {
+            "Id": 23,
+            "Name": "Anna Watercrown"
+        },
+        {
+            "Id": 24,
+            "Name": "Hano Crownfield"
+        },
+        {
+            "Id": 25,
+            "Name": "Grudgeful Henrah"
+        },
+        {
+            "Id": 26,
+            "Name": "Prince"
+        },
+        {
+            "Id": 27,
+            "Name": "Manuel the Visionary"
+        },
+        {
+            "Id": 28,
+            "Name": "Luke the Just"
+        },
+        {
+            "Id": 29,
+            "Name": "Emma the Quick-witted"
         }
     ]
 }

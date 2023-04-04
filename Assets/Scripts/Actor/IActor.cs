@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public interface IActor
 {
     int Id { get; }
@@ -5,4 +7,7 @@ public interface IActor
     float Health { get; }
     float AttackPower { get; }
     int Level { get; }
+    Sprite Avatar { get; }
+
+    void SetAvatar(Sprite avatar);
 }

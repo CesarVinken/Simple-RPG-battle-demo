@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -13,7 +14,7 @@ public static class HeroTileFactory
             if (o.Status == AsyncOperationStatus.Succeeded)
             {
                 GameObject heroSelectionTileGO = o.Result;
-                HandleLoadCompleted(heroSelectionTileGO, hero);
+                HandleHeroTileLoadCompleted(heroSelectionTileGO, hero);
             }
             else
             {
@@ -22,7 +23,23 @@ public static class HeroTileFactory
         };
     }
 
-    private static void HandleLoadCompleted(GameObject heroSelectionTileGO, IHero hero)
+    public static async Task<Sprite> LoadHeroAvatar(IHero hero)
+    {
+        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject($"Assets/Sprites/Heroes/{hero.Id}.png");
+
+        if(prefabReference == null)
+        {
+            ConsoleLog.Error(LogCategory.General, $"Could not find an avatar asset for hero {hero.Id} {hero.Name}");
+        }
+
+        AsyncOperationHandle<Sprite> handle = Addressables.LoadAssetAsync<Sprite>(prefabReference);
+
+        await handle.Task;
+
+        return handle.Result;
+    }
+
+    private static void HandleHeroTileLoadCompleted(GameObject heroSelectionTileGO, IHero hero)
     {
         HeroSelectionTile heroSelectionTile = heroSelectionTileGO.GetComponent<HeroSelectionTile>();
         heroSelectionTile.Setup(hero);

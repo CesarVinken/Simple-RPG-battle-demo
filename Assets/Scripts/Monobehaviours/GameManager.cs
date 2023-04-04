@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public GameData GameData { get; private set; }
 
     private Dictionary<int, IHero> _playerHeroes = new Dictionary<int, IHero>();
+
     // By default the PreviousScene is set to None. If we open the Battle scene directly from Unity (and not through HeroSelection), we can identify this through this property. In this case we load the Battle scene with default data.
     public SceneType PreviousScene { get; private set; } 
 
