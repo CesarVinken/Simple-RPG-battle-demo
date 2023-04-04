@@ -37,6 +37,7 @@ public class HeroSelectionTile : MonoBehaviour
 
     private async void SetAvatar()
     {
+        // during the game we load the avatar for a hero only once
         if(_hero.Avatar == null)
         {
             Sprite avatar = await HeroTileFactory.LoadHeroAvatar(_hero);

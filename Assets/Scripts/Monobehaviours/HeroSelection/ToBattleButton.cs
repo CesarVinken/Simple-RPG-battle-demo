@@ -1,7 +1,8 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class #SCRIPTNAME# : MonoBehaviour
+public class ToBattleButton : MonoBehaviour
 {
     [SerializeField] private Button _button;
 
@@ -18,11 +19,12 @@ public class #SCRIPTNAME# : MonoBehaviour
 
     public void Initialise()
     {
-            #NOTRIM#
+            
     }
 
     public void OnClick()
     {
-            #NOTRIM#
+        GameManager.Instance.SetPreviousScene(SceneType.HeroSelection);
+        SceneManager.LoadScene("Battle");
     }
 }

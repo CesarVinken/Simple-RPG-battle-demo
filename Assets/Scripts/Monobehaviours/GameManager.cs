@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        PreviousScene = SceneType.None;
+        SetPreviousScene(PreviousScene);
     }
 
     public void Start()
@@ -65,5 +65,10 @@ public class GameManager : MonoBehaviour
             return hero;
         }
         return null;
+    }
+
+    public void SetPreviousScene(SceneType sceneType)
+    {
+        PreviousScene = sceneType;
     }
 }
