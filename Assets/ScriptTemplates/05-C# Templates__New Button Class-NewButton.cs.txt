@@ -1,0 +1,27 @@
+using UnityEngine;
+
+public class #SCRIPTNAME# : MonoBehaviour
+{
+    [SerializeField] private Button _button;
+
+    public void Setup()
+    {
+        if (_button == null)
+        {
+            ConsoleLog.Error(LogCategory.Initialisation, $"Could not find button on {gameObject.name}");
+        }
+
+        _button.onClick.RemoveAllListeners();
+        _button.onClick.AddListener(delegate { OnClick(); });
+    }
+
+    public void Initialise()
+    {
+            #NOTRIM#
+    }
+
+    public void OnClick()
+    {
+            #NOTRIM#
+    }
+}
