@@ -2,31 +2,26 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HeroSelectionTile : MonoBehaviour, IHeroTile
+public class HeroBattleTile : MonoBehaviour, IHeroTile
 {
-    [SerializeField] private Image _selectionBorderImage;
     [SerializeField] private Image _backgroundImage;
     [SerializeField] private Image _avatarImage;
     [SerializeField] private Button _button;
     [SerializeField] private TextMeshProUGUI _nameText;
 
-    [SerializeField] private Sprite _avatarSprite;
+    [SerializeField] private Sprite _avatar;
     private IHero _hero;
-    private ICanvasController _canvasController;
+    private BattleCanvasController _canvasController;
 
     public void Setup(IHero hero)
     {
-        if (_selectionBorderImage == null)
-        {
-            ConsoleLog.Error(LogCategory.General, $"Cannot find _selectionBorderImage");
-        }
         if (_backgroundImage == null)
         {
             ConsoleLog.Error(LogCategory.General, $"Cannot find _backgroundImage");
         }
         if (_avatarImage == null)
         {
-            ConsoleLog.Error(LogCategory.General, $"Cannot find _avatarImage");
+            ConsoleLog.Error(LogCategory.General, $"Cannot find image");
         }
         if (_button == null)
         {
@@ -37,17 +32,15 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile
             ConsoleLog.Error(LogCategory.General, $"Cannot find name text");
         }
 
+        _canvasController = BattleCanvasController.Instance;
         _hero = hero;
-        _canvasController = HeroSelectionCanvasController.Instance;
-
-        _selectionBorderImage.enabled = false;
 
         _button.onClick.RemoveAllListeners();
         _button.onClick.AddListener(delegate { OnClick(); });
     }
 
     public void Initialise()
-    {       
+    {
         _canvasController.AddTile(this);
 
         SetName();
@@ -62,7 +55,7 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile
     private async void SetAvatar()
     {
         // during the game we load the avatar for a hero only once
-        if(_hero.Avatar == null)
+        if (_hero.Avatar == null)
         {
             Sprite avatar = await HeroTileFactory.LoadHeroAvatar(_hero);
             _hero.SetAvatar(avatar);
@@ -79,19 +72,5 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile
     public void OnClick()
     {
         _canvasController.OnClickHero(this);
-    }
-
-    public void Select(HeroSelectionHandler heroSelectionHandler)
-    {
-        ConsoleLog.Log(LogCategory.General, $"select");
-        _selectionBorderImage.enabled = true;
-        heroSelectionHandler.AddToSelectedTiles(this);
-    }
-
-    public void Deselect(HeroSelectionHandler heroSelectionHandler)
-    {
-        ConsoleLog.Log(LogCategory.General, $"deselect");
-        _selectionBorderImage.enabled = false;
-        heroSelectionHandler.RemoveFromSelectedTiles(this);
     }
 }

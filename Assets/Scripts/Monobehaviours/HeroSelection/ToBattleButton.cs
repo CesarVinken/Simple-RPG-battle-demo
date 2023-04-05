@@ -19,11 +19,21 @@ public class ToBattleButton : MonoBehaviour
 
     public void Initialise()
     {
-            
+        Disable();
     }
 
-    public void OnClick()
+    private void OnClick()
     {
         GameManager.Instance.ToScene(SceneType.Battle);
+    }
+
+    public void Enable()
+    {
+        _button.interactable = true;
+    }
+
+    public void Disable()
+    {
+        _button.interactable = false;
     }
 }

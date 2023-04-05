@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class HeroSelectionCanvasController : MonoBehaviour
+public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
 {
     public static HeroSelectionCanvasController Instance;
 
     [SerializeField] private Transform _heroTileContainer;
     [SerializeField] private ToBattleButton _toBattleButton;
+
+    private List<IHeroTile> _tiles = new List<IHeroTile>();
+    private HeroSelectionHandler _heroSelectionHandler;
 
     public void Awake()
     {
@@ -21,6 +23,7 @@ public class HeroSelectionCanvasController : MonoBehaviour
         }
 
         Instance = this;
+        _heroSelectionHandler = new HeroSelectionHandler(_toBattleButton);
     }
 
     private void Start()
@@ -54,5 +57,20 @@ public class HeroSelectionCanvasController : MonoBehaviour
         {
             HeroTileFactory.CreateHeroTile(_heroTileContainer, item.Value);
         }
-    }  
+    }
+
+    public void AddTile(IHeroTile tile)
+    {
+        _tiles.Add(tile);
+    }
+
+    public void OnClickHero(IHeroTile tile)
+    {
+        if(!(tile is HeroSelectionTile))
+        {
+            ConsoleLog.Error(LogCategory.General, $"This tile is not a HeroSelectionTile");
+        }
+
+        _heroSelectionHandler.HandleTileSelection(tile as HeroSelectionTile);
+    }
 }
