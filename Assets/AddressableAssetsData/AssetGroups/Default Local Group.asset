@@ -145,6 +145,22 @@ MonoBehaviour:
     m_Address: Assets/Prefabs/HeroBattleTile.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 69a28ac1847db1a47aa1c3d44efff2e4
+    m_Address: Assets/Prefabs/EnemyTile.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6d4fd2a4f67f9944a830c8ac01ec54b8
+    m_Address: Assets/Sprites/Enemies/0.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5c91db8db619b584daa7c26037df29b7
+    m_Address: Assets/Sprites/Enemies/1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: df611bc86c929014c96dbb1fec90597a
+    m_Address: Assets/Sprites/Enemies/2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b79047341e11940498d72ce0c90c65f7, type: 2}
   m_SchemaSet:

@@ -34,9 +34,10 @@ public class SpawnpointContainer : MonoBehaviour
         _heroSpawnpoints.Add(_heroSpawnpoint3);
     }
 
-    public void Initialise(List<IHero> heroes)
+    public void Initialise(List<IHero> heroes, IEnemy enemy)
     {
         SpawnHeroes(heroes);
+        SpawnEnemy(enemy);
     }
 
     private void SpawnHeroes(List<IHero> heroes)
@@ -56,5 +57,10 @@ public class SpawnpointContainer : MonoBehaviour
             Transform spawnpoint = _heroSpawnpoints[i];
             HeroTileFactory.CreateHeroBattleTile(spawnpoint, hero);
         }
+    }
+
+    private void SpawnEnemy(IEnemy enemy)
+    {
+        EnemyTileFactory.CreateEnemyTile(_enemySpawnpoint, enemy);
     }
 }
