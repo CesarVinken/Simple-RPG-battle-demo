@@ -11,6 +11,8 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
     private List<IHeroTile> _tiles = new List<IHeroTile>();
     private HeroSelectionHandler _heroSelectionHandler;
 
+    public SelectedHeroes _selectedHeroesAsset;
+
     public void Awake()
     {
         if (_heroTileContainer == null)
@@ -38,7 +40,7 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
 
     public void Setup()
     {
-        _toBattleButton.Setup();
+        _toBattleButton.Setup(this);
     }
 
     // We want initialisation to take place after we have loaded in game data
@@ -49,13 +51,19 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
         _toBattleButton.Initialise();
     }
 
+    public void ToBattle()
+    {
+        _selectedHeroesAsset.selectedHeroes = _heroSelectionHandler.GetSelectedHeros();
+        GameManager.Instance.ToScene(SceneType.Battle);
+    }
+
     private void CreateHeroTiles()
     {
-        Dictionary<int, IHero> heroes = GameManager.Instance.GetHeroes();
+        Dictionary<int, IHero> heroes = GameManager.Instance.GetPlayerHeroes();
 
         foreach (KeyValuePair<int, IHero> item in heroes)
         {
-            HeroTileFactory.CreateHeroTile(_heroTileContainer, item.Value);
+            HeroTileFactory.CreateHeroSelectionTile(_heroTileContainer, item.Value);
         }
     }
 

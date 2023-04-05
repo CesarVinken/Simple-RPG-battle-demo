@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
         int numberOfHeroes = 3;
         for (int i = 0; i < numberOfHeroes; i++)
         {
-            IHero hero = HeroFactory.CreateRandomHero(GameData.Heroes, GetHeroes().Keys.ToList());
+            IHero hero = HeroFactory.CreateRandomHero(GameData.Heroes, GetPlayerHeroes().Keys.ToList());
             _playerHeroes.Add(hero.Id, hero);
         }
     }
@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
         SetUpPlayerHeroes(playerData);
     }
 
-    public Dictionary<int, IHero> GetHeroes()
+    public Dictionary<int, IHero> GetPlayerHeroes()
     {
         return _playerHeroes;
     }
@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
         {
             case SceneType.HeroSelection:
                 SetNumberOfBattles(_numberOfBattles + 1);
-                Dictionary<int, IHero> heroes = GetHeroes();
+                Dictionary<int, IHero> heroes = GetPlayerHeroes();
 
                 // Later move this to the victory screen. Heroes should be updated in the victory screen phase
                 foreach (KeyValuePair<int, IHero> item in heroes)

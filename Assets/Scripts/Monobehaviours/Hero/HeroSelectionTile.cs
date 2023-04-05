@@ -11,7 +11,9 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile
     [SerializeField] private TextMeshProUGUI _nameText;
 
     [SerializeField] private Sprite _avatarSprite;
-    private IHero _hero;
+
+    public IHero Hero { get; private set; }
+    
     private ICanvasController _canvasController;
 
     public void Setup(IHero hero)
@@ -37,7 +39,7 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile
             ConsoleLog.Error(LogCategory.General, $"Cannot find name text");
         }
 
-        _hero = hero;
+        Hero = hero;
         _canvasController = HeroSelectionCanvasController.Instance;
 
         _selectionBorderImage.enabled = false;
@@ -56,21 +58,21 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile
 
     private void SetName()
     {
-        _nameText.text = _hero.Name;
+        _nameText.text = Hero.Name;
     }
 
     private async void SetAvatar()
     {
         // during the game we load the avatar for a hero only once
-        if(_hero.Avatar == null)
+        if(Hero.Avatar == null)
         {
-            Sprite avatar = await HeroTileFactory.LoadHeroAvatar(_hero);
-            _hero.SetAvatar(avatar);
+            Sprite avatar = await HeroTileFactory.LoadHeroAvatar(Hero);
+            Hero.SetAvatar(avatar);
             _avatarImage.sprite = avatar;
         }
         else
         {
-            _avatarImage.sprite = _hero.Avatar;
+            _avatarImage.sprite = Hero.Avatar;
         }
 
         _avatarImage.enabled = true;

@@ -727,6 +727,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _heroTileContainer: {fileID: 959391541}
   _toBattleButton: {fileID: 998704168}
+  _selectedHeroesAsset: {fileID: 11400000, guid: e303fc7d408fdbe44964dcf66fd3e34b, type: 2}
 --- !u!114 &1116709693
 MonoBehaviour:
   m_ObjectHideFlags: 0

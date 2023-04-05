@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class HeroSelectionHandler
@@ -44,5 +45,16 @@ public class HeroSelectionHandler
         }
 
         _selectedTiles.Remove(tile);
+    }
+
+    public List<IHero> GetSelectedHeros()
+    {
+        List<IHero> selectedHeroes = new List<IHero>();
+
+        for (int i = 0; i < _selectedTiles.Count; i++)
+        {
+            selectedHeroes.Add(_selectedTiles[i].Hero);
+        }
+        return selectedHeroes;
     }
 }

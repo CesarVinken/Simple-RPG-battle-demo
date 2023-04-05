@@ -5,7 +5,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public static class HeroTileFactory
 {
-    public static void CreateHeroTile(Transform container, IHero hero) 
+    public static void CreateHeroSelectionTile(Transform container, IHero hero)
     {
         AssetReferenceGameObject prefabReference = new AssetReferenceGameObject("Assets/Prefabs/HeroSelectionTile.prefab");
         AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(prefabReference, container);
@@ -14,7 +14,25 @@ public static class HeroTileFactory
             if (o.Status == AsyncOperationStatus.Succeeded)
             {
                 GameObject heroSelectionTileGO = o.Result;
-                HandleHeroTileLoadCompleted(heroSelectionTileGO, hero);
+                HandleHeroSelectionTileLoadCompleted(heroSelectionTileGO, hero);
+            }
+            else
+            {
+                Debug.LogError($"Failed to instantiate tile for hero {hero.Name}");
+            }
+        };
+    }
+
+    public static void CreateHeroBattleTile(Transform container, IHero hero)
+    {
+        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject("Assets/Prefabs/HeroBattleTile.prefab");
+        AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(prefabReference, container);
+        handle.Completed += (o) =>
+        {
+            if (o.Status == AsyncOperationStatus.Succeeded)
+            {
+                GameObject heroBattleTileGO = o.Result;
+                HandleHeroSelectionTileLoadCompleted(heroBattleTileGO, hero);
             }
             else
             {
@@ -39,9 +57,9 @@ public static class HeroTileFactory
         return handle.Result;
     }
 
-    private static void HandleHeroTileLoadCompleted(GameObject heroSelectionTileGO, IHero hero)
+    private static void HandleHeroSelectionTileLoadCompleted(GameObject heroSelectionTileGO, IHero hero)
     {
-        HeroSelectionTile heroSelectionTile = heroSelectionTileGO.GetComponent<HeroSelectionTile>();
+        IHeroTile heroSelectionTile = heroSelectionTileGO.GetComponent<IHeroTile>();
         heroSelectionTile.Setup(hero);
         heroSelectionTile.Initialise();
     }
