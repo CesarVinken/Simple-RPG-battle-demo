@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DataHandler
@@ -23,10 +24,10 @@ public class DataHandler
         return serialisableGameData.Deserialise();
     }
 
-    public void SavePlayerData()
+    public void SavePlayerData(Dictionary<int, IHero> playerHeroes)
     {
         SerialisablePlayerData serialisablePlayerData = new SerialisablePlayerData()
-            .WithPlayerHeroes(GameManager.Instance.GetHeroes());
+            .WithPlayerHeroes(playerHeroes);
 
         JsonPlayerDataWriter.GetInstance().SerialiseData(serialisablePlayerData);
         ConsoleLog.Log(LogCategory.General, $"Saved player data. {serialisablePlayerData.Heroes.Count} heros saved");

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -33,9 +34,7 @@ public class GameManager : MonoBehaviour
         GameData = DataHandler.GetInstance().LoadGameData();
         PlayerData playerData = DataHandler.GetInstance().LoadPlayerData();
         
-
         SetUpPlayerHeroes(playerData);
-
 
         // We need to make sure that we load all the data, and only than initialise the ui canvas controller
         if (PreviousScene == SceneType.None) 
@@ -69,12 +68,12 @@ public class GameManager : MonoBehaviour
     private void CreateInitialHeroes()
     {
         ConsoleLog.Log(LogCategory.Initialisation, $"Create the player's first 3 heroes");
-        IHero hero1 = HeroFactory.CreateRandomHero();
-        _playerHeroes.Add(hero1.Id, hero1);
-        IHero hero2 = HeroFactory.CreateRandomHero();
-        _playerHeroes.Add(hero2.Id, hero2);
-        IHero hero3 = HeroFactory.CreateRandomHero();
-        _playerHeroes.Add(hero3.Id, hero3);
+        int numberOfHeroes = 3;
+        for (int i = 0; i < numberOfHeroes; i++)
+        {
+            IHero hero = HeroFactory.CreateRandomHero(GameData.Heroes, GetHeroes().Keys.ToList());
+            _playerHeroes.Add(hero.Id, hero);
+        }
     }
 
     private void SetUpPlayerHeroes(PlayerData playerData)
@@ -120,7 +119,7 @@ public class GameManager : MonoBehaviour
         {
             case SceneType.HeroSelection:
                 SetPreviousScene(SceneType.Battle);
-                DataHandler.GetInstance().SavePlayerData();
+                DataHandler.GetInstance().SavePlayerData(GetHeroes());
                 SceneManager.LoadScene("HeroSelection");
                 break;
             case SceneType.Battle:

@@ -15,10 +15,9 @@ public static class HeroFactory
         return hero;
     }
 
-    public static IHero CreateRandomHero()
+    public static IHero CreateRandomHero(Dictionary<int, HeroBlueprint> heroData, List<int> excludedIds)
     {
-        Dictionary<int, HeroBlueprint> heroData = GameManager.Instance.GameData.Heroes;
-        List<int> excludedIds = GameManager.Instance.GetHeroes().Keys.ToList();
+        //List<int> excludedIds = GameManager.Instance.GetHeroes().Keys.ToList();
         List<int> heroIds = heroData.Keys.Where(k => !excludedIds.Contains(k)).ToList();
 
         int randomId = heroIds[_random.Next(heroIds.Count)];
