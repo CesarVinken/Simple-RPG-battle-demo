@@ -70,7 +70,7 @@ public class PlayerHeroHandler : EditorWindow
         GameData gameData = DataHandler.GetInstance().LoadGameData();
         Dictionary<int, HeroBlueprint> allHeroes = gameData.Heroes;
 
-        // generate new plyer data
+        // generate new player data
         Dictionary<int, IHero> playerHeroes = new Dictionary<int, IHero>();
 
         for (int i = 0; i < numberToGenerate; i++)
@@ -78,8 +78,9 @@ public class PlayerHeroHandler : EditorWindow
             IHero hero = HeroFactory.CreateRandomHero(allHeroes, playerHeroes.Keys.ToList());
             playerHeroes.Add(hero.Id, hero);
         }
+        int numberOfBattles = 0;
 
         // save new player data
-        DataHandler.GetInstance().SavePlayerData(playerHeroes);
+        DataHandler.GetInstance().SavePlayerData(playerHeroes, numberOfBattles);
     }
 }

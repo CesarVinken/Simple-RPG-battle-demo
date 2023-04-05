@@ -24,10 +24,11 @@ public class DataHandler
         return serialisableGameData.Deserialise();
     }
 
-    public void SavePlayerData(Dictionary<int, IHero> playerHeroes)
+    public void SavePlayerData(Dictionary<int, IHero> playerHeroes, int numberOfBattles)
     {
         SerialisablePlayerData serialisablePlayerData = new SerialisablePlayerData()
-            .WithPlayerHeroes(playerHeroes);
+            .WithPlayerHeroes(playerHeroes)
+            .WithNumberOfBattles(numberOfBattles);
 
         JsonPlayerDataWriter.GetInstance().SerialiseData(serialisablePlayerData);
         ConsoleLog.Log(LogCategory.General, $"Saved player data. {serialisablePlayerData.Heroes.Count} heros saved");

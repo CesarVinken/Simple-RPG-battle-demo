@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public GameData GameData { get; private set; }
 
     private Dictionary<int, IHero> _playerHeroes = new Dictionary<int, IHero>();
+    private int _numberOfBattles = 0;
 
     // By default the PreviousScene is set to None. If we open the Battle scene directly from Unity (and not through HeroSelection), we can identify this through this property. In this case we load the Battle scene with default data.
     public SceneType PreviousScene { get; private set; } 
@@ -33,8 +34,8 @@ public class GameManager : MonoBehaviour
     {
         GameData = DataHandler.GetInstance().LoadGameData();
         PlayerData playerData = DataHandler.GetInstance().LoadPlayerData();
-        
-        SetUpPlayerHeroes(playerData);
+
+        SetUpPlayerData(playerData);
 
         // We need to make sure that we load all the data, and only than initialise the ui canvas controller
         if (PreviousScene == SceneType.None) 
@@ -89,9 +90,16 @@ public class GameManager : MonoBehaviour
         {
             PlayerHeroData playerHeroData = playerData.Heroes[i];
             IHero hero = HeroFactory.CreateHero(playerHeroData.Id);
-            hero.Initialise(playerHeroData.XP);
+            hero.UpdateStats(playerHeroData.XP);
             _playerHeroes.Add(hero.Id, hero);
         }
+    }
+
+    private void SetUpPlayerData(PlayerData playerData)
+    {
+        SetNumberOfBattles(playerData.NumberOfBattles);
+
+        SetUpPlayerHeroes(playerData);
     }
 
     public Dictionary<int, IHero> GetHeroes()
@@ -118,8 +126,20 @@ public class GameManager : MonoBehaviour
         switch (sceneType)
         {
             case SceneType.HeroSelection:
+                SetNumberOfBattles(_numberOfBattles + 1);
+                Dictionary<int, IHero> heroes = GetHeroes();
+
+                // Later move this to the victory screen. Heroes should be updated in the victory screen phase
+                foreach (KeyValuePair<int, IHero> item in heroes)
+                {
+                    IHero hero = item.Value;
+                    if (hero.Health == 0) continue;
+
+                    hero.UpdateStats(hero.XP + 1);
+                }
+
                 SetPreviousScene(SceneType.Battle);
-                DataHandler.GetInstance().SavePlayerData(GetHeroes());
+                DataHandler.GetInstance().SavePlayerData(heroes, _numberOfBattles);
                 SceneManager.LoadScene("HeroSelection");
                 break;
             case SceneType.Battle:
@@ -129,5 +149,12 @@ public class GameManager : MonoBehaviour
             default:
                 throw new NotImplementedException("SceneType", sceneType.ToString());
         }
+    }
+
+    private void SetNumberOfBattles(int numberOfBattles)
+    {
+        _numberOfBattles = numberOfBattles;
+
+        ConsoleLog.Log(LogCategory.General, $"Number of battles is now {_numberOfBattles}");
     }
 }

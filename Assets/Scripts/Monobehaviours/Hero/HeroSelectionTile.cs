@@ -83,14 +83,12 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile
 
     public void Select(HeroSelectionHandler heroSelectionHandler)
     {
-        ConsoleLog.Log(LogCategory.General, $"select");
         _selectionBorderImage.enabled = true;
         heroSelectionHandler.AddToSelectedTiles(this);
     }
 
     public void Deselect(HeroSelectionHandler heroSelectionHandler)
     {
-        ConsoleLog.Log(LogCategory.General, $"deselect");
         _selectionBorderImage.enabled = false;
         heroSelectionHandler.RemoveFromSelectedTiles(this);
     }

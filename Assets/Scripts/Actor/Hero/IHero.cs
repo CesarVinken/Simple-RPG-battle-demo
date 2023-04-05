@@ -2,5 +2,5 @@ public interface IHero : IActor
 {
     int XP { get; }
 
-    void Initialise(int xp);
+    void UpdateStats(int xp);
 }

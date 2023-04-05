@@ -12,6 +12,7 @@ using UnityEngine;
 public class SerialisablePlayerData
 {
     public List<SerialisablePlayerHero> Heroes = new List<SerialisablePlayerHero>();
+    public int NumberOfBattles;
 
     public SerialisablePlayerData WithPlayerHeroes(Dictionary<int, IHero> heroesById)
     {
@@ -24,6 +25,13 @@ public class SerialisablePlayerData
             serialisablePlayerHero.XP = item.Value.XP;
             Heroes.Add(serialisablePlayerHero);
         }
+
+        return this;
+    }
+
+    public SerialisablePlayerData WithNumberOfBattles(int numberOfBattles)
+    {
+        NumberOfBattles = numberOfBattles;
 
         return this;
     }
@@ -42,6 +50,7 @@ public class SerialisablePlayerData
 
         PlayerData playerData = new PlayerData();
         playerData.Heroes = heroes;
+        playerData.NumberOfBattles = NumberOfBattles;
 
         return playerData;
     }

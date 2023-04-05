@@ -10,5 +10,5 @@ public struct PlayerHeroData
 public struct PlayerData
 {
     public List<PlayerHeroData> Heroes;
-
+    public int NumberOfBattles;
 }
