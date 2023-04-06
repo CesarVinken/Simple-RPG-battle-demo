@@ -133,7 +133,7 @@ public class GameManager : MonoBehaviour
                 foreach (KeyValuePair<int, IHero> item in heroes)
                 {
                     IHero hero = item.Value;
-                    if (hero.Health == 0) continue;
+                    if (hero.CurrentHealth   == 0) continue;
 
                     hero.UpdateStats(hero.XP + 1);
                 }

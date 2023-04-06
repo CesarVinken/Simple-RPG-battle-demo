@@ -49,10 +49,7 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
         List<IHero> heroesToSpawn = GetSelectedHeroes();
         ConsoleLog.Warning(LogCategory.General, $"number of selected heroes: {_selectedHeroesAsset.selectedHeroes.Count}");
 
-        EnemyBlueprint enemyBlueprint = new EnemyBlueprint();
-        enemyBlueprint.Id = 0;
-        enemyBlueprint.Name = "Aap";
-        IEnemy enemyToSpawn = new Enemy(enemyBlueprint);
+        IEnemy enemyToSpawn = EnemyFactory.CreateRandomEnemy();
 
         _toHeroSelectionButton.Initialise();
         _spawnpointContainer.Initialise(heroesToSpawn, enemyToSpawn);

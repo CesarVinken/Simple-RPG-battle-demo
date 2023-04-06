@@ -5,9 +5,8 @@ public class Hero : IHero
 {
     public int Id { get; private set; }
     public string Name { get; private set; }
-    public float Health { get; private set; }
-
     public float MaxHealth { get; private set; }
+    public float CurrentHealth { get; private set; }
     public float AttackPower { get; private set; }
     public int XP { get; private set; }
     public int Level { get; private set; }
@@ -25,7 +24,7 @@ public class Hero : IHero
         XP = 0;
         Level = 1;
         MaxHealth = 100;
-        Health = MaxHealth;
+        CurrentHealth = MaxHealth;
         AttackPower = 10;
     }
 
@@ -37,8 +36,8 @@ public class Hero : IHero
 
         MaxHealth = _baseHealth * (float)Math.Pow((double)1.1f, (double)Level - 1);
         AttackPower = _baseAttackPower * (float)Math.Pow((double)1.1f, (double)Level - 1);
-        Health = MaxHealth;
-        ConsoleLog.Log(LogCategory.General, $"{Name} has {XP} XP. This means they are now level {Level}. Their health is {Health}. Attack power {AttackPower}");
+        CurrentHealth = MaxHealth;
+        ConsoleLog.Log(LogCategory.General, $"{Name} has {XP} XP. This means they are now level {Level}. Their health is {CurrentHealth}. Attack power {AttackPower}");
     }
 
     public void SetAvatar(Sprite avatar)

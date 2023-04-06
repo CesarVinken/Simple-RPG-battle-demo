@@ -7,6 +7,9 @@ public class EnemyTile : MonoBehaviour, IEnemyTile
     [SerializeField] private Image _backgroundImage;
     [SerializeField] private Image _avatarImage;
     [SerializeField] private TextMeshProUGUI _nameText;
+
+    [SerializeField] private Healthbar _healthbar;
+
     [SerializeField] private Sprite _avatarSprite;
 
     public IEnemy Enemy { get; private set; }
@@ -26,13 +29,22 @@ public class EnemyTile : MonoBehaviour, IEnemyTile
             ConsoleLog.Error(LogCategory.General, $"Cannot find name text");
         }
 
+        if (_healthbar == null)
+        {
+            ConsoleLog.Error(LogCategory.General, $"Cannot find _healthbar");
+        }
+
         Enemy = enemy;
+
+        _healthbar.Setup();
     }
 
     public void Initialise()
     {
         SetName();
         SetAvatar();
+
+        _healthbar.Initialise(Enemy);
     }
 
     private void SetName()

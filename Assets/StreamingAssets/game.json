@@ -1,4 +1,18 @@
 {
+    "Enemies": [
+        {
+            "Id": 0,
+            "Name": "Cofragigus"
+        },
+        {
+            "Id": 1,
+            "Name": "Infernape"
+        },
+        {
+            "Id": 2,
+            "Name": "Krookodile"
+        }
+    ],
     "Heroes": [
         {
             "Id": 0,

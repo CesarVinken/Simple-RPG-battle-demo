@@ -9,7 +9,10 @@ public class HeroBattleTile : MonoBehaviour, IHeroTile
     [SerializeField] private Button _button;
     [SerializeField] private TextMeshProUGUI _nameText;
 
+    [SerializeField] private Healthbar _healthbar;
+
     [SerializeField] private Sprite _avatar;
+
     private IHero _hero;
     private BattleCanvasController _canvasController;
 
@@ -37,6 +40,8 @@ public class HeroBattleTile : MonoBehaviour, IHeroTile
 
         _button.onClick.RemoveAllListeners();
         _button.onClick.AddListener(delegate { OnClick(); });
+
+        _healthbar.Setup();
     }
 
     public void Initialise()
@@ -45,6 +50,8 @@ public class HeroBattleTile : MonoBehaviour, IHeroTile
 
         SetName();
         SetAvatar();
+
+        _healthbar.Initialise(_hero);
     }
 
     private void SetName()
