@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public interface ICanvasController
 {
     void AddTile(IHeroTile tile);

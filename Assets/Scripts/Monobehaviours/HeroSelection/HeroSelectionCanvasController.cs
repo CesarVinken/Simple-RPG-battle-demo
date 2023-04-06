@@ -1,11 +1,13 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
 {
     public static HeroSelectionCanvasController Instance;
 
-    [SerializeField] private Transform _heroTileContainer;
+    [SerializeField] private Transform _tileRow1;
+    [SerializeField] private Transform _tileRow2;
     [SerializeField] private ToBattleButton _toBattleButton;
 
     private List<IHeroTile> _tiles = new List<IHeroTile>();
@@ -15,9 +17,13 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
 
     public void Awake()
     {
-        if (_heroTileContainer == null)
+        if (_tileRow1 == null)
         {
-            ConsoleLog.Error(LogCategory.General, $"Could not find _heroTileContainer");
+            ConsoleLog.Error(LogCategory.General, $"Could not find _tileRow1");
+        }
+        if (_tileRow2 == null)
+        {
+            ConsoleLog.Error(LogCategory.General, $"Could not find _tileRow2");
         }
         if (_toBattleButton == null)
         {
@@ -59,11 +65,12 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
 
     private void CreateHeroTiles()
     {
-        Dictionary<int, IHero> heroes = GameManager.Instance.GetPlayerHeroes();
+        List<IHero> heroes = GameManager.Instance.GetPlayerHeroes().Values.ToList();
 
-        foreach (KeyValuePair<int, IHero> item in heroes)
+        for (int i = 0; i < heroes.Count; i++)
         {
-            HeroTileFactory.CreateHeroSelectionTile(_heroTileContainer, item.Value);
+            Transform container = i < 5 ? _tileRow1 : _tileRow2;
+            HeroTileFactory.CreateHeroSelectionTile(container, heroes[i]);
         }
     }
 

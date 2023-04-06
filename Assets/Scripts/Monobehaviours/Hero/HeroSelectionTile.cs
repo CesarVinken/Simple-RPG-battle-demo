@@ -41,6 +41,12 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile
 
         Hero = hero;
         _canvasController = HeroSelectionCanvasController.Instance;
+        RectTransform parentRect = HeroSelectionCanvasController.Instance.GetComponent<RectTransform>();
+        RectTransform rectTransform = GetComponent<RectTransform>();
+
+        rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, parentRect.sizeDelta.x / 5f);
+        rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, parentRect.sizeDelta.x / 5f);
+
 
         _selectionBorderImage.enabled = false;
 
