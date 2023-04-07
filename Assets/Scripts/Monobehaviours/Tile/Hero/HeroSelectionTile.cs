@@ -16,7 +16,7 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile
     
     private ICanvasController _canvasController;
 
-    public void Setup(IHero hero)
+    public void Setup(IHero hero, ICanvasController canvasController)
     {
         if (_selectionBorderImage == null)
         {
@@ -40,9 +40,12 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile
         }
 
         Hero = hero;
-        _canvasController = HeroSelectionCanvasController.Instance;
+        Hero.ResetHealth();
+
+        _canvasController = canvasController;
         _selectionBorderImage.enabled = false;
 
+        ConsoleLog.Log(LogCategory.General, $"CurrentHealth of {Hero.Name} is {Hero.CurrentHealth}");
         SetTileSize();
 
         _button.onClick.RemoveAllListeners();
@@ -55,6 +58,11 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile
 
         SetName();
         SetAvatar();
+    }
+
+    public void Unload()
+    {
+
     }
 
     public IActor GetActor()

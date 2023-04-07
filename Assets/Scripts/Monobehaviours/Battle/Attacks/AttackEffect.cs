@@ -28,5 +28,7 @@ public class AttackEffect : MonoBehaviour, IAttackEffect
             BattleHandler battleHandler = BattleCanvasController.Instance.BattleHandler; // TODO use service locator 
             battleHandler.Attack(attack);
         }
+
+        Destroy(gameObject);
     }
 }

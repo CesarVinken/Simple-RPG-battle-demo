@@ -6,8 +6,9 @@ public class GameEventHandler
 {
     private static readonly GameEventHandler _instance = new GameEventHandler();
 
+    public event EventHandler<EnemyDefeatedEvent> EnemyDefeatedEvent;
     public event EventHandler<HasTakenDamageEvent> HasTakenDamageEvent;
-    public event EventHandler<HasCompletedBattleEvent> HasCompletedBattleEvent;
+    public event EventHandler<HeroDefeatedEvent> HeroDefeatedEvent;
 
     private GameEventHandler()
     {
@@ -25,9 +26,15 @@ public class GameEventHandler
         HasTakenDamageEvent?.Invoke(this, new HasTakenDamageEvent(hitActor));
     }
 
-    public void ExecuteHasCompletedBattleEvent(bool hasWon)
+    public void ExecuteHeroDefeatedEvent(IHero hero)
     {
-        ConsoleLog.Log(LogCategory.Events, $"Execute HasCompletedBattleEvent");
-        HasCompletedBattleEvent?.Invoke(this, new HasCompletedBattleEvent(hasWon));
+        ConsoleLog.Log(LogCategory.Events, $"Execute HeroDefeatedEvent");
+        HeroDefeatedEvent?.Invoke(this, new HeroDefeatedEvent(hero));
+    }
+
+    public void ExecuteEnemyDefeatedEvent()
+    {
+        ConsoleLog.Log(LogCategory.Events, $"Execute EnemyDefeatedEvent");
+        EnemyDefeatedEvent?.Invoke(this, new EnemyDefeatedEvent());
     }
 }

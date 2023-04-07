@@ -24,6 +24,8 @@ public class ToHeroSelectionButton : MonoBehaviour
 
     public void OnClick()
     {
+        //TODO Use service locator:
+        BattleCanvasController.Instance.Unload();
         GameManager.Instance.ToScene(SceneType.HeroSelection);  
     }
 }

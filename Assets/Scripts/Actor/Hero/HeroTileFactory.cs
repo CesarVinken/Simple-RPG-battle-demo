@@ -14,7 +14,7 @@ public static class HeroTileFactory
             if (o.Status == AsyncOperationStatus.Succeeded)
             {
                 GameObject heroSelectionTileGO = o.Result;
-                HandleHeroSelectionTileLoadCompleted(heroSelectionTileGO, hero);
+                HandleHeroTileLoadCompleted(heroSelectionTileGO, hero);
             }
             else
             {
@@ -32,7 +32,7 @@ public static class HeroTileFactory
             if (o.Status == AsyncOperationStatus.Succeeded)
             {
                 GameObject heroBattleTileGO = o.Result;
-                HandleHeroSelectionTileLoadCompleted(heroBattleTileGO, hero);
+                HandleHeroTileLoadCompleted(heroBattleTileGO, hero);
             }
             else
             {
@@ -57,10 +57,13 @@ public static class HeroTileFactory
         return handle.Result;
     }
 
-    private static void HandleHeroSelectionTileLoadCompleted(GameObject heroSelectionTileGO, IHero hero)
+    private static void HandleHeroTileLoadCompleted(GameObject heroTileGO, IHero hero)
     {
-        IHeroTile heroSelectionTile = heroSelectionTileGO.GetComponent<IHeroTile>();
-        heroSelectionTile.Setup(hero);
+        // TODO use service locator
+        ICanvasController canvasController = BattleCanvasController.Instance != null ? BattleCanvasController.Instance : HeroSelectionCanvasController.Instance;
+
+        IHeroTile heroSelectionTile = heroTileGO.GetComponent<IHeroTile>();
+        heroSelectionTile.Setup(hero, canvasController);
         heroSelectionTile.Initialise();
     }
 }

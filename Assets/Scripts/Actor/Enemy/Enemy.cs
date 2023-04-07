@@ -19,7 +19,7 @@ public class Enemy : IEnemy
         Level = 1;
         MaxHealth = 100;
         CurrentHealth = MaxHealth;
-        AttackPower = 10;
+        AttackPower = 100;
     }
 
     public void SetAvatar(Sprite avatar)
@@ -35,7 +35,9 @@ public class Enemy : IEnemy
         {
             CurrentHealth = 0;
             ConsoleLog.Log(LogCategory.General, $"The enemy {Name} was defeated");
-            GameEventHandler.GetInstance().ExecuteHasCompletedBattleEvent(true);
+
+            GameEventHandler.GetInstance().ExecuteHasTakenDamageEvent(this);
+            GameEventHandler.GetInstance().ExecuteEnemyDefeatedEvent();
             return;
         }
 

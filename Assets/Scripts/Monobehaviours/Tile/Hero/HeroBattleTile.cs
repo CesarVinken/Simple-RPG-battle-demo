@@ -16,7 +16,7 @@ public class HeroBattleTile : MonoBehaviour, IHeroTile
     public IHero Hero { get; private set; }
     private ICanvasController _canvasController;
 
-    public void Setup(IHero hero)
+    public void Setup(IHero hero, ICanvasController canvasController)
     {
         if (_backgroundImage == null)
         {
@@ -35,7 +35,7 @@ public class HeroBattleTile : MonoBehaviour, IHeroTile
             ConsoleLog.Error(LogCategory.General, $"Cannot find name text");
         }
 
-        _canvasController = BattleCanvasController.Instance;
+        _canvasController = canvasController;
         Hero = hero;
 
         _button.onClick.RemoveAllListeners();
@@ -44,6 +44,7 @@ public class HeroBattleTile : MonoBehaviour, IHeroTile
         _healthbar.Setup();
 
         GameEventHandler.GetInstance().HasTakenDamageEvent += OnHasTakenDamageEvent;
+        GameEventHandler.GetInstance().HeroDefeatedEvent += OnHeroDefeatedEvent;
     }
 
     public void Initialise()
@@ -54,6 +55,12 @@ public class HeroBattleTile : MonoBehaviour, IHeroTile
         SetAvatar();
 
         _healthbar.Initialise(Hero);
+    }
+
+    public void Unload()
+    {
+        GameEventHandler.GetInstance().HasTakenDamageEvent -= OnHasTakenDamageEvent;
+        GameEventHandler.GetInstance().HeroDefeatedEvent -= OnHeroDefeatedEvent;
     }
 
     public IActor GetActor()
@@ -88,6 +95,11 @@ public class HeroBattleTile : MonoBehaviour, IHeroTile
         _avatarImage.enabled = true;
     }
 
+    private void BeDefeated()
+    {
+        _backgroundImage.color = ColourUtility.GetColour(ColourType.ErrorRed);
+    }
+
     public void OnClick()
     {
         _canvasController.OnClickHero(this);
@@ -95,10 +107,18 @@ public class HeroBattleTile : MonoBehaviour, IHeroTile
 
     public void OnHasTakenDamageEvent(object sender, HasTakenDamageEvent e)
     {
-        if (e.HitActor is IEnemy) return;
+        if (!(e.HitActor is IHero)) return;
 
         if (e.HitActor.Id != Hero.Id) return;
 
+        ConsoleLog.Log(LogCategory.General, $"Update health for hero {Hero.Name} on {gameObject.name}");
         _healthbar.UpdateHealth(Hero);
+    }
+
+    public void OnHeroDefeatedEvent(object sender, HeroDefeatedEvent e)
+    {
+        if (e.Hero.Id != Hero.Id) return;
+
+        BeDefeated();
     }
 }

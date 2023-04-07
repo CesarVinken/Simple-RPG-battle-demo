@@ -42,16 +42,17 @@ public class BattleHandler
         else if (attacker is IEnemy)
         {
             List<IHeroTile> livingHeroes = _heroTiles.Where(h => h.Hero.CurrentHealth > 0).ToList();
-            IHeroTile randomHeroTile = livingHeroes[_random.Next(_heroTiles.Count)];
+
+            ConsoleLog.Log(LogCategory.General, $"look for alive hero");
+
+            IHeroTile randomHeroTile = livingHeroes[_random.Next(livingHeroes.Count)];
             attack.WithTarget(randomHeroTile.GetActor());
         }
         else
         {
-            ConsoleLog.Error(LogCategory.General, $"{attacker.Name} is of an unexpected type {attacker.GetType()}");
+            throw new NotImplementedException($"{attacker.Name} is of an unexpected type {attacker.GetType()}");
         }
 
         AttackFactory.CreateAttackEffect(attack);
     }
-
-
 }

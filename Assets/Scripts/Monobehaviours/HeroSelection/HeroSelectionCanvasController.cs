@@ -57,6 +57,11 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
         _toBattleButton.Initialise();
     }
 
+    public void Unload()
+    {
+
+    }
+
     public void ToBattle()
     {
         _selectedHeroesAsset.selectedHeroes = _heroSelectionHandler.GetSelectedHeros();

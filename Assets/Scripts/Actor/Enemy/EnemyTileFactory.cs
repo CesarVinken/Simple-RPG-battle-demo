@@ -42,7 +42,7 @@ public class EnemyTileFactory
     private static void HandleEnemyTileLoadCompleted(GameObject heroSelectionTileGO, IEnemy enemy)
     {
         IEnemyTile enemyTile = heroSelectionTileGO.GetComponent<IEnemyTile>();
-        enemyTile.Setup(enemy);
+        enemyTile.Setup(enemy, BattleCanvasController.Instance); // TODO use ServiceLocator instead
         enemyTile.Initialise();
     }
 }

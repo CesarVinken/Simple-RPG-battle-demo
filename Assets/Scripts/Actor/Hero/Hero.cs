@@ -45,6 +45,11 @@ public class Hero : IHero
         Avatar = avatar;
     }
 
+    public void ResetHealth()
+    {
+        CurrentHealth = MaxHealth;
+    }
+
     public void TakeDamage(float damage)
     {
         CurrentHealth -= damage;
@@ -53,11 +58,8 @@ public class Hero : IHero
         {
             CurrentHealth = 0;
 
-            ConsoleLog.Log(LogCategory.General, $"{Name} was defeated");
-
-            // TODO: if all heroes are dead, trigger lose condition
-            //            GameEventHandler.GetInstance().ExecuteHasCompletedBattleEvent(false);
-
+            ConsoleLog.Warning(LogCategory.General, $"{Name} was defeated");
+            GameEventHandler.GetInstance().ExecuteHeroDefeatedEvent(this);
         }
 
         GameEventHandler.GetInstance().ExecuteHasTakenDamageEvent(this);

@@ -4,4 +4,5 @@ public interface ITile
 {
     IActor GetActor();
     Transform GetTransform();
+    void Unload();
 }
