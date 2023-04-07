@@ -26,4 +26,19 @@ public class Enemy : IEnemy
     {
         Avatar = avatar;
     }
+
+    public void TakeDamage(float damage)
+    {
+        CurrentHealth -= damage;
+
+        if (CurrentHealth <= 0)
+        {
+            CurrentHealth = 0;
+            ConsoleLog.Log(LogCategory.General, $"The enemy {Name} was defeated");
+            GameEventHandler.GetInstance().ExecuteHasCompletedBattleEvent(true);
+            return;
+        }
+
+        GameEventHandler.GetInstance().ExecuteHasTakenDamageEvent(this);
+    }
 }

@@ -44,5 +44,23 @@ public class Hero : IHero
     {
         Avatar = avatar;
     }
+
+    public void TakeDamage(float damage)
+    {
+        CurrentHealth -= damage;
+
+        if(CurrentHealth <= 0)
+        {
+            CurrentHealth = 0;
+
+            ConsoleLog.Log(LogCategory.General, $"{Name} was defeated");
+
+            // TODO: if all heroes are dead, trigger lose condition
+            //            GameEventHandler.GetInstance().ExecuteHasCompletedBattleEvent(false);
+
+        }
+
+        GameEventHandler.GetInstance().ExecuteHasTakenDamageEvent(this);
+    }
 }
 

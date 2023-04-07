@@ -9,6 +9,7 @@ public class SpawnpointContainer : MonoBehaviour
     [SerializeField] private Transform _enemySpawnpoint;
 
     private List<Transform> _heroSpawnpoints = new List<Transform>();
+    private Dictionary<IActor, Transform> _spawnpointsByActor = new Dictionary<IActor, Transform>();
 
     public void Setup()
     {
@@ -56,11 +57,29 @@ public class SpawnpointContainer : MonoBehaviour
             IHero hero = heroes[i];
             Transform spawnpoint = _heroSpawnpoints[i];
             HeroTileFactory.CreateHeroBattleTile(spawnpoint, hero);
+            _spawnpointsByActor.Add(hero, spawnpoint);
         }
     }
 
     private void SpawnEnemy(IEnemy enemy)
     {
         EnemyTileFactory.CreateEnemyTile(_enemySpawnpoint, enemy);
+        _spawnpointsByActor.Add(enemy, _enemySpawnpoint);
     }
+
+    public void Register()
+    {
+
+    }
+
+    //public Transform GetActorSpawnpoint(IActor actor)
+    //{
+    //    if(_spawnpointsByActor.TryGetValue(actor, out Transform spawnpoint))
+    //    {
+    //        return spawnpoint;
+    //    }
+
+    //    ConsoleLog.Error(LogCategory.General, $"Could not find a spawnpoint for {actor.Name}");
+    //    return null;
+    //}
 }

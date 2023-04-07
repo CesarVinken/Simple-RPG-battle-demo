@@ -11,4 +11,5 @@ public interface IActor
     Sprite Avatar { get; }
 
     void SetAvatar(Sprite avatar);
+    void TakeDamage(float damage);
 }

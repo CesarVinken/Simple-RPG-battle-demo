@@ -13,8 +13,8 @@ public class HeroBattleTile : MonoBehaviour, IHeroTile
 
     [SerializeField] private Sprite _avatar;
 
-    private IHero _hero;
-    private BattleCanvasController _canvasController;
+    public IHero Hero { get; private set; }
+    private ICanvasController _canvasController;
 
     public void Setup(IHero hero)
     {
@@ -36,41 +36,53 @@ public class HeroBattleTile : MonoBehaviour, IHeroTile
         }
 
         _canvasController = BattleCanvasController.Instance;
-        _hero = hero;
+        Hero = hero;
 
         _button.onClick.RemoveAllListeners();
         _button.onClick.AddListener(delegate { OnClick(); });
 
         _healthbar.Setup();
+
+        GameEventHandler.GetInstance().HasTakenDamageEvent += OnHasTakenDamageEvent;
     }
 
     public void Initialise()
     {
-        _canvasController.AddTile(this);
+        _canvasController.RegisterTile(this);
 
         SetName();
         SetAvatar();
 
-        _healthbar.Initialise(_hero);
+        _healthbar.Initialise(Hero);
+    }
+
+    public IActor GetActor()
+    {
+        return Hero;
+    }
+
+    public Transform GetTransform()
+    {
+        return transform;
     }
 
     private void SetName()
     {
-        _nameText.text = _hero.Name;
+        _nameText.text = Hero.Name;
     }
 
     private async void SetAvatar()
     {
         // during the game we load the avatar for a hero only once
-        if (_hero.Avatar == null)
+        if (Hero.Avatar == null)
         {
-            Sprite avatar = await HeroTileFactory.LoadHeroAvatar(_hero);
-            _hero.SetAvatar(avatar);
+            Sprite avatar = await HeroTileFactory.LoadHeroAvatar(Hero);
+            Hero.SetAvatar(avatar);
             _avatarImage.sprite = avatar;
         }
         else
         {
-            _avatarImage.sprite = _hero.Avatar;
+            _avatarImage.sprite = Hero.Avatar;
         }
 
         _avatarImage.enabled = true;
@@ -79,5 +91,14 @@ public class HeroBattleTile : MonoBehaviour, IHeroTile
     public void OnClick()
     {
         _canvasController.OnClickHero(this);
+    }
+
+    public void OnHasTakenDamageEvent(object sender, HasTakenDamageEvent e)
+    {
+        if (e.HitActor is IEnemy) return;
+
+        if (e.HitActor.Id != Hero.Id) return;
+
+        _healthbar.UpdateHealth(Hero);
     }
 }

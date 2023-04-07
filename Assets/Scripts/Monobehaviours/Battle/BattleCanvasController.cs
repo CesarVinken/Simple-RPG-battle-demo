@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,9 +10,9 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
     [SerializeField] private ToHeroSelectionButton _toHeroSelectionButton;
     [SerializeField] private SpawnpointContainer _spawnpointContainer;
 
-    private List<IHeroTile> _tiles = new List<IHeroTile>();
     [SerializeField] private SelectedHeroes _selectedHeroesAsset;
-
+    public BattleHandler BattleHandler { get; private set; }
+    private Dictionary<IActor, ITile> _tilesByActor = new Dictionary<IActor, ITile>();
 
     public void Awake()
     {
@@ -41,6 +42,7 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
 
         _toHeroSelectionButton.Setup();
         _spawnpointContainer.Setup();
+
     }
 
     // We want initialisation to take place after we have loaded in game data
@@ -79,13 +81,27 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
         return _selectedHeroesAsset.selectedHeroes;
     }
 
-    public void AddTile(IHeroTile tile)
+    public void RegisterTile(ITile tile)
     {
-        _tiles.Add(tile);
+        _tilesByActor.Add(tile.GetActor(), tile);
     }
 
     public void OnClickHero(IHeroTile tile)
     {
-        ConsoleLog.Log(LogCategory.General, $"attack");
+        // For now we only have default attacks in our game.
+        IAttack attack = AttackFactory.CreateAttack<DefaultAttack>(tile.Hero);
+        BattleHandler = new BattleHandler(_tilesByActor.Values.ToList());
+        BattleHandler.Attack(attack);
+    }
+
+    public ITile GetTile(IActor actor)
+    {
+        if (_tilesByActor.TryGetValue(actor, out ITile tile))
+        {
+            return tile;
+        }
+
+        ConsoleLog.Error(LogCategory.General, $"Could not find a tile for {actor.Name}");
+        return null;     
     }
 }

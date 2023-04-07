@@ -10,7 +10,7 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
     [SerializeField] private Transform _tileRow2;
     [SerializeField] private ToBattleButton _toBattleButton;
 
-    private List<IHeroTile> _tiles = new List<IHeroTile>();
+    private List<ITile> _tiles = new List<ITile>();
     private HeroSelectionHandler _heroSelectionHandler;
 
     public SelectedHeroes _selectedHeroesAsset;
@@ -74,7 +74,7 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
         }
     }
 
-    public void AddTile(IHeroTile tile)
+    public void RegisterTile(ITile tile)
     {
         _tiles.Add(tile);
     }

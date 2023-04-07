@@ -2,6 +2,6 @@ using UnityEngine;
 
 public interface ICanvasController
 {
-    void AddTile(IHeroTile tile);
+    void RegisterTile(ITile tile);
     void OnClickHero(IHeroTile tile);
 }

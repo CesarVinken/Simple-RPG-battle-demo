@@ -5,10 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    // We may want to turn this singleton pattern into a Service Locator
     public static GameManager Instance;
 
     public GameData GameData { get; private set; }
 
+    // We may want to move these to some HeroHandler or something.
     private Dictionary<int, IHero> _playerHeroes = new Dictionary<int, IHero>();
     private int _numberOfBattles = 0;
 

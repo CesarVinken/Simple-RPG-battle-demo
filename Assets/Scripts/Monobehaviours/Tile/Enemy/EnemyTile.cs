@@ -11,6 +11,7 @@ public class EnemyTile : MonoBehaviour, IEnemyTile
     [SerializeField] private Healthbar _healthbar;
 
     [SerializeField] private Sprite _avatarSprite;
+    private ICanvasController _canvasController;
 
     public IEnemy Enemy { get; private set; }
 
@@ -34,9 +35,12 @@ public class EnemyTile : MonoBehaviour, IEnemyTile
             ConsoleLog.Error(LogCategory.General, $"Cannot find _healthbar");
         }
 
+        _canvasController = BattleCanvasController.Instance;
         Enemy = enemy;
 
         _healthbar.Setup();
+
+        GameEventHandler.GetInstance().HasTakenDamageEvent += OnHasTakenDamageEvent;
     }
 
     public void Initialise()
@@ -44,7 +48,17 @@ public class EnemyTile : MonoBehaviour, IEnemyTile
         SetName();
         SetAvatar();
 
+        _canvasController.RegisterTile(this);
         _healthbar.Initialise(Enemy);
+    }
+    public IActor GetActor()
+    {
+        return Enemy;
+    }
+
+    public Transform GetTransform()
+    {
+        return transform;
     }
 
     private void SetName()
@@ -67,5 +81,14 @@ public class EnemyTile : MonoBehaviour, IEnemyTile
         }
 
         _avatarImage.enabled = true;
+    }
+
+    public void OnHasTakenDamageEvent(object sender, HasTakenDamageEvent e)
+    {
+        if (e.HitActor is IHero) return;
+
+        if (e.HitActor.Id != Enemy.Id) return;
+
+        _healthbar.UpdateHealth(Enemy);
     }
 }

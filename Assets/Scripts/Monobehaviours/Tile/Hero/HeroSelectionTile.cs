@@ -41,14 +41,9 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile
 
         Hero = hero;
         _canvasController = HeroSelectionCanvasController.Instance;
-        RectTransform parentRect = HeroSelectionCanvasController.Instance.GetComponent<RectTransform>();
-        RectTransform rectTransform = GetComponent<RectTransform>();
-
-        rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, parentRect.sizeDelta.x / 5f);
-        rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, parentRect.sizeDelta.x / 5f);
-
-
         _selectionBorderImage.enabled = false;
+
+        SetTileSize();
 
         _button.onClick.RemoveAllListeners();
         _button.onClick.AddListener(delegate { OnClick(); });
@@ -56,15 +51,34 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile
 
     public void Initialise()
     {       
-        _canvasController.AddTile(this);
+        _canvasController.RegisterTile(this);
 
         SetName();
         SetAvatar();
     }
 
+    public IActor GetActor()
+    {
+        return Hero;
+    }
+
+    public Transform GetTransform()
+    {
+        return transform;
+    }
+
     private void SetName()
     {
         _nameText.text = Hero.Name;
+    }
+
+    private void SetTileSize()
+    {
+        RectTransform parentRect = HeroSelectionCanvasController.Instance.GetComponent<RectTransform>();
+        RectTransform rectTransform = GetComponent<RectTransform>();
+
+        rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, parentRect.sizeDelta.x / 5f);
+        rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, parentRect.sizeDelta.x / 5f);
     }
 
     private async void SetAvatar()

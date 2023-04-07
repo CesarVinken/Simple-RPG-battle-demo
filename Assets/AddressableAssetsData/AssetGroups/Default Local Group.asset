@@ -161,6 +161,10 @@ MonoBehaviour:
     m_Address: Assets/Sprites/Enemies/2.png
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 9f95c634c9aa45446808349ef6413e27
+    m_Address: Assets/Prefabs/Attacks/Default Attack.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b79047341e11940498d72ce0c90c65f7, type: 2}
   m_SchemaSet:
