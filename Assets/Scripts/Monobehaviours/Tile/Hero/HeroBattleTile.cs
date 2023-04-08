@@ -6,6 +6,7 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile
 {
     [SerializeField] private Image _backgroundImage;
     [SerializeField] private Image _avatarImage;
+    [SerializeField] private Transform _effectContainer;
     [SerializeField] private Button _button;
     [SerializeField] private TextMeshProUGUI _nameText;
 
@@ -20,19 +21,23 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile
     {
         if (_backgroundImage == null)
         {
-            ConsoleLog.Error(LogCategory.General, $"Cannot find _backgroundImage");
+            ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find _backgroundImage");
         }
         if (_avatarImage == null)
         {
-            ConsoleLog.Error(LogCategory.General, $"Cannot find image");
+            ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find image");
+        }
+        if (_effectContainer == null)
+        {
+            ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find _effectContainer");
         }
         if (_button == null)
         {
-            ConsoleLog.Error(LogCategory.General, $"Cannot find button");
+            ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find button");
         }
         if (_nameText == null)
         {
-            ConsoleLog.Error(LogCategory.General, $"Cannot find name text");
+            ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find name text");
         }
 
         _canvasController = canvasController;
@@ -68,9 +73,9 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile
         return Hero;
     }
 
-    public Transform GetTransform()
+    public Transform GetEffectContainer()
     {
-        return transform;
+        return _effectContainer;
     }
 
     private void SetName()

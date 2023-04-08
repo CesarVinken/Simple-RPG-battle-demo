@@ -14,7 +14,7 @@ public class Hero : IHero
 
     private const float _baseHealth = 100;
     private const float _baseAttackPower = 10;
-    private const int _levelThreshold = 2;
+    private const int _levelThreshold = 5; // how much xp is needed for the next level
 
     public Hero(HeroBlueprint heroBlueprint)
     {

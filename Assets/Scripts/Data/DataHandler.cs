@@ -19,7 +19,7 @@ public class DataHandler
     {
         SerialisableGameData serialisableGameData = JsonGameDataReader.GetInstance().ReadData<SerialisableGameData>();
 
-        ConsoleLog.Log(LogCategory.General, $"Loaded data for {serialisableGameData.Heroes.Count} hero blueprints");
+        ConsoleLog.Log(LogCategory.Data, $"Loaded data for {serialisableGameData.Heroes.Count} hero blueprints");
 
         return serialisableGameData.Deserialise();
     }

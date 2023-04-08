@@ -20,23 +20,23 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile
     {
         if (_selectionBorderImage == null)
         {
-            ConsoleLog.Error(LogCategory.General, $"Cannot find _selectionBorderImage");
+            ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find _selectionBorderImage");
         }
         if (_backgroundImage == null)
         {
-            ConsoleLog.Error(LogCategory.General, $"Cannot find _backgroundImage");
+            ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find _backgroundImage");
         }
         if (_avatarImage == null)
         {
-            ConsoleLog.Error(LogCategory.General, $"Cannot find _avatarImage");
+            ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find _avatarImage");
         }
         if (_button == null)
         {
-            ConsoleLog.Error(LogCategory.General, $"Cannot find button");
+            ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find button");
         }
         if (_nameText == null)
         {
-            ConsoleLog.Error(LogCategory.General, $"Cannot find name text");
+            ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find name text");
         }
 
         Hero = hero;
@@ -45,7 +45,6 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile
         _canvasController = canvasController;
         _selectionBorderImage.enabled = false;
 
-        ConsoleLog.Log(LogCategory.General, $"CurrentHealth of {Hero.Name} is {Hero.CurrentHealth}");
         SetTileSize();
 
         _button.onClick.RemoveAllListeners();
@@ -70,7 +69,7 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile
         return Hero;
     }
 
-    public Transform GetTransform()
+    public Transform GetEffectContainer()
     {
         return transform;
     }

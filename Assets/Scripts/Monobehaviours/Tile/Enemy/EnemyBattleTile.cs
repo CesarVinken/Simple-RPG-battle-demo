@@ -6,6 +6,7 @@ public class EnemyBattleTile : MonoBehaviour, IEnemyBattleTile
 {
     [SerializeField] private Image _backgroundImage;
     [SerializeField] private Image _avatarImage;
+    [SerializeField] private Transform _effectContainer;
     [SerializeField] private TextMeshProUGUI _nameText;
 
     [SerializeField] private Healthbar _healthbar;
@@ -19,20 +20,24 @@ public class EnemyBattleTile : MonoBehaviour, IEnemyBattleTile
     {
         if (_backgroundImage == null)
         {
-            ConsoleLog.Error(LogCategory.General, $"Cannot find _backgroundImage");
+            ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find _backgroundImage");
         }
         if (_avatarImage == null)
         {
-            ConsoleLog.Error(LogCategory.General, $"Cannot find _avatarImage");
+            ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find _avatarImage");
+        }
+        if (_effectContainer == null)
+        {
+            ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find _effectContainer");
         }
         if (_nameText == null)
         {
-            ConsoleLog.Error(LogCategory.General, $"Cannot find name text");
+            ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find name text");
         }
 
         if (_healthbar == null)
         {
-            ConsoleLog.Error(LogCategory.General, $"Cannot find _healthbar");
+            ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find _healthbar");
         }
 
         _canvasController = canvasController;
@@ -64,9 +69,9 @@ public class EnemyBattleTile : MonoBehaviour, IEnemyBattleTile
         return Enemy;
     }
 
-    public Transform GetTransform()
+    public Transform GetEffectContainer()
     {
-        return transform;
+        return _effectContainer;
     }
 
     private void SetName()

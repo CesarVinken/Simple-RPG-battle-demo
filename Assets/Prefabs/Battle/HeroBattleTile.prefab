@@ -185,6 +185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _backgroundImage: {fileID: 5966274186897949686}
   _avatarImage: {fileID: 417953482865692316}
+  _effectContainer: {fileID: 3210004582109478816}
   _button: {fileID: 6728487248261130836}
   _nameText: {fileID: 7833488350446928710}
   _healthbar: {fileID: 331192395727040313}

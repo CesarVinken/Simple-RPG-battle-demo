@@ -131,6 +131,15 @@ public class GameManager : MonoBehaviour
                 SetNumberOfBattles(_numberOfBattles + 1);
                 Dictionary<int, IHero> heroes = GetPlayerHeroes();
 
+                ConsoleLog.Log(LogCategory.General, $"refactor me");
+
+                if(heroes.Count < 10 && _numberOfBattles % 5 == 0)
+                {
+                    IHero hero = HeroFactory.CreateRandomHero(GameData.Heroes, GetPlayerHeroes().Keys.ToList());
+                    _playerHeroes.Add(hero.Id, hero);
+                    ConsoleLog.Warning(LogCategory.General, $"Added {hero.Name} as new hero!");
+                }
+
                 // Later move this to the victory screen. Heroes should be updated in the victory screen phase
                 foreach (KeyValuePair<int, IHero> item in heroes)
                 {

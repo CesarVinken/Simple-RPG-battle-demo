@@ -31,7 +31,7 @@ public class AttackFactory
 
         ITile attackContainer = BattleCanvasController.Instance.GetTile(target);
 
-        AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(prefabReference, attackContainer.GetTransform());
+        AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(prefabReference, attackContainer.GetEffectContainer());
         handle.Completed += (o) =>
         {
             if (o.Status == AsyncOperationStatus.Succeeded)
@@ -58,7 +58,7 @@ public class AttackFactory
 
         ITile attackContainer = BattleCanvasController.Instance.GetTile(attack.Attacker);
 
-        AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(prefabReference, attackContainer.GetTransform());
+        AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(prefabReference, attackContainer.GetEffectContainer());
         handle.Completed += (o) =>
         {
             if (o.Status == AsyncOperationStatus.Succeeded)

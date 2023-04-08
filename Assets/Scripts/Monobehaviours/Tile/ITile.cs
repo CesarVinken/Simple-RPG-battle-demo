@@ -3,6 +3,6 @@ using UnityEngine;
 public interface ITile
 {
     IActor GetActor();
-    Transform GetTransform();
+    Transform GetEffectContainer();
     void Unload();
 }
