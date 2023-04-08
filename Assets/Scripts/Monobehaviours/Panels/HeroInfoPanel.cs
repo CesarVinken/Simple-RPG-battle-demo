@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HeroInfoPanel : MonoBehaviour
+public class HeroInfoPanel : MonoBehaviour, IHeroInfoPanel
 {
     [SerializeField] private TextMeshProUGUI _nameLabel;
     [SerializeField] private TextMeshProUGUI _levelLabel;
@@ -45,10 +45,24 @@ public class HeroInfoPanel : MonoBehaviour
         }
     }
 
-    public void Initialise(IHero hero)
+    public void Initialise(InfoPanelContainer infoPanelContainer, IHero hero)
     {
+        infoPanelContainer.ActivateInfoPanelContainer(this);
+
         SetTextLabels(hero);
         SetPosition();
+        Register();
+    }
+
+    public void Register()
+    {
+        BattleCanvasController.Instance.PanelHandler.RegisterPanel(this);
+    }
+
+    public void Deregister()
+    {
+        BattleCanvasController.Instance.PanelHandler.DeregisterPanel(this);
+        Destroy(gameObject);
     }
 
     private void SetTextLabels(IHero hero)

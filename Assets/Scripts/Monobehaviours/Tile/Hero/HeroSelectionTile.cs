@@ -133,6 +133,10 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile, IPointerDownHandler, 
             if (tapTimer >= 3f)
             {
                 Debug.Log("Long tap detected");
+                //TODO Use service locator
+                InfoPanelContainer panelContainer = _canvasController.GetInfoPanelContainer();
+                UIPanelFactory.CreateHeroInfoPanel(panelContainer, Hero);
+
                 StopCoroutine(tapCoroutine);
             }
         }

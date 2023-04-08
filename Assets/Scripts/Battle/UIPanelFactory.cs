@@ -24,21 +24,21 @@ public static class UIPanelFactory
 
     private static void HandleLevelEndPanelLoadCompleted(GameObject battleEndPanelGO, bool hasWon)
     {
-        BattleEndPanel battleEndPanel = battleEndPanelGO.GetComponent<BattleEndPanel>();
+        IBattleEndPanel battleEndPanel = battleEndPanelGO.GetComponent<IBattleEndPanel>();
         battleEndPanel.Setup();
         battleEndPanel.Initialise(hasWon);
     }
 
-    public static void CreateHeroInfoPanel(Transform container, IHero hero)
+    public static void CreateHeroInfoPanel(InfoPanelContainer infoPanelContainer, IHero hero)
     {
         AssetReferenceGameObject prefabReference = new AssetReferenceGameObject("Assets/Prefabs/Panels/HeroInfoPanel.prefab");
-        AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(prefabReference, container);
+        AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(prefabReference, infoPanelContainer.transform);
         handle.Completed += (o) =>
         {
             if (o.Status == AsyncOperationStatus.Succeeded)
             {
                 GameObject heroInfoGO = o.Result;
-                HandleHeroInfoPanelLoadCompleted(heroInfoGO, hero);
+                HandleHeroInfoPanelLoadCompleted(infoPanelContainer, heroInfoGO, hero);
             }
             else
             {
@@ -47,10 +47,10 @@ public static class UIPanelFactory
         };
     }
 
-    private static void HandleHeroInfoPanelLoadCompleted(GameObject heroInfoPanelGO, IHero hero)
+    private static void HandleHeroInfoPanelLoadCompleted(InfoPanelContainer infoPanelContainer, GameObject heroInfoPanelGO, IHero hero)
     {
-        HeroInfoPanel heroInfoPanel = heroInfoPanelGO.GetComponent<HeroInfoPanel>();
+        IHeroInfoPanel heroInfoPanel = heroInfoPanelGO.GetComponent<IHeroInfoPanel>();
         heroInfoPanel.Setup();
-        heroInfoPanel.Initialise(hero);
+        heroInfoPanel.Initialise(infoPanelContainer, hero);
     }
 }

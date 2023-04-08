@@ -9,9 +9,13 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
     [SerializeField] private Transform _tileRow1;
     [SerializeField] private Transform _tileRow2;
     [SerializeField] private ToBattleButton _toBattleButton;
+    [SerializeField] private InfoPanelContainer _infoPanelContainer;
 
     private List<ITile> _tiles = new List<ITile>();
+    private List<IPanel> _openPanels = new List<IPanel>();
+
     private HeroSelectionHandler _heroSelectionHandler;
+    public PanelHandler PanelHandler { get; private set; }
 
     public SelectedHeroes _selectedHeroesAsset;
 
@@ -32,6 +36,7 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
 
         Instance = this;
         _heroSelectionHandler = new HeroSelectionHandler(_toBattleButton);
+        PanelHandler = new PanelHandler();
     }
 
     private void Start()
@@ -77,6 +82,11 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
             Transform container = i < 5 ? _tileRow1 : _tileRow2;
             HeroTileFactory.CreateHeroSelectionTile(container, heroes[i]);
         }
+    }
+
+    public InfoPanelContainer GetInfoPanelContainer()
+    {
+        return _infoPanelContainer;
     }
 
     public void RegisterTile(ITile tile)

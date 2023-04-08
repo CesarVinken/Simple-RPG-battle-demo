@@ -342,8 +342,8 @@ MonoBehaviour:
   _experienceLabel: {fileID: 1016572325550338630}
   _maxHealthLabel: {fileID: 1016572325868417923}
   _attackPowerLabel: {fileID: 1016572324258588036}
-  _rectTransform: {fileID: 0}
-  _layoutElement: {fileID: 0}
+  _rectTransform: {fileID: 1016572324257402681}
+  _layoutElement: {fileID: 1456255842}
 --- !u!114 &1016572324257402631
 MonoBehaviour:
   m_ObjectHideFlags: 0

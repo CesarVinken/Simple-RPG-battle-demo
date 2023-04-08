@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class BattleEndPanel : MonoBehaviour
+public class BattleEndPanel : MonoBehaviour, IBattleEndPanel
 {
     [SerializeField] private TextMeshProUGUI _headerLabel;
     [SerializeField] private ToHeroSelectionButton _toHeroSelectionButton;
@@ -32,5 +32,18 @@ public class BattleEndPanel : MonoBehaviour
         }
 
         _toHeroSelectionButton.Initialise();
+        Register();
     }
+
+    public void Register()
+    {
+        BattleCanvasController.Instance.PanelHandler.RegisterPanel(this);
+    }
+
+    public void Deregister()
+    {
+        BattleCanvasController.Instance.PanelHandler.DeregisterPanel(this);
+        Destroy(gameObject);
+    }
+
 }

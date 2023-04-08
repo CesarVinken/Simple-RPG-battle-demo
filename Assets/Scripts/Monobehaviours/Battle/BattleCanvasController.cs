@@ -1,7 +1,26 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+
+public class PanelHandler
+{
+    private List<IPanel> _openPanels = new List<IPanel>();
+
+    public void RegisterPanel(IPanel panel)
+    {
+        _openPanels.Add(panel);
+    }
+
+    public void DeregisterPanel(IPanel panel)
+    {
+        _openPanels.Remove(panel);
+    }
+
+    public List<IPanel> GetOpenPanels()
+    {
+        return _openPanels;
+    }
+}
 
 public class BattleCanvasController : MonoBehaviour, ICanvasController
 {
@@ -10,9 +29,10 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
     [SerializeField] private SpawnpointContainer _spawnpointContainer;
 
     [SerializeField] private SelectedHeroes _selectedHeroesAsset;
+    [SerializeField] private InfoPanelContainer _infoPanelContainer;
     public AttackHandler CurrentAttackHandler { get; private set; }
+    public PanelHandler PanelHandler { get; private set; }
     private Dictionary<IActor, ITile> _tilesByActor = new Dictionary<IActor, ITile>();
-    //public bool InAttackRoutine { get; private set; }
 
     public void Awake()
     {
@@ -31,11 +51,12 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
 
     public void Setup()
     {
-
         if (_spawnpointContainer == null)
         {
             ConsoleLog.Error(LogCategory.General, $"Could not find _spawnpointContainer");
         }
+
+        PanelHandler = new PanelHandler();
 
         _spawnpointContainer.Setup();
 
@@ -66,6 +87,12 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
         }
     }
 
+    public void RegisterTile(ITile tile)
+    {
+        _tilesByActor.Add(tile.GetActor(), tile);
+    }
+
+
     private List<IHero> GetSelectedHeroes()
     {
         if(GameManager.Instance.PreviousScene == SceneType.None) // we started the battle scene directly from Unity inspector
@@ -90,9 +117,9 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
         return _selectedHeroesAsset.selectedHeroes;
     }
 
-    public void RegisterTile(ITile tile)
+    public InfoPanelContainer GetInfoPanelContainer()
     {
-        _tilesByActor.Add(tile.GetActor(), tile);
+        return _infoPanelContainer;
     }
 
     public void OnClickHero(IHeroTile tile)
@@ -100,8 +127,7 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
         if (CurrentAttackHandler != null) return;
 
         // For now we only have default attacks in our game.
-        TriggerAttack(tile);
-    
+        TriggerAttack(tile);   
     }
 
     public void TriggerAttack(ITile attackingTile)
@@ -138,6 +164,14 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
 
     public void OnEnemyDefeatedEvent(object sender, EnemyDefeatedEvent e)
     {
+        // TODO MOVE FACTORY WORK TO PANEL HANDLER
+        List<IPanel> openPanels = PanelHandler.GetOpenPanels();
+
+        for (int i = 0; i < openPanels.Count; i++)
+        {
+            openPanels[i].Deregister();
+        }
+
         UIPanelFactory.CreateBattleEndPanel(transform, true);
     }
 
@@ -153,6 +187,14 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
         List<IActor> aliveHeroes = _tilesByActor.Keys.Where(t => t is IHero && t.CurrentHealth > 0).ToList();
         if(aliveHeroes.Count == 0)
         {
+            // TODO MOVE FACTORY WORK TO PANEL HANDLER
+            List<IPanel> openPanels = PanelHandler.GetOpenPanels();
+
+            for (int i = 0; i < openPanels.Count; i++)
+            {
+                openPanels[i].Deregister();
+            }
+
             UIPanelFactory.CreateBattleEndPanel(transform, false);
         }
     }

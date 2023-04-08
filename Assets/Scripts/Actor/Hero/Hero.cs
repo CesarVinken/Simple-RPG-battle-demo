@@ -37,7 +37,7 @@ public class Hero : IHero
         MaxHealth = _baseHealth * (float)Math.Pow((double)1.1f, (double)Level - 1);
         AttackPower = _baseAttackPower * (float)Math.Pow((double)1.1f, (double)Level - 1);
         CurrentHealth = MaxHealth;
-        ConsoleLog.Log(LogCategory.General, $"{Name} has {Experience} Experience. This means they are now level {Level}. Their health is {CurrentHealth}. Attack power {AttackPower}");
+        ConsoleLog.Log(LogCategory.General, $"{Name} has {Experience} Experience. This means they are now level {Level}. Their health is {CurrentHealth}. Attack power {AttackPower}", LogPriority.Low);
     }
 
     public void SetAvatar(Sprite avatar)

@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -116,17 +118,24 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandle
             if (tapTimer >= 3f)
             {
                 Debug.Log("Long tap detected");
+
+                //TODO Use service locator
+                // info panel should not work if the BattleEndPanel is open
+                List<IPanel> openPanels = _canvasController.PanelHandler.GetOpenPanels();
+                bool endGamePanelIsOpen = openPanels.OfType<IBattleEndPanel>().Any();
+
+                if (!endGamePanelIsOpen)
+                {
+                    InfoPanelContainer panelContainer = _canvasController.GetInfoPanelContainer();
+                    UIPanelFactory.CreateHeroInfoPanel(panelContainer, Hero);
+                }
+                
                 StopCoroutine(tapCoroutine);
             }
         }
     }
 
     #region events
-
-    public void OnClick()
-    {
-
-    }
 
     public void OnPointerDown(PointerEventData eventData)
     {
