@@ -7,6 +7,7 @@ public class EnemyBattleTile : MonoBehaviour, IEnemyBattleTile
     [SerializeField] private Image _backgroundImage;
     [SerializeField] private Image _avatarImage;
     [SerializeField] private Transform _effectContainer;
+    [SerializeField] private Transform _damageValueEffectContainer;
     [SerializeField] private TextMeshProUGUI _nameText;
 
     [SerializeField] private Healthbar _healthbar;
@@ -29,6 +30,10 @@ public class EnemyBattleTile : MonoBehaviour, IEnemyBattleTile
         if (_effectContainer == null)
         {
             ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find _effectContainer");
+        }
+        if (_damageValueEffectContainer == null)
+        {
+            ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find _damageValueEffectContainer");
         }
         if (_nameText == null)
         {
@@ -72,6 +77,11 @@ public class EnemyBattleTile : MonoBehaviour, IEnemyBattleTile
     public Transform GetEffectContainer()
     {
         return _effectContainer;
+    }
+
+    public Transform GetDamageValueEffectContainer()
+    {
+        return _damageValueEffectContainer;
     }
 
     private void SetName()

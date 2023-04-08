@@ -11,6 +11,7 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandle
     [SerializeField] private Image _backgroundImage;
     [SerializeField] private Image _avatarImage;
     [SerializeField] private Transform _effectContainer;
+    [SerializeField] private Transform _damageValueEffectContainer;
     [SerializeField] private Button _button;
     [SerializeField] private TextMeshProUGUI _nameText;
 
@@ -36,6 +37,10 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandle
         if (_effectContainer == null)
         {
             ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find _effectContainer");
+        } 
+        if (_damageValueEffectContainer == null)
+        {
+            ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find _damageValueEffectContainer");
         }
         if (_button == null)
         {
@@ -79,6 +84,11 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandle
     public Transform GetEffectContainer()
     {
         return _effectContainer;
+    }
+
+    public Transform GetDamageValueEffectContainer()
+    {
+        return _damageValueEffectContainer;
     }
 
     private void SetName()

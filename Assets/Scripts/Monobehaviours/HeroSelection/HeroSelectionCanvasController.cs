@@ -1,6 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
 {
@@ -8,6 +10,7 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
 
     [SerializeField] private Transform _tileRow1;
     [SerializeField] private Transform _tileRow2;
+    [SerializeField] private VerticalLayoutGroup _heroTileContainerLayoutGroup;
     [SerializeField] private ToBattleButton _toBattleButton;
     [SerializeField] private InfoPanelContainer _infoPanelContainer;
 
@@ -60,6 +63,8 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
         CreateHeroTiles();
 
         _toBattleButton.Initialise();
+
+        StartCoroutine(UpdateCanvas());
     }
 
     public void Unload()
@@ -92,6 +97,16 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
     public void RegisterTile(ITile tile)
     {
         _tiles.Add(tile);
+    }
+
+    // There is a Unity bug that tends to mix up the width of the vertical layout group.
+    // This function works around this by forcing a refresh of the width. That way the tiles are put in the right position
+    private IEnumerator UpdateCanvas()
+    {
+        yield return null;
+        _heroTileContainerLayoutGroup.enabled = false;
+        yield return null;
+        _heroTileContainerLayoutGroup.enabled = true; 
     }
 
     public void OnClickHero(IHeroTile tile)

@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using System.Collections;
 
 public class AttackHandler
 {
@@ -20,7 +19,7 @@ public class AttackHandler
 
         if(livingTargets.Count == 0)
         {
-            ConsoleLog.Error(LogCategory.General, $"We eexperienceect at least one of the targets to be alive");
+            ConsoleLog.Error(LogCategory.General, $"We expect at least one of the targets to be alive");
         }
 
         ITile randomTile = livingTargets[_random.Next(livingTargets.Count)];
@@ -38,6 +37,7 @@ public class AttackHandler
                 break;
             case AttackPhase.TakingDamage:
                 AttackFactory.CreateDamageEffect(_attack);
+                TileEffectFactory.CreateDamageValueEffect(_attack);
                 break;
             default:
                 break;
