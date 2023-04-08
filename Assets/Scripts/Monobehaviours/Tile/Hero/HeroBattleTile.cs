@@ -1,8 +1,10 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class HeroBattleTile : MonoBehaviour, IHeroBattleTile
+public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] private Image _backgroundImage;
     [SerializeField] private Image _avatarImage;
@@ -13,6 +15,8 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile
     [SerializeField] private Healthbar _healthbar;
 
     [SerializeField] private Sprite _avatar;
+    private float tapTimer = 0f; //TODO check if we can do something with this shared tile code
+    private Coroutine tapCoroutine = null;
 
     public IHero Hero { get; private set; }
     private ICanvasController _canvasController;
@@ -42,9 +46,6 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile
 
         _canvasController = canvasController;
         Hero = hero;
-
-        _button.onClick.RemoveAllListeners();
-        _button.onClick.AddListener(delegate { OnClick(); });
 
         _healthbar.Setup();
 
@@ -105,13 +106,45 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile
         _backgroundImage.color = ColourUtility.GetColour(ColourType.ErrorRed);
     }
 
+    private IEnumerator TapTimer()
+    {
+        while (true)
+        {
+            yield return null;
+            tapTimer += Time.deltaTime;
+
+            if (tapTimer >= 3f)
+            {
+                Debug.Log("Long tap detected");
+                StopCoroutine(tapCoroutine);
+            }
+        }
+    }
+
     #region events
 
     public void OnClick()
     {
-        if (Hero.CurrentHealth == 0) return;
 
-        _canvasController.OnClickHero(this);
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        tapCoroutine = StartCoroutine(TapTimer());
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        StopCoroutine(tapCoroutine);
+
+        if (tapTimer < 3f)
+        {
+            if (Hero.CurrentHealth == 0) return;
+
+            _canvasController.OnClickHero(this);
+        }
+
+        tapTimer = 0f;
     }
 
     public void OnHasTakenDamageEvent(object sender, HasTakenDamageEvent e)

@@ -4,7 +4,7 @@ using UnityEngine;
 public struct PlayerHeroData
 {
     public int Id;
-    public int XP;
+    public int Experience;
 }
 
 public struct PlayerData

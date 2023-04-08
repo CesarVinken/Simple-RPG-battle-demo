@@ -1,7 +1,7 @@
 public interface IHero : IActor
 {
-    int XP { get; }
+    int Experience { get; }
 
     void ResetHealth();
-    void UpdateStats(int xp);
+    void UpdateStats(int experience);
 }

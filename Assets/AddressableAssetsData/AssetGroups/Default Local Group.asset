@@ -173,6 +173,10 @@ MonoBehaviour:
     m_Address: Assets/Prefabs/Attacks/AttackEffect.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 305dbf6164d70104ca6445f4c96e34ce
+    m_Address: Assets/Prefabs/Panels/HeroInfoPanel.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b79047341e11940498d72ce0c90c65f7, type: 2}
   m_SchemaSet:

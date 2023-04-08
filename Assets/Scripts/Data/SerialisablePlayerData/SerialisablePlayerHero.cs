@@ -5,13 +5,13 @@ using UnityEngine;
 public class SerialisablePlayerHero
 {
     public int Id;
-    public int XP;
+    public int Experience;
 
     public PlayerHeroData Deserialise()
     {
         PlayerHeroData playerHeroData = new PlayerHeroData();
         playerHeroData.Id = Id;
-        playerHeroData.XP = XP;
+        playerHeroData.Experience = Experience;
 
         return playerHeroData;
     }

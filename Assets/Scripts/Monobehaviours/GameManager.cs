@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour
         {
             PlayerHeroData playerHeroData = playerData.Heroes[i];
             IHero hero = HeroFactory.CreateHero(playerHeroData.Id);
-            hero.UpdateStats(playerHeroData.XP);
+            hero.UpdateStats(playerHeroData.Experience);
             _playerHeroes.Add(hero.Id, hero);
         }
     }
@@ -137,7 +137,6 @@ public class GameManager : MonoBehaviour
                 {
                     IHero hero = HeroFactory.CreateRandomHero(GameData.Heroes, GetPlayerHeroes().Keys.ToList());
                     _playerHeroes.Add(hero.Id, hero);
-                    ConsoleLog.Warning(LogCategory.General, $"Added {hero.Name} as new hero!");
                 }
 
                 // Later move this to the victory screen. Heroes should be updated in the victory screen phase
@@ -146,7 +145,7 @@ public class GameManager : MonoBehaviour
                     IHero hero = item.Value;
                     if (hero.CurrentHealth   == 0) continue;
 
-                    hero.UpdateStats(hero.XP + 1);
+                    hero.UpdateStats(hero.Experience + 1);
                 }
 
                 SetPreviousScene(SceneType.Battle);

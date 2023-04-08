@@ -1,8 +1,10 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class HeroSelectionTile : MonoBehaviour, IHeroTile
+public class HeroSelectionTile : MonoBehaviour, IHeroTile, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] private Image _selectionBorderImage;
     [SerializeField] private Image _backgroundImage;
@@ -11,6 +13,8 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile
     [SerializeField] private TextMeshProUGUI _nameText;
 
     [SerializeField] private Sprite _avatarSprite;
+    private float tapTimer = 0f;
+    private Coroutine tapCoroutine = null;
 
     public IHero Hero { get; private set; }
     
@@ -46,9 +50,6 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile
         _selectionBorderImage.enabled = false;
 
         SetTileSize();
-
-        _button.onClick.RemoveAllListeners();
-        _button.onClick.AddListener(delegate { OnClick(); });
     }
 
     public void Initialise()
@@ -61,7 +62,7 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile
 
     public void Unload()
     {
-
+        StopCoroutine(tapCoroutine);
     }
 
     public IActor GetActor()
@@ -105,9 +106,36 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile
         _avatarImage.enabled = true;
     }
 
-    public void OnClick()
+    public void OnPointerDown(PointerEventData eventData)
     {
-        _canvasController.OnClickHero(this);
+        tapCoroutine = StartCoroutine(TapTimer());
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        StopCoroutine(tapCoroutine);
+
+        if (tapTimer < 3f)
+        {
+            _canvasController.OnClickHero(this);
+        }
+
+        tapTimer = 0f;
+    }
+
+    private IEnumerator TapTimer()
+    {
+        while (true)
+        {
+            yield return null;
+            tapTimer += Time.deltaTime;
+
+            if (tapTimer >= 3f)
+            {
+                Debug.Log("Long tap detected");
+                StopCoroutine(tapCoroutine);
+            }
+        }
     }
 
     public void Select(HeroSelectionHandler heroSelectionHandler)

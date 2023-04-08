@@ -138,7 +138,7 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
 
     public void OnEnemyDefeatedEvent(object sender, EnemyDefeatedEvent e)
     {
-        BattleUIFactory.CreateBattleEndPanel(transform, true);
+        UIPanelFactory.CreateBattleEndPanel(transform, true);
     }
 
     public void OnHasTakenDamageEvent(object sender, HasTakenDamageEvent e)
@@ -153,7 +153,7 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
         List<IActor> aliveHeroes = _tilesByActor.Keys.Where(t => t is IHero && t.CurrentHealth > 0).ToList();
         if(aliveHeroes.Count == 0)
         {
-            BattleUIFactory.CreateBattleEndPanel(transform, false);
+            UIPanelFactory.CreateBattleEndPanel(transform, false);
         }
     }
 

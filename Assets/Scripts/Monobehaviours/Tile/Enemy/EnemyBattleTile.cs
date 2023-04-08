@@ -106,10 +106,8 @@ public class EnemyBattleTile : MonoBehaviour, IEnemyBattleTile
     public void OnHasTakenDamageEvent(object sender, HasTakenDamageEvent e)
     {
         if (e.HitActor is IHero) return;
-
         if (e.HitActor.Id != Enemy.Id) return;
 
-        ConsoleLog.Log(LogCategory.General, $"Update health of enemy {Enemy.Name}");
         _healthbar.UpdateHealth(Enemy);
     }
 
