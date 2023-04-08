@@ -20,12 +20,6 @@ public class Healthbar : MonoBehaviour
     public void UpdateHealth(IActor actor)
     {
         float healthPercentage = actor.CurrentHealth / actor.MaxHealth;
-
-        ConsoleLog.Log(LogCategory.General, $"_background == null {_background == null}.");
-        ConsoleLog.Log(LogCategory.General, $"gameObject {gameObject.name}");
-        ConsoleLog.Log(LogCategory.General, $"actor {actor.Name}");
-        
-        ConsoleLog.Log(LogCategory.General, $"_background.rect == null {_background.rect == null}");
         float fullWidth = _background.rect.width;
 
         _currentHealth.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, fullWidth * healthPercentage);

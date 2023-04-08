@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public interface IAttackEffect
+public interface IBattleMoveEffect
 {
     void Setup(IAttack attack);
     void Initialise();
-    void OnAttackFinished();
+    void OnEffectFinished();
 }

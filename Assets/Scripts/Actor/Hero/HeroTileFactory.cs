@@ -25,7 +25,7 @@ public static class HeroTileFactory
 
     public static void CreateHeroBattleTile(Transform container, IHero hero)
     {
-        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject("Assets/Prefabs/HeroBattleTile.prefab");
+        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject("Assets/Prefabs/Battle/HeroBattleTile.prefab");
         AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(prefabReference, container);
         handle.Completed += (o) =>
         {

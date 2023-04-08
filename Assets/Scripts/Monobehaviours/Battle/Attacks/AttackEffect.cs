@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackEffect : MonoBehaviour, IAttackEffect
+public class AttackEffect : MonoBehaviour, IBattleMoveEffect
 {
     private IAttack _attack;
 
@@ -16,19 +16,24 @@ public class AttackEffect : MonoBehaviour, IAttackEffect
 
     }
 
-    public void OnAttackFinished()
+    public void OnEffectFinished()
     {
-        _attack.Target.TakeDamage(_attack.Attacker.AttackPower);
+         StartCoroutine(WaitAndExecuteNextAttackPhase());
+    }
 
-        if (_attack.Target.CurrentHealth == 0) return;
+    private IEnumerator WaitAndExecuteNextAttackPhase()
+    {
+        float waitTime = 1f;
+        yield return new WaitForSeconds(waitTime);
 
-        if(_attack.Attacker is IHero)
+        AttackHandler attackHandler = BattleCanvasController.Instance.CurrentAttackHandler;
+
+        if (attackHandler == null)
         {
-            IAttack attack = AttackFactory.CreateAttack<DefaultAttack>(_attack.Target);
-            BattleHandler battleHandler = BattleCanvasController.Instance.BattleHandler; // TODO use service locator 
-            battleHandler.Attack(attack);
+            ConsoleLog.Error(LogCategory.General, $"Could not find attack handler");
         }
 
+        attackHandler.ExecutePhase(AttackPhase.TakingDamage);
         Destroy(gameObject);
     }
 }

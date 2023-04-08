@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HeroBattleTile : MonoBehaviour, IHeroTile
+public class HeroBattleTile : MonoBehaviour, IHeroBattleTile
 {
     [SerializeField] private Image _backgroundImage;
     [SerializeField] private Image _avatarImage;
@@ -100,8 +100,12 @@ public class HeroBattleTile : MonoBehaviour, IHeroTile
         _backgroundImage.color = ColourUtility.GetColour(ColourType.ErrorRed);
     }
 
+    #region events
+
     public void OnClick()
     {
+        if (Hero.CurrentHealth == 0) return;
+
         _canvasController.OnClickHero(this);
     }
 
@@ -121,4 +125,6 @@ public class HeroBattleTile : MonoBehaviour, IHeroTile
 
         BeDefeated();
     }
+
+    #endregion
 }

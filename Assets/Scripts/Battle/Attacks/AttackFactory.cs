@@ -12,18 +12,19 @@ public class AttackFactory
         return attack;
     }
 
-    public static void CreateAttackEffect(IAttack attack)
+    public static void CreateDamageEffect(IAttack attack)
     {
-        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject($"Assets/Prefabs/Attacks/{attack.Name}.prefab");
+        // we have only one effect at the moment
+        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject($"Assets/Prefabs/Attacks/FireDamage.prefab");
 
-        if(prefabReference == null)
+        if (prefabReference == null)
         {
             ConsoleLog.Error(LogCategory.General, $"Could not find asset reference for {attack.Name} attack");
         }
 
         IActor target = attack.Target;
 
-        if(target == null)
+        if (target == null)
         {
             ConsoleLog.Error(LogCategory.General, $"We need a target for this {attack.Name} attack");
         }
@@ -35,20 +36,47 @@ public class AttackFactory
         {
             if (o.Status == AsyncOperationStatus.Succeeded)
             {
-                GameObject attackGO = o.Result;
-                HandleAttackGameObjectCompleted(attackGO, attack);
+                GameObject damageGO = o.Result;
+                HandleBattleMoveEffectGameObjectCompleted(damageGO, attack);
             }
             else
             {
-                Debug.LogError($"Failed to instantiate attack game object {attack.Name}");
+                Debug.LogError($"Failed to instantiate damage game object {attack.Name}");
             }
         };
     }
 
-    private static void HandleAttackGameObjectCompleted(GameObject attackGO, IAttack attack)
+    public static void CreateAttackEffect(IAttack attack)
     {
-        IAttackEffect attackEffect = attackGO.GetComponent<IAttackEffect>();
-        attackEffect.Setup(attack);
-        attackEffect.Initialise();
+        // we have only one effect at the moment
+        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject($"Assets/Prefabs/Attacks/AttackEffect.prefab");
+
+        if (prefabReference == null)
+        {
+            ConsoleLog.Error(LogCategory.General, $"Could not find asset reference for {attack.Name} attack");
+        }
+
+        ITile attackContainer = BattleCanvasController.Instance.GetTile(attack.Attacker);
+
+        AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(prefabReference, attackContainer.GetTransform());
+        handle.Completed += (o) =>
+        {
+            if (o.Status == AsyncOperationStatus.Succeeded)
+            {
+                GameObject attackGO = o.Result;
+                HandleBattleMoveEffectGameObjectCompleted(attackGO, attack);
+            }
+            else
+            {
+                Debug.LogError($"Failed to instantiate damage game object {attack.Name}");
+            }
+        };
+    }
+
+    private static void HandleBattleMoveEffectGameObjectCompleted(GameObject effectGO, IAttack attack)
+    {
+        IBattleMoveEffect battleMoveEffect = effectGO.GetComponent<IBattleMoveEffect>();
+        battleMoveEffect.Setup(attack);
+        battleMoveEffect.Initialise();
     }
 }

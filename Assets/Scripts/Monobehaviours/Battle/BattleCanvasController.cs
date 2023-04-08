@@ -10,8 +10,9 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
     [SerializeField] private SpawnpointContainer _spawnpointContainer;
 
     [SerializeField] private SelectedHeroes _selectedHeroesAsset;
-    public BattleHandler BattleHandler { get; private set; }
+    public AttackHandler CurrentAttackHandler { get; private set; }
     private Dictionary<IActor, ITile> _tilesByActor = new Dictionary<IActor, ITile>();
+    //public bool InAttackRoutine { get; private set; }
 
     public void Awake()
     {
@@ -40,6 +41,7 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
 
         GameEventHandler.GetInstance().HeroDefeatedEvent += OnHeroDefeatedEvent;
         GameEventHandler.GetInstance().EnemyDefeatedEvent += OnEnemyDefeatedEvent;
+        GameEventHandler.GetInstance().HasTakenDamageEvent += OnHasTakenDamageEvent;
     }
 
     // We want initialisation to take place after we have loaded in game data
@@ -95,10 +97,30 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
 
     public void OnClickHero(IHeroTile tile)
     {
+        if (CurrentAttackHandler != null) return;
+
         // For now we only have default attacks in our game.
-        IAttack attack = AttackFactory.CreateAttack<DefaultAttack>(tile.Hero);
-        BattleHandler = new BattleHandler(_tilesByActor.Values.ToList()); // TODO use Service locator
-        BattleHandler.Attack(attack);
+        TriggerAttack(tile);
+    
+    }
+
+    public void TriggerAttack(ITile attackingTile)
+    {
+        IActor attacker = attackingTile.GetActor();
+        List<ITile> possibleTargets = new List<ITile>();
+        if(attacker is IEnemy)
+        {
+            possibleTargets = _tilesByActor.Values.Where(v => v.GetActor() is IHero).ToList();
+        }
+        else
+        {
+            possibleTargets = _tilesByActor.Values.Where(v => v.GetActor() is IEnemy).ToList();
+        }
+
+        IAttack attack = AttackFactory.CreateAttack<DefaultAttack>(attackingTile.GetActor());
+        CurrentAttackHandler = new AttackHandler(attack); // TODO use service locator 
+        CurrentAttackHandler.AddTarget(possibleTargets);
+        CurrentAttackHandler.ExecutePhase(AttackPhase.Attacking);
     }
 
     public ITile GetTile(IActor actor)
@@ -112,10 +134,20 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
         return null;
     }
 
+    #region events
+
     public void OnEnemyDefeatedEvent(object sender, EnemyDefeatedEvent e)
     {
         BattleUIFactory.CreateBattleEndPanel(transform, true);
     }
+
+    public void OnHasTakenDamageEvent(object sender, HasTakenDamageEvent e)
+    {
+        if (e.HitActor is Enemy) return;
+
+        CurrentAttackHandler = null;
+    }
+
     public void OnHeroDefeatedEvent(object sender, HeroDefeatedEvent e)
     {
         List<IActor> aliveHeroes = _tilesByActor.Keys.Where(t => t is IHero && t.CurrentHealth > 0).ToList();
@@ -124,5 +156,7 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
             BattleUIFactory.CreateBattleEndPanel(transform, false);
         }
     }
+
+    #endregion
 }
 

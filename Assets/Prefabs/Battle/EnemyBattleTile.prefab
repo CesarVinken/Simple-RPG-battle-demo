@@ -86,9 +86,9 @@ GameObject:
   m_Component:
   - component: {fileID: 9086087463901372073}
   - component: {fileID: 1361905980130391397}
-  - component: {fileID: 1583150644738699572}
+  - component: {fileID: 257088645836126083}
   m_Layer: 5
-  m_Name: EnemyTile
+  m_Name: EnemyBattleTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126,7 +126,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4014069994456567884}
   m_CullTransparentMesh: 1
---- !u!114 &1583150644738699572
+--- !u!114 &257088645836126083
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

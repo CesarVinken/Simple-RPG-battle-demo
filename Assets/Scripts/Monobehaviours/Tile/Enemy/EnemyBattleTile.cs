@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class EnemyTile : MonoBehaviour, IEnemyTile
+public class EnemyBattleTile : MonoBehaviour, IEnemyBattleTile
 {
     [SerializeField] private Image _backgroundImage;
     [SerializeField] private Image _avatarImage;
@@ -96,6 +96,8 @@ public class EnemyTile : MonoBehaviour, IEnemyTile
         _avatarImage.enabled = true;
     }
 
+    #region events
+
     public void OnHasTakenDamageEvent(object sender, HasTakenDamageEvent e)
     {
         if (e.HitActor is IHero) return;
@@ -110,4 +112,6 @@ public class EnemyTile : MonoBehaviour, IEnemyTile
     {
         BeDefeated();
     }
+
+    #endregion
 }

@@ -141,8 +141,8 @@ MonoBehaviour:
     m_Address: Assets/Sprites/Heroes/9.png
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: bd5a1d2aea2ec4446b4b315833c8d39f
-    m_Address: Assets/Prefabs/HeroBattleTile.prefab
+  - m_GUID: 2f3bf5f51843f7b498718e53ab317cfb
+    m_Address: Assets/Prefabs/Battle/HeroBattleTile.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 69a28ac1847db1a47aa1c3d44efff2e4
@@ -162,11 +162,15 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 9f95c634c9aa45446808349ef6413e27
-    m_Address: Assets/Prefabs/Attacks/Default Attack.prefab
+    m_Address: Assets/Prefabs/Attacks/FireDamage.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 3bd387d40763e124cb9d60d4b8178402
     m_Address: Assets/Prefabs/Battle/UI/BattleEndPanel.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e0384fc4ea707f14eaeb417facd2c364
+    m_Address: Assets/Prefabs/Attacks/AttackEffect.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0
