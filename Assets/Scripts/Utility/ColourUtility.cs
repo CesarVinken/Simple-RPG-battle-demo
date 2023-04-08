@@ -6,6 +6,8 @@ public class ColourUtility
     {
         switch (colourType)
         {
+            case ColourType.Blue:
+                return new Color(0, 125f / 255f, 204f / 255f);
             case ColourType.Empty:
                 return Color.white;
             case ColourType.ErrorRed:
@@ -27,7 +29,7 @@ public class ColourUtility
             case ColourType.Black:
                 return "#000000";
             case ColourType.Blue:
-                return "#0013C1";
+                return "#007DCC";
             case ColourType.Cyan:
                 return "#48D1AC";
             case ColourType.Empty:

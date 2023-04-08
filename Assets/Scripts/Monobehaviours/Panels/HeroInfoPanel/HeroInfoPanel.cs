@@ -56,12 +56,16 @@ public class HeroInfoPanel : MonoBehaviour, IHeroInfoPanel
 
     public void Register()
     {
-        BattleCanvasController.Instance.PanelHandler.RegisterPanel(this);
+        //TODO Use service locator
+        ICanvasController canvasController = BattleCanvasController.Instance == null ? HeroSelectionCanvasController.Instance : BattleCanvasController.Instance;
+        canvasController.PanelHandler.RegisterPanel(this);
     }
 
     public void Deregister()
     {
-        BattleCanvasController.Instance.PanelHandler.DeregisterPanel(this);
+        //TODO Use service locator
+        ICanvasController canvasController = BattleCanvasController.Instance == null ? HeroSelectionCanvasController.Instance : BattleCanvasController.Instance;
+        canvasController.PanelHandler.DeregisterPanel(this);
         Destroy(gameObject);
     }
 

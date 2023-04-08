@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 9086087463901372073}
   - component: {fileID: 1361905980130391397}
   - component: {fileID: 257088645836126083}
+  - component: {fileID: 5047311381136074123}
   m_Layer: 5
   m_Name: EnemyBattleTile
   m_TagString: Untagged
@@ -144,6 +145,20 @@ MonoBehaviour:
   _nameText: {fileID: 7833488350446928710}
   _healthbar: {fileID: 2922888887672580190}
   _avatarSprite: {fileID: 0}
+--- !u!114 &5047311381136074123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4014069994456567884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86710e43de46f6f4bac7c8e50813a599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AspectMode: 1
+  m_AspectRatio: 1
 --- !u!1 &6738636288899495809
 GameObject:
   m_ObjectHideFlags: 0

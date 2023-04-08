@@ -117,8 +117,6 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandle
 
             if (tapTimer >= 3f)
             {
-                Debug.Log("Long tap detected");
-
                 //TODO Use service locator
                 // info panel should not work if the BattleEndPanel is open
                 List<IPanel> openPanels = _canvasController.PanelHandler.GetOpenPanels();

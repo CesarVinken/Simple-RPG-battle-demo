@@ -5,6 +5,7 @@ public class BattleEndPanel : MonoBehaviour, IBattleEndPanel
 {
     [SerializeField] private TextMeshProUGUI _headerLabel;
     [SerializeField] private ToHeroSelectionButton _toHeroSelectionButton;
+    [SerializeField] private HeroBattleResultsContainer _heroBattleResultsContainer;
 
     public void Setup()
     {
@@ -16,7 +17,12 @@ public class BattleEndPanel : MonoBehaviour, IBattleEndPanel
         {
             ConsoleLog.Error(LogCategory.General, $"Could not find header label");
         }
+        if (_heroBattleResultsContainer == null)
+        {
+            ConsoleLog.Error(LogCategory.General, $"Could not find _heroBattleResultsContainer");
+        }
 
+        _heroBattleResultsContainer.Setup();
         _toHeroSelectionButton.Setup();
     }
 
@@ -31,6 +37,7 @@ public class BattleEndPanel : MonoBehaviour, IBattleEndPanel
             _headerLabel.text = "You were defeated";
         }
 
+        _heroBattleResultsContainer.Initialise();
         _toHeroSelectionButton.Initialise();
         Register();
     }
@@ -45,5 +52,4 @@ public class BattleEndPanel : MonoBehaviour, IBattleEndPanel
         BattleCanvasController.Instance.PanelHandler.DeregisterPanel(this);
         Destroy(gameObject);
     }
-
 }

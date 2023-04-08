@@ -48,8 +48,6 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile, IPointerDownHandler, 
 
         _canvasController = canvasController;
         _selectionBorderImage.enabled = false;
-
-        SetTileSize();
     }
 
     public void Initialise()
@@ -78,15 +76,6 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile, IPointerDownHandler, 
     private void SetName()
     {
         _nameText.text = Hero.Name;
-    }
-
-    private void SetTileSize()
-    {
-        RectTransform parentRect = HeroSelectionCanvasController.Instance.GetComponent<RectTransform>();
-        RectTransform rectTransform = GetComponent<RectTransform>();
-
-        rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, parentRect.sizeDelta.x / 5f);
-        rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, parentRect.sizeDelta.x / 5f);
     }
 
     private async void SetAvatar()

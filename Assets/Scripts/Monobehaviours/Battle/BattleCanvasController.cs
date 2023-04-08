@@ -2,25 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PanelHandler
-{
-    private List<IPanel> _openPanels = new List<IPanel>();
-
-    public void RegisterPanel(IPanel panel)
-    {
-        _openPanels.Add(panel);
-    }
-
-    public void DeregisterPanel(IPanel panel)
-    {
-        _openPanels.Remove(panel);
-    }
-
-    public List<IPanel> GetOpenPanels()
-    {
-        return _openPanels;
-    }
-}
 
 public class BattleCanvasController : MonoBehaviour, ICanvasController
 {
@@ -92,8 +73,7 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
         _tilesByActor.Add(tile.GetActor(), tile);
     }
 
-
-    private List<IHero> GetSelectedHeroes()
+    public List<IHero> GetSelectedHeroes()
     {
         if(GameManager.Instance.PreviousScene == SceneType.None) // we started the battle scene directly from Unity inspector
         {
