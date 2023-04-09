@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PanelHandler
+public class PanelHandler : IGameService
 {
     private List<IPanel> _openPanels = new List<IPanel>();
 

@@ -3,8 +3,6 @@ using UnityEngine;
 
 public interface ICanvasController
 {
-    PanelHandler PanelHandler { get;}
-
     void Unload();
     void RegisterTile(ITile tile);
 

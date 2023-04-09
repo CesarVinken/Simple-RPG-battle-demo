@@ -56,8 +56,9 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandle
 
         _healthbar.Setup();
 
-        GameEventHandler.GetInstance().HasTakenDamageEvent += OnHasTakenDamageEvent;
-        GameEventHandler.GetInstance().HeroDefeatedEvent += OnHeroDefeatedEvent;
+        GameEventHandler gameEventHandler = ServiceLocator.Instance.Get<GameEventHandler>();
+        gameEventHandler.HasTakenDamageEvent += OnHasTakenDamageEvent;
+        gameEventHandler.HeroDefeatedEvent += OnHeroDefeatedEvent;
     }
 
     public void Initialise()
@@ -72,8 +73,9 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandle
 
     public void Unload()
     {
-        GameEventHandler.GetInstance().HasTakenDamageEvent -= OnHasTakenDamageEvent;
-        GameEventHandler.GetInstance().HeroDefeatedEvent -= OnHeroDefeatedEvent;
+        GameEventHandler gameEventHandler = ServiceLocator.Instance.Get<GameEventHandler>();
+        gameEventHandler.HasTakenDamageEvent -= OnHasTakenDamageEvent;
+        gameEventHandler.HeroDefeatedEvent -= OnHeroDefeatedEvent;
     }
 
     public IActor GetActor()
@@ -127,9 +129,9 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandle
 
             if (tapTimer >= 3f)
             {
-                //TODO Use service locator
                 // info panel should not work if the BattleEndPanel is open
-                List<IPanel> openPanels = _canvasController.PanelHandler.GetOpenPanels();
+                PanelHandler panelHandler = ServiceLocator.Instance.Get<PanelHandler>();
+                List<IPanel> openPanels = panelHandler.GetOpenPanels();
                 bool endGamePanelIsOpen = openPanels.OfType<IBattleEndPanel>().Any();
 
                 if (!endGamePanelIsOpen)

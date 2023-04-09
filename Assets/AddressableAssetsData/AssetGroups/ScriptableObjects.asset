@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: ScriptableObjects
+  m_EditorClassIdentifier: 
+  m_GroupName: ScriptableObjects
+  m_Data:
+    m_SerializedData: []
+  m_GUID: f190e768422711645a3a2d3d227b99a9
+  m_SerializeEntries:
+  - m_GUID: e303fc7d408fdbe44964dcf66fd3e34b
+    m_Address: ScriptableObjects/SelectedHeroes.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b580c93a8456afb47b09404f358ea985
+    m_Address: ScriptableObjects/GameData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b79047341e11940498d72ce0c90c65f7, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 20e278a630a422d49ba1a1c34b2d1292, type: 2}
+    - {fileID: 11400000, guid: d0419487a14b60841b777e3c08746155, type: 2}

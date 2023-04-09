@@ -35,14 +35,8 @@ public class AttackEffect : MonoBehaviour, IBattleMoveEffect
         float waitTime = .6f;
         yield return new WaitForSeconds(waitTime);
 
-        AttackHandler attackHandler = BattleCanvasController.Instance.CurrentAttackHandler;
+        ServiceLocator.Instance.Get<AttackHandler>().ExecutePhase(AttackPhase.TakingDamage);
 
-        if (attackHandler == null)
-        {
-            ConsoleLog.Error(LogCategory.General, $"Could not find attack handler");
-        }
-
-        attackHandler.ExecutePhase(AttackPhase.TakingDamage);
         Destroy(gameObject);
     }
 }

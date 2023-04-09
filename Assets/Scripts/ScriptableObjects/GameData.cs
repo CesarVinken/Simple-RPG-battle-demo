@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameData
+[CreateAssetMenu(fileName = "GameData", menuName = "ScriptableObjects/GameData")]
+public class GameData : ScriptableObject
 {
     public Dictionary<int, HeroBlueprint> Heroes = new Dictionary<int, HeroBlueprint>();
     public Dictionary<int, EnemyBlueprint> Enemies = new Dictionary<int, EnemyBlueprint>();

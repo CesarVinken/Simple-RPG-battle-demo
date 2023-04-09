@@ -11,8 +11,7 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
 
     [SerializeField] private SelectedHeroes _selectedHeroesAsset;
     [SerializeField] private InfoPanelContainer _infoPanelContainer;
-    public AttackHandler CurrentAttackHandler { get; private set; }
-    public PanelHandler PanelHandler { get; private set; }
+
     private Dictionary<IActor, ITile> _tilesByActor = new Dictionary<IActor, ITile>();
 
     public void Awake()
@@ -37,13 +36,12 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
             ConsoleLog.Error(LogCategory.General, $"Could not find _spawnpointContainer");
         }
 
-        PanelHandler = new PanelHandler();
-
         _spawnpointContainer.Setup();
 
-        GameEventHandler.GetInstance().HeroDefeatedEvent += OnHeroDefeatedEvent;
-        GameEventHandler.GetInstance().EnemyDefeatedEvent += OnEnemyDefeatedEvent;
-        GameEventHandler.GetInstance().HasTakenDamageEvent += OnHasTakenDamageEvent;
+        GameEventHandler gameEventHandler = ServiceLocator.Instance.Get<GameEventHandler>();
+        gameEventHandler.HeroDefeatedEvent += OnHeroDefeatedEvent;
+        gameEventHandler.EnemyDefeatedEvent += OnEnemyDefeatedEvent;
+        gameEventHandler.HasTakenDamageEvent += OnHasTakenDamageEvent;
     }
 
     // We want initialisation to take place after we have loaded in game data
@@ -59,8 +57,9 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
 
     public void Unload()
     {
-        GameEventHandler.GetInstance().HeroDefeatedEvent -= OnHeroDefeatedEvent;
-        GameEventHandler.GetInstance().EnemyDefeatedEvent -= OnEnemyDefeatedEvent;
+        GameEventHandler gameEventHandler = ServiceLocator.Instance.Get<GameEventHandler>();
+        gameEventHandler.HeroDefeatedEvent -= OnHeroDefeatedEvent;
+        gameEventHandler.EnemyDefeatedEvent -= OnEnemyDefeatedEvent;
 
         foreach (KeyValuePair<IActor, ITile> item in _tilesByActor)
         {
@@ -104,7 +103,9 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
 
     public void OnClickHero(IHeroTile tile)
     {
-        if (CurrentAttackHandler != null) return;
+        IAttack currentAttack = ServiceLocator.Instance.Get<AttackHandler>().GetCurrentAttack();
+
+        if (currentAttack != null) return;
 
         // For now we only have default attacks in our game.
         TriggerAttack(tile);   
@@ -124,9 +125,10 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
         }
 
         IAttack attack = AttackFactory.CreateAttack<DefaultAttack>(attackingTile.GetActor());
-        CurrentAttackHandler = new AttackHandler(attack); // TODO use service locator 
-        CurrentAttackHandler.AddTarget(possibleTargets);
-        CurrentAttackHandler.ExecutePhase(AttackPhase.Attacking);
+        AttackHandler attackHandler = ServiceLocator.Instance.Get<AttackHandler>();
+        attackHandler.SetAttack(attack);
+        attackHandler.SetTarget(possibleTargets);
+        attackHandler.ExecutePhase(AttackPhase.Attacking);
     }
 
     public ITile GetTile(IActor actor)
@@ -144,8 +146,10 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
 
     public void OnEnemyDefeatedEvent(object sender, EnemyDefeatedEvent e)
     {
+        PanelHandler panelHandler = ServiceLocator.Instance.Get<PanelHandler>();
         // TODO MOVE FACTORY WORK TO PANEL HANDLER
-        List<IPanel> openPanels = PanelHandler.GetOpenPanels();
+
+        List<IPanel> openPanels = panelHandler.GetOpenPanels();
 
         for (int i = 0; i < openPanels.Count; i++)
         {
@@ -159,16 +163,17 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
     {
         if (e.HitActor is Enemy) return;
 
-        CurrentAttackHandler = null;
+        ServiceLocator.Instance.Get<AttackHandler>().SetAttack(null);
     }
 
     public void OnHeroDefeatedEvent(object sender, HeroDefeatedEvent e)
     {
+        PanelHandler panelHandler = ServiceLocator.Instance.Get<PanelHandler>();
         List<IActor> aliveHeroes = _tilesByActor.Keys.Where(t => t is IHero && t.CurrentHealth > 0).ToList();
         if(aliveHeroes.Count == 0)
         {
             // TODO MOVE FACTORY WORK TO PANEL HANDLER
-            List<IPanel> openPanels = PanelHandler.GetOpenPanels();
+            List<IPanel> openPanels = panelHandler.GetOpenPanels();
 
             for (int i = 0; i < openPanels.Count; i++)
             {

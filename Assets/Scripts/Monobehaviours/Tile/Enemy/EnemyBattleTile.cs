@@ -50,8 +50,9 @@ public class EnemyBattleTile : MonoBehaviour, IEnemyBattleTile
 
         _healthbar.Setup();
 
-        GameEventHandler.GetInstance().HasTakenDamageEvent += OnHasTakenDamageEvent;
-        GameEventHandler.GetInstance().EnemyDefeatedEvent += OnEnemyDefeatedEvent;
+        GameEventHandler gameEventHandler = ServiceLocator.Instance.Get<GameEventHandler>();
+        gameEventHandler.HasTakenDamageEvent += OnHasTakenDamageEvent;
+        gameEventHandler.EnemyDefeatedEvent += OnEnemyDefeatedEvent;
     }
 
     public void Initialise()
@@ -65,8 +66,9 @@ public class EnemyBattleTile : MonoBehaviour, IEnemyBattleTile
 
     public void Unload()
     {
-        GameEventHandler.GetInstance().HasTakenDamageEvent -= OnHasTakenDamageEvent;
-        GameEventHandler.GetInstance().EnemyDefeatedEvent -= OnEnemyDefeatedEvent;
+        GameEventHandler gameEventHandler = ServiceLocator.Instance.Get<GameEventHandler>();
+        gameEventHandler.HasTakenDamageEvent -= OnHasTakenDamageEvent;
+        gameEventHandler.EnemyDefeatedEvent -= OnEnemyDefeatedEvent;
     }
 
     public IActor GetActor()

@@ -17,9 +17,6 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
     private List<ITile> _tiles = new List<ITile>();
     private List<IPanel> _openPanels = new List<IPanel>();
 
-    private HeroSelectionHandler _heroSelectionHandler;
-    public PanelHandler PanelHandler { get; private set; }
-
     public SelectedHeroes _selectedHeroesAsset;
 
     public void Awake()
@@ -38,8 +35,7 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
         }
 
         Instance = this;
-        _heroSelectionHandler = new HeroSelectionHandler(_toBattleButton);
-        PanelHandler = new PanelHandler();
+        ServiceLocator.Instance.Get<HeroSelectionHandler>();        
     }
 
     private void Start()
@@ -72,7 +68,8 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
 
     public void ToBattle()
     {
-        _selectedHeroesAsset.selectedHeroes = _heroSelectionHandler.GetSelectedHeros();
+        HeroSelectionHandler heroSelectionHandler = ServiceLocator.Instance.Get<HeroSelectionHandler>();
+        _selectedHeroesAsset.selectedHeroes = heroSelectionHandler.GetSelectedHeros();
         GameManager.Instance.ToScene(SceneType.Battle);
     }
 
@@ -85,6 +82,11 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
             Transform container = i < 5 ? _tileRow1 : _tileRow2;
             HeroTileFactory.CreateHeroSelectionTile(container, heroes[i]);
         }
+    }
+
+    public ToBattleButton GetToBattleButton()
+    {
+        return _toBattleButton;
     }
 
     public InfoPanelContainer GetInfoPanelContainer()
@@ -120,6 +122,7 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
             ConsoleLog.Error(LogCategory.General, $"This tile is not a HeroSelectionTile");
         }
 
-        _heroSelectionHandler.HandleTileSelection(tile as HeroSelectionTile);
+        HeroSelectionHandler heroSelectionHandler = ServiceLocator.Instance.Get<HeroSelectionHandler>();
+        heroSelectionHandler.HandleTileSelection(tile as HeroSelectionTile);
     }
 }

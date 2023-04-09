@@ -1,22 +1,15 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-public class HeroSelectionHandler
+public class HeroSelectionHandler : IGameService
 {
     private List<HeroSelectionTile> _selectedTiles = new List<HeroSelectionTile>();
-    private ToBattleButton _toBattleButton;
-
-    public HeroSelectionHandler(ToBattleButton toBattleButton)
-    {
-        _toBattleButton = toBattleButton;
-    }
 
     public void HandleTileSelection(HeroSelectionTile tile)
     {
         if (_selectedTiles.Contains(tile))
         {
-            tile.Deselect(this);
+            tile.Deselect();
             return;
         }
 
@@ -25,7 +18,7 @@ public class HeroSelectionHandler
             return;
         }
 
-        tile.Select(this);
+        tile.Select();
     }
 
     public void AddToSelectedTiles(HeroSelectionTile tile)
@@ -33,7 +26,8 @@ public class HeroSelectionHandler
         _selectedTiles.Add(tile);
         if (_selectedTiles.Count == 3)
         {
-            _toBattleButton.Enable();
+            ToBattleButton button = HeroSelectionCanvasController.Instance.GetToBattleButton();
+            button.Enable();
         }
     }
 
@@ -41,7 +35,8 @@ public class HeroSelectionHandler
     {
         if (_selectedTiles.Count == 3)
         {
-            _toBattleButton.Disable();
+            ToBattleButton button = HeroSelectionCanvasController.Instance.GetToBattleButton();
+            button.Disable();
         }
 
         _selectedTiles.Remove(tile);

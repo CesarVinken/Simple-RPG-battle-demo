@@ -142,14 +142,16 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile, IPointerDownHandler, 
         }
     }
 
-    public void Select(HeroSelectionHandler heroSelectionHandler)
+    public void Select()
     {
+        HeroSelectionHandler heroSelectionHandler = ServiceLocator.Instance.Get<HeroSelectionHandler>();
         _selectionBorderImage.enabled = true;
         heroSelectionHandler.AddToSelectedTiles(this);
     }
 
-    public void Deselect(HeroSelectionHandler heroSelectionHandler)
+    public void Deselect()
     {
+        HeroSelectionHandler heroSelectionHandler = ServiceLocator.Instance.Get<HeroSelectionHandler>();
         _selectionBorderImage.enabled = false;
         heroSelectionHandler.RemoveFromSelectedTiles(this);
     }

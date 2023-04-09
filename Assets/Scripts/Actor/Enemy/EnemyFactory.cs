@@ -8,7 +8,7 @@ public class EnemyFactory
 
     public static IEnemy CreateRandomEnemy()
     {
-        List <EnemyBlueprint> enemyData = GameManager.Instance.GameData.Enemies.Values.ToList();
+        List <EnemyBlueprint> enemyData = GameManager.Instance._gameDataAsset.Enemies.Values.ToList();
 
         EnemyBlueprint enemyBlueprint = enemyData[_random.Next(enemyData.Count)];
 

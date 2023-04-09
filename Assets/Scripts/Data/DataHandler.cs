@@ -1,27 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DataHandler
+public class DataHandler : IGameService
 {
-    private static readonly DataHandler _instance = new DataHandler();
-
-    private DataHandler()
-    {
-
-    }
-
-    public static DataHandler GetInstance()
-    {
-        return _instance;
-    }
-
-    public GameData LoadGameData()
+    public GameData LoadGameData(GameData gameData)
     {
         SerialisableGameData serialisableGameData = JsonGameDataReader.GetInstance().ReadData<SerialisableGameData>();
 
         ConsoleLog.Log(LogCategory.Data, $"Loaded data for {serialisableGameData.Heroes.Count} hero blueprints");
 
-        return serialisableGameData.Deserialise();
+        gameData = serialisableGameData.Deserialise();
+        return gameData;
     }
 
     public void SavePlayerData(Dictionary<int, IHero> playerHeroes, int numberOfBattles)

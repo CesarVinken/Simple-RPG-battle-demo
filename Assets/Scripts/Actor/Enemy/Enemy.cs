@@ -36,11 +36,11 @@ public class Enemy : IEnemy
             CurrentHealth = 0;
             ConsoleLog.Log(LogCategory.General, $"The enemy {Name} was defeated");
 
-            GameEventHandler.GetInstance().ExecuteHasTakenDamageEvent(this);
-            GameEventHandler.GetInstance().ExecuteEnemyDefeatedEvent();
+            ServiceLocator.Instance.Get<GameEventHandler>().ExecuteHasTakenDamageEvent(this);
+            ServiceLocator.Instance.Get<GameEventHandler>().ExecuteEnemyDefeatedEvent();
             return;
         }
 
-        GameEventHandler.GetInstance().ExecuteHasTakenDamageEvent(this);
+        ServiceLocator.Instance.Get<GameEventHandler>().ExecuteHasTakenDamageEvent(this);
     }
 }
