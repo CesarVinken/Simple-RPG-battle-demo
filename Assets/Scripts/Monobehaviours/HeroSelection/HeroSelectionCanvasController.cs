@@ -63,8 +63,6 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
         CreateHeroTiles();
 
         _toBattleButton.Initialise();
-
-        StartCoroutine(UpdateCanvas());
     }
 
     public void Unload()
@@ -97,6 +95,11 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
     public void RegisterTile(ITile tile)
     {
         _tiles.Add(tile);
+
+        if(_tiles.Count == GameManager.Instance.GetPlayerHeroes().Count)
+        {
+            StartCoroutine(UpdateCanvas());
+        }
     }
 
     // There is a Unity bug that tends to mix up the width of the vertical layout group.
@@ -106,7 +109,8 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
         yield return null;
         _heroTileContainerLayoutGroup.enabled = false;
         yield return null;
-        _heroTileContainerLayoutGroup.enabled = true; 
+        _heroTileContainerLayoutGroup.enabled = true;
+        Canvas.ForceUpdateCanvases();
     }
 
     public void OnClickHero(IHeroTile tile)

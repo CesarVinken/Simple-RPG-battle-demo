@@ -6,7 +6,7 @@ public static class UIPanelFactory
 {
     public static void CreateBattleEndPanel(Transform container, bool hasWon)
     {
-        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject("Assets/Prefabs/Battle/UI/BattleEndPanel.prefab");
+        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject("Panels/BattleEndPanel.prefab");
         AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(prefabReference, container);
         handle.Completed += (o) =>
         {
@@ -31,7 +31,7 @@ public static class UIPanelFactory
 
     public static void CreateHeroInfoPanel(InfoPanelContainer infoPanelContainer, IHero hero)
     {
-        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject("Assets/Prefabs/Panels/HeroInfoPanel.prefab");
+        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject("Panels/HeroInfoPanel.prefab");
         AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(prefabReference, infoPanelContainer.transform);
         handle.Completed += (o) =>
         {

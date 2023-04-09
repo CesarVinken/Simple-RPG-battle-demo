@@ -63,7 +63,7 @@ public class SpawnpointContainer : MonoBehaviour
 
     private void SpawnEnemy(IEnemy enemy)
     {
-        EnemyTileFactory.CreateEnemyTile(_enemySpawnpoint, enemy);
+        EnemyTileFactory.CreateEnemyBattleTile(_enemySpawnpoint, enemy);
         _spawnpointsByActor.Add(enemy, _enemySpawnpoint);
     }
 

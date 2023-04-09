@@ -7,7 +7,7 @@ public static class HeroTileFactory
 {
     public static void CreateHeroSelectionTile(Transform container, IHero hero)
     {
-        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject("Assets/Prefabs/HeroSelectionTile.prefab");
+        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject("Tiles/HeroSelectionTile.prefab");
         AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(prefabReference, container);
         handle.Completed += (o) =>
         {
@@ -25,7 +25,7 @@ public static class HeroTileFactory
 
     public static void CreateHeroBattleTile(Transform container, IHero hero)
     {
-        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject("Assets/Prefabs/Battle/HeroBattleTile.prefab");
+        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject("Tiles/HeroBattleTile.prefab");
         AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(prefabReference, container);
         handle.Completed += (o) =>
         {
@@ -43,7 +43,7 @@ public static class HeroTileFactory
 
     public static async Task<Sprite> LoadHeroAvatar(IHero hero)
     {
-        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject($"Assets/Sprites/Heroes/{hero.Id}.png");
+        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject($"Heroes/{hero.Id}.png");
 
         if(prefabReference == null)
         {

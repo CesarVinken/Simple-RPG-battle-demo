@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Effects
+  m_EditorClassIdentifier: 
+  m_GroupName: Effects
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 9961be53e48f45040bd19d53309ab103
+  m_SerializeEntries:
+  - m_GUID: e39fa17c89f1b014b94905f190313883
+    m_Address: Effects/DamageValueEffect.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e0384fc4ea707f14eaeb417facd2c364
+    m_Address: Effects/AttackEffect.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9f95c634c9aa45446808349ef6413e27
+    m_Address: Effects/FireDamage.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b79047341e11940498d72ce0c90c65f7, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 885d413405ed7194a816bd30890be68f, type: 2}
+    - {fileID: 11400000, guid: 6fc4b30572984fc47863f0ae9d5b4346, type: 2}

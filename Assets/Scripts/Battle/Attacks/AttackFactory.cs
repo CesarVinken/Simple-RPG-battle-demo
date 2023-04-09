@@ -15,7 +15,7 @@ public class AttackFactory
     public static void CreateDamageEffect(IAttack attack)
     {
         // we have only one effect at the moment
-        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject($"Assets/Prefabs/Attacks/FireDamage.prefab");
+        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject($"Effects/FireDamage.prefab");
 
         if (prefabReference == null)
         {
@@ -49,7 +49,7 @@ public class AttackFactory
     public static void CreateAttackEffect(IAttack attack)
     {
         // we have only one effect at the moment
-        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject($"Assets/Prefabs/Attacks/AttackEffect.prefab");
+        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject($"Effects/AttackEffect.prefab");
 
         if (prefabReference == null)
         {

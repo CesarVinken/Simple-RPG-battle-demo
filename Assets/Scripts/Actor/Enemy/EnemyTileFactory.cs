@@ -5,27 +5,27 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class EnemyTileFactory
 {
-    public static void CreateEnemyTile(Transform container, IEnemy enemy)
+    public static void CreateEnemyBattleTile(Transform container, IEnemy enemy)
     {
-        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject("Assets/Prefabs/EnemyTile.prefab");
+        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject("Tiles/EnemyBattleTile.prefab");
         AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(prefabReference, container);
         handle.Completed += (o) =>
         {
             if (o.Status == AsyncOperationStatus.Succeeded)
             {
                 GameObject enemyTileGO = o.Result;
-                HandleEnemyTileLoadCompleted(enemyTileGO, enemy);
+                HandleEnemyBattleTileLoadCompleted(enemyTileGO, enemy);
             }
             else
             {
-                Debug.LogError($"Failed to instantiate tile for hero {enemy.Name}");
+                Debug.LogError($"Failed to instantiate tile for enemy {enemy.Name}");
             }
         };
     }
 
     public static async Task<Sprite> LoadEnemyAvatar(IEnemy enemy)
     {
-        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject($"Assets/Sprites/Enemies/{enemy.Id}.png");
+        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject($"Enemies/{enemy.Id}.png");
 
         if (prefabReference == null)
         {
@@ -39,9 +39,9 @@ public class EnemyTileFactory
         return handle.Result;
     }
 
-    private static void HandleEnemyTileLoadCompleted(GameObject heroSelectionTileGO, IEnemy enemy)
+    private static void HandleEnemyBattleTileLoadCompleted(GameObject enemyBattleTileGO, IEnemy enemy)
     {
-        IEnemyTile enemyTile = heroSelectionTileGO.GetComponent<IEnemyTile>();
+        IEnemyTile enemyTile = enemyBattleTileGO.GetComponent<IEnemyTile>();
         enemyTile.Setup(enemy, BattleCanvasController.Instance); // TODO use ServiceLocator instead
         enemyTile.Initialise();
     }

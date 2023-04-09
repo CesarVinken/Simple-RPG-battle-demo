@@ -6,7 +6,7 @@ public class TileEffectFactory
 {
     public static void CreateDamageValueEffect(IAttack attack)
     {
-        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject($"Assets/Prefabs/Tiles/Battle/TileElements/DamageValueEffect.prefab");
+        AssetReferenceGameObject prefabReference = new AssetReferenceGameObject($"Effects/DamageValueEffect.prefab");
 
         if (prefabReference == null)
         {
