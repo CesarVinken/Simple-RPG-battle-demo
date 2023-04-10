@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public interface IBattleMoveEffect
 {
     void Setup(IAttack attack);

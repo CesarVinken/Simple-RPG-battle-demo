@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// The Service Locator is the central hub from where we take all IGameServices. It is supposed to be (together with the GameManager) the only singleton in the architecture.
+/// </summary>
 public class ServiceLocator
 {
     private ServiceLocator() { }

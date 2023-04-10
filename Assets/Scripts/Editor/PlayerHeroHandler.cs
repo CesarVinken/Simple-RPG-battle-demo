@@ -2,14 +2,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class PlayerHeroHandler : EditorWindow
 {
     private const int _minimumHeroes = 3;
     private const int _maximumHeroes = 10;
-    private const int _scalingFactor = 100;
 
     private float _sliderValue = 3f;
     private Rect _sliderRect = new Rect(0, 40, 200, 30);

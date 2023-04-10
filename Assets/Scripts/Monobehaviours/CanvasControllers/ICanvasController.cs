@@ -1,7 +1,5 @@
 
 // The ICanvasController controls the canvas of the current scene
-using UnityEngine;
-
 public interface ICanvasController : IGameService
 {
     void Setup();

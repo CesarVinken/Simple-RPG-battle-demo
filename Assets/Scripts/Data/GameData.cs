@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 
+/// <summary>
+/// Game data is all the data that never changes during the game. It includes blueprints of all heroes and enemies.
+/// </summary>
 public class GameData
 {
     public Dictionary<int, HeroBlueprint> Heroes = new Dictionary<int, HeroBlueprint>();

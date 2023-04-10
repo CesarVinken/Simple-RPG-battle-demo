@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// When going from one seen to another, this handler should make sure that all the correct changes are made before changing the scene
+/// </summary>
 public class SceneChangeHandler : IGameService
 {
     public SceneType PreviousScene { get; private set; } = SceneType.None;
@@ -78,5 +80,4 @@ public class SceneChangeHandler : IGameService
     {
         PreviousScene = sceneType;
     }
-
 }

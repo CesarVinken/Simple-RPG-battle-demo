@@ -31,7 +31,6 @@ public class HeroInfoPanel : MonoBehaviour, IHeroInfoPanel
             if(_textMeshes[i] == null)
             {
                 ConsoleLog.Error(LogCategory.General, $"Cannot find {_textMeshes[i]}");
-
             }
         }
 

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-
 public class BattleCanvasController : MonoBehaviour, ICanvasController
 {
     [SerializeField] private SpawnpointContainer _spawnpointContainer;  
@@ -41,7 +40,6 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
         gameEventHandler.HasTakenDamageEvent += OnHasTakenDamageEvent;
     }
 
-    // We want initialisation to take place after we have loaded in game data
     public async void Initialise()
     {
         SelectedHeroesAsset selectedHeroesAsset = await ServiceLocator.Instance.Get<ScriptableObjectHandler>().GetSelectedHeroesAsset();
@@ -97,10 +95,6 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
 
     public void ActivateTile(ITile tile)
     {
-        //IAttack currentAttack = ServiceLocator.Instance.Get<AttackHandler>().GetCurrentAttack();
-
-        //if (currentAttack != null) return;
-
         TriggerAttack(tile);   
     }
 
@@ -126,7 +120,6 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
     }
 
     #region events
-
     public void OnEnemyDefeatedEvent(object sender, EnemyDefeatedEvent e)
     {
         ServiceLocator.Instance.Get<PanelHandler>().ClearOpenPanels();
