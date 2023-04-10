@@ -65,6 +65,8 @@ public class PlayerHeroHandler : EditorWindow
     {
         ServiceLocator.Setup();
         ServiceLocator.Instance.Register<DataHandler>(new DataHandler());
+        ServiceLocator.Instance.Register<JsonGameDataReader>(new JsonGameDataReader());
+        ServiceLocator.Instance.Register<JsonPlayerDataWriter>(new JsonPlayerDataWriter());
 
         // remove old player data
         PlayerDataResetter.Reset();

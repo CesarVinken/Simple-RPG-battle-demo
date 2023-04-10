@@ -3,20 +3,8 @@ using UnityEngine;
 
 public class JsonPlayerDataWriter : IJsonFileWriter
 {
-    private static readonly JsonPlayerDataWriter _instance = new JsonPlayerDataWriter();
-
     private SerialisablePlayerData _data;
     private string _path;
-
-    private JsonPlayerDataWriter()
-    {
-
-    }
-
-    public static JsonPlayerDataWriter GetInstance()
-    {
-        return _instance;
-    }
 
     public void SerialiseData<T>(T configurationData)
     {

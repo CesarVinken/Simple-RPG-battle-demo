@@ -28,6 +28,11 @@ public class GameManager : MonoBehaviour
         ServiceLocator.Instance.Register<PanelHandler>(new PanelHandler());
         ServiceLocator.Instance.Register<SceneChangeHandler>(new SceneChangeHandler());
 
+        ServiceLocator.Instance.Register<JsonGameDataReader>(new JsonGameDataReader());
+        ServiceLocator.Instance.Register<JsonPlayerDataReader>(new JsonPlayerDataReader());
+        ServiceLocator.Instance.Register<JsonPlayerDataWriter>(new JsonPlayerDataWriter());
+
+
         DataHandler dataHandler = ServiceLocator.Instance.Get<DataHandler>();
         dataHandler.LoadGameData();
         dataHandler.LoadPlayerData();

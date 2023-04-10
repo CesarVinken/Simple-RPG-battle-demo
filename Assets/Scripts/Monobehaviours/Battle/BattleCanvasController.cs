@@ -97,15 +97,14 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
 
     public void ActivateTile(ITile tile)
     {
-        IAttack currentAttack = ServiceLocator.Instance.Get<AttackHandler>().GetCurrentAttack();
+        //IAttack currentAttack = ServiceLocator.Instance.Get<AttackHandler>().GetCurrentAttack();
 
-        if (currentAttack != null) return;
+        //if (currentAttack != null) return;
 
-        // For now we only have default attacks in our game.
         TriggerAttack(tile);   
     }
 
-    public void TriggerAttack(ITile attackingTile)
+    private void TriggerAttack(ITile attackingTile)
     {
         IActor attacker = attackingTile.GetActor();
         List<ITile> possibleTargets = new List<ITile>();
@@ -118,6 +117,7 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
             possibleTargets = _tilesByActor.Values.Where(v => v.GetActor() is IEnemy).ToList();
         }
 
+        // For now we only have default attacks in our game.
         IAttack attack = AttackFactory.CreateAttack<DefaultAttack>(attackingTile.GetActor());
         AttackHandler attackHandler = ServiceLocator.Instance.Get<AttackHandler>();
         attackHandler.SetAttack(attack);

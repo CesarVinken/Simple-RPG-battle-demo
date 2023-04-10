@@ -158,6 +158,9 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandle
         {
             if (Hero.CurrentHealth == 0) return;
 
+            IAttack currentAttack = ServiceLocator.Instance.Get<AttackHandler>().GetCurrentAttack();
+            if (currentAttack != null) return;
+
             ServiceLocator.Instance.Get<ICanvasController>().ActivateTile(this);
         }
 
@@ -170,7 +173,6 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandle
 
         if (e.HitActor.Id != Hero.Id) return;
 
-        ConsoleLog.Log(LogCategory.General, $"Update health for hero {Hero.Name} on {gameObject.name}");
         _healthbar.UpdateHealth(Hero);
     }
 

@@ -1,4 +1,4 @@
-public interface IJsonFileReader
+public interface IJsonFileReader : IGameService
 {
     T ReadData<T>();
 }

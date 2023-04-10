@@ -5,18 +5,6 @@ using UnityEngine.Networking;
 
 public class JsonGameDataReader : IJsonFileReader
 {
-    private static readonly JsonGameDataReader _instance = new JsonGameDataReader();
-    
-    private JsonGameDataReader()
-    {
-
-    }
-
-    public static JsonGameDataReader GetInstance()
-    {
-        return _instance;
-    }
-
     public SerialisableGameData ReadData<SerialisableGameData>()
     {
         string filePath = Path.Combine(Application.streamingAssetsPath, "game.json");

@@ -14,7 +14,7 @@ public class DataHandler : IGameService
 
     public void LoadGameData()
     {
-        SerialisableGameData serialisableGameData = JsonGameDataReader.GetInstance().ReadData<SerialisableGameData>();
+        SerialisableGameData serialisableGameData = ServiceLocator.Instance.Get<JsonGameDataReader>().ReadData<SerialisableGameData>();
 
         ConsoleLog.Log(LogCategory.Data, $"Loaded data for {serialisableGameData.Heroes.Count} hero blueprints");
 
@@ -27,13 +27,13 @@ public class DataHandler : IGameService
             .WithPlayerHeroes(PlayerData.Heroes)
             .WithNumberOfBattles(PlayerData.NumberOfBattles);
 
-        JsonPlayerDataWriter.GetInstance().SerialiseData(serialisablePlayerData);
+        ServiceLocator.Instance.Get<JsonPlayerDataWriter>().SerialiseData(serialisablePlayerData);
         ConsoleLog.Log(LogCategory.General, $"Saved player data. {serialisablePlayerData.Heroes.Count} heros saved");
     }
 
     public void LoadPlayerData()
     {
-        SerialisablePlayerData serialisablePlayerData = JsonPlayerDataReader.GetInstance().ReadData<SerialisablePlayerData>();
+        SerialisablePlayerData serialisablePlayerData = ServiceLocator.Instance.Get<JsonPlayerDataReader>().ReadData<SerialisablePlayerData>();
 
         if(serialisablePlayerData == null)
         {
