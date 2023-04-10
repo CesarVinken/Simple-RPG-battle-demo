@@ -2,23 +2,11 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameEventHandler
+public class GameEventHandler : IGameService
 {
-    private static readonly GameEventHandler _instance = new GameEventHandler();
-
     public event EventHandler<EnemyDefeatedEvent> EnemyDefeatedEvent;
     public event EventHandler<HasTakenDamageEvent> HasTakenDamageEvent;
     public event EventHandler<HeroDefeatedEvent> HeroDefeatedEvent;
-
-    private GameEventHandler()
-    {
-
-    }
-
-    public static GameEventHandler GetInstance()
-    {
-        return _instance;
-    }
 
     public void ExecuteHasTakenDamageEvent(IActor hitActor)
     {

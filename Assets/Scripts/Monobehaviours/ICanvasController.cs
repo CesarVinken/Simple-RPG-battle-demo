@@ -1,14 +1,17 @@
-using System.Collections.Generic;
+
+// The ICanvasController controls the canvas of the current scene
 using UnityEngine;
 
-public interface ICanvasController
+public interface ICanvasController : IGameService
 {
-    PanelHandler PanelHandler { get;}
-
+    void Setup();
+    void Initialise();
     void Unload();
+    
     void RegisterTile(ITile tile);
+    ITile GetTile(IActor actor);
+    void ActivateTile(ITile tile);
 
+    void ToScene(SceneType sceneType);
     InfoPanelContainer GetInfoPanelContainer();
-
-    void OnClickHero(IHeroTile tile);
 }

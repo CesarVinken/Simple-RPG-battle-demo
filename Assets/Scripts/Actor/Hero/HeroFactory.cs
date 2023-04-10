@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public static class HeroFactory
 {
@@ -8,7 +7,7 @@ public static class HeroFactory
 
     public static IHero CreateHero(int id)
     {
-        Dictionary<int, HeroBlueprint> heroData = GameManager.Instance.GameData.Heroes;
+        Dictionary<int, HeroBlueprint> heroData = GameManager.Instance._gameDataAsset.Heroes;
 
         HeroBlueprint heroBlueprint = heroData[id];
         IHero hero = new Hero(heroBlueprint);

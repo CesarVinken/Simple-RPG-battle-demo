@@ -29,7 +29,7 @@ public class AttackFactory
             ConsoleLog.Error(LogCategory.General, $"We need a target for this {attack.Name} attack");
         }
 
-        ITile attackContainer = BattleCanvasController.Instance.GetTile(target);
+        ITile attackContainer = ServiceLocator.Instance.Get<ICanvasController>().GetTile(target);
 
         AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(prefabReference, attackContainer.GetEffectContainer());
         handle.Completed += (o) =>
@@ -56,7 +56,7 @@ public class AttackFactory
             ConsoleLog.Error(LogCategory.General, $"Could not find asset reference for {attack.Name} attack");
         }
 
-        ITile attackContainer = BattleCanvasController.Instance.GetTile(attack.Attacker);
+        ITile attackContainer = ServiceLocator.Instance.Get<ICanvasController>().GetTile(attack.Attacker);
 
         AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(prefabReference, attackContainer.GetEffectContainer());
         handle.Completed += (o) =>

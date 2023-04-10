@@ -20,12 +20,13 @@ public class DamageEffect : MonoBehaviour, IDamageEffect
 
         if (_attack.Target.CurrentHealth == 0) return;
 
-        ITile targettedTile = BattleCanvasController.Instance.GetTile(_attack.Target);
+        ICanvasController canvasController = ServiceLocator.Instance.Get<ICanvasController>();
+        ITile targettedTile = canvasController.GetTile(_attack.Target);
 
-        // Once an enemey has taken damage, the enemy will attack back
+        // Once an enemy has taken damage, the enemy will attack back
         if (targettedTile is IEnemyBattleTile)
         {
-            BattleCanvasController.Instance.TriggerAttack(targettedTile);
+            canvasController.ActivateTile(targettedTile);
         }
 
         Destroy(gameObject);

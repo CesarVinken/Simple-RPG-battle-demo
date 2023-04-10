@@ -44,12 +44,12 @@ public class BattleEndPanel : MonoBehaviour, IBattleEndPanel
 
     public void Register()
     {
-        BattleCanvasController.Instance.PanelHandler.RegisterPanel(this);
+        ServiceLocator.Instance.Get<PanelHandler>().RegisterPanel(this);
     }
 
     public void Deregister()
     {
-        BattleCanvasController.Instance.PanelHandler.DeregisterPanel(this);
+        ServiceLocator.Instance.Get<PanelHandler>().DeregisterPanel(this);
         Destroy(gameObject);
     }
 }

@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class PlayerHeroHandler : EditorWindow
 {
@@ -61,17 +63,40 @@ public class PlayerHeroHandler : EditorWindow
 
     private void GenerateHeroes()
     {
-        int numberToGenerate = (int)_sliderValue;
+        ServiceLocator.Setup();
+        ServiceLocator.Instance.Register<DataHandler>(new DataHandler());
 
         // remove old player data
         PlayerDataResetter.Reset();
+        // generate new player data from game data
+        LoadGameDataAsset(); 
+    }
 
-        // load game data
-        GameData gameData = DataHandler.GetInstance().LoadGameData();
+    public void LoadGameDataAsset()
+    {
+        AsyncOperationHandle<GameData> handle = Addressables.LoadAssetAsync<GameData>("ScriptableObjects/GameData.asset");
+        handle.Completed += (o) =>
+        {
+            if (o.Status == AsyncOperationStatus.Succeeded)
+            {
+                GameData gameData = o.Result;
+                HandleGameDataAssetLoadingCompleted(gameData);
+            }
+            else
+            {
+                Debug.LogError($"Failed load game data asset");
+            }
+        };
+    }
+
+    private void HandleGameDataAssetLoadingCompleted(GameData gameData)
+    {
+        gameData = ServiceLocator.Instance.Get<DataHandler>().LoadGameData(gameData);
         Dictionary<int, HeroBlueprint> allHeroes = gameData.Heroes;
 
         // generate new player data
         Dictionary<int, IHero> playerHeroes = new Dictionary<int, IHero>();
+        int numberToGenerate = (int)_sliderValue;
 
         for (int i = 0; i < numberToGenerate; i++)
         {
@@ -81,6 +106,6 @@ public class PlayerHeroHandler : EditorWindow
         int numberOfBattles = 0;
 
         // save new player data
-        DataHandler.GetInstance().SavePlayerData(playerHeroes, numberOfBattles);
+        ServiceLocator.Instance.Get<DataHandler>().SavePlayerData(playerHeroes, numberOfBattles);
     }
 }

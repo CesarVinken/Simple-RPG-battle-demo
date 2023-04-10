@@ -9,16 +9,15 @@ public class HeroBattleResultsContainer : MonoBehaviour
 
     private List<HeroBattleResults> _heroBattleResults = new List<HeroBattleResults>();
 
-    public void Setup()
+    public async void Setup()
     {
         _heroBattleResults.Add(_hero1Results);
         _heroBattleResults.Add(_hero2Results);
         _heroBattleResults.Add(_hero3Results);
 
-        //TODO USe service locator
-        List<IHero> heroes = BattleCanvasController.Instance.GetSelectedHeroes();
+        List<IHero> heroes = await ServiceLocator.Instance.Get<ScriptableObjectHandler>().GetSelectedHeroes();
 
-        if(heroes.Count != _heroBattleResults.Count)
+        if (heroes.Count != _heroBattleResults.Count)
         {
             ConsoleLog.Error(LogCategory.General, $"We expected {_heroBattleResults.Count} heroes but found {heroes.Count}");
         }

@@ -58,12 +58,9 @@ public static class HeroTileFactory
     }
 
     private static void HandleHeroTileLoadCompleted(GameObject heroTileGO, IHero hero)
-    {
-        // TODO use service locator
-        ICanvasController canvasController = BattleCanvasController.Instance != null ? BattleCanvasController.Instance : HeroSelectionCanvasController.Instance;
-
+    {      
         IHeroTile heroSelectionTile = heroTileGO.GetComponent<IHeroTile>();
-        heroSelectionTile.Setup(hero, canvasController);
+        heroSelectionTile.Setup(hero);
         heroSelectionTile.Initialise();
     }
 }

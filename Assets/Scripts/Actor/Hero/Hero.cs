@@ -59,10 +59,10 @@ public class Hero : IHero
             CurrentHealth = 0;
 
             ConsoleLog.Warning(LogCategory.General, $"{Name} was defeated");
-            GameEventHandler.GetInstance().ExecuteHeroDefeatedEvent(this);
+            ServiceLocator.Instance.Get<GameEventHandler>().ExecuteHeroDefeatedEvent(this);
         }
 
-        GameEventHandler.GetInstance().ExecuteHasTakenDamageEvent(this);
+        ServiceLocator.Instance.Get<GameEventHandler>().ExecuteHasTakenDamageEvent(this);
     }
 }
 

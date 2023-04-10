@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     // We may want to turn this singleton pattern into a Service Locator
     public static GameManager Instance;
 
-    public GameData GameData { get; private set; }
+    [SerializeField] public GameData _gameDataAsset;
 
     // We may want to move these to some HeroHandler or something.
     private Dictionary<int, IHero> _playerHeroes = new Dictionary<int, IHero>();
@@ -19,6 +19,11 @@ public class GameManager : MonoBehaviour
 
     public void Awake()
     {
+        if (_gameDataAsset == null)
+        {
+            ConsoleLog.Error(LogCategory.General, $"Cannot find game data asset");
+        }
+
         if(Instance != null)
         {
             Destroy(gameObject);
@@ -30,42 +35,25 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         SetPreviousScene(PreviousScene);
+
+        ServiceLocator.Setup();
+        ServiceLocator.Instance.Register<DataHandler>(new DataHandler());
+        ServiceLocator.Instance.Register<ScriptableObjectHandler>(new ScriptableObjectHandler());
+        ServiceLocator.Instance.Register<AttackHandler>(new AttackHandler());
+        ServiceLocator.Instance.Register<GameEventHandler>(new GameEventHandler());
+        ServiceLocator.Instance.Register<HeroSelectionHandler>(new HeroSelectionHandler());
+        ServiceLocator.Instance.Register<PanelHandler>(new PanelHandler());
+
+        DataHandler dataHandler = ServiceLocator.Instance.Get<DataHandler>();
+        _gameDataAsset = dataHandler.LoadGameData(_gameDataAsset);
+        PlayerData playerData = dataHandler.LoadPlayerData();
+
+        SetUpPlayerData(playerData);
     }
 
     public void Start()
-    {
-        GameData = DataHandler.GetInstance().LoadGameData();
-        PlayerData playerData = DataHandler.GetInstance().LoadPlayerData();
-
-        SetUpPlayerData(playerData);
-
-        // We need to make sure that we load all the data, and only than initialise the ui canvas controller
-        if (PreviousScene == SceneType.None) 
-        {
-            string sceneName = SceneManager.GetActiveScene().name;
-
-            if (sceneName == "HeroSelection")
-            {
-                if (HeroSelectionCanvasController.Instance == null)
-                {
-                    ConsoleLog.Error(LogCategory.General, $"Could not find the Instance of the HeroSelectionCanvasController");
-                }
-
-                HeroSelectionCanvasController.Instance.Setup();
-                HeroSelectionCanvasController.Instance.Initialise();
-            }
-            else
-            {
-                if (BattleCanvasController.Instance == null)
-                {
-                    ConsoleLog.Error(LogCategory.General, $"Could not find the Instance of the BattleCanvasController");
-                }
-
-                BattleCanvasController.Instance.Setup();
-                BattleCanvasController.Instance.Initialise();
-            }
-
-        }
+    {   
+       
     }
 
     private void CreateInitialHeroes()
@@ -74,7 +62,7 @@ public class GameManager : MonoBehaviour
         int numberOfHeroes = 3;
         for (int i = 0; i < numberOfHeroes; i++)
         {
-            IHero hero = HeroFactory.CreateRandomHero(GameData.Heroes, GetPlayerHeroes().Keys.ToList());
+            IHero hero = HeroFactory.CreateRandomHero(_gameDataAsset.Heroes, GetPlayerHeroes().Keys.ToList());
             _playerHeroes.Add(hero.Id, hero);
         }
     }
@@ -88,6 +76,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        ConsoleLog.Log(LogCategory.General, $"playerData contains {playerData.Heroes.Count} heroes");
         for (int i = 0; i < playerData.Heroes.Count; i++)
         {
             PlayerHeroData playerHeroData = playerData.Heroes[i];
@@ -135,7 +124,7 @@ public class GameManager : MonoBehaviour
 
                 if(heroes.Count < 10 && _numberOfBattles % 5 == 0)
                 {
-                    IHero hero = HeroFactory.CreateRandomHero(GameData.Heroes, GetPlayerHeroes().Keys.ToList());
+                    IHero hero = HeroFactory.CreateRandomHero(_gameDataAsset.Heroes, GetPlayerHeroes().Keys.ToList());
                     _playerHeroes.Add(hero.Id, hero);
                 }
 
@@ -149,7 +138,7 @@ public class GameManager : MonoBehaviour
                 }
 
                 SetPreviousScene(SceneType.Battle);
-                DataHandler.GetInstance().SavePlayerData(heroes, _numberOfBattles);
+                ServiceLocator.Instance.Get<DataHandler>().SavePlayerData(heroes, _numberOfBattles);
                 SceneManager.LoadScene("HeroSelection");
                 break;
             case SceneType.Battle:

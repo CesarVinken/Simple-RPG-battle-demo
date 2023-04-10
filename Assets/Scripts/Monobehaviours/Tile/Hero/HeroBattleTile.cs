@@ -22,9 +22,8 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandle
     private Coroutine tapCoroutine = null;
 
     public IHero Hero { get; private set; }
-    private ICanvasController _canvasController;
 
-    public void Setup(IHero hero, ICanvasController canvasController)
+    public void Setup(IHero hero)
     {
         if (_backgroundImage == null)
         {
@@ -51,18 +50,18 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandle
             ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find name text");
         }
 
-        _canvasController = canvasController;
         Hero = hero;
 
         _healthbar.Setup();
 
-        GameEventHandler.GetInstance().HasTakenDamageEvent += OnHasTakenDamageEvent;
-        GameEventHandler.GetInstance().HeroDefeatedEvent += OnHeroDefeatedEvent;
+        GameEventHandler gameEventHandler = ServiceLocator.Instance.Get<GameEventHandler>();
+        gameEventHandler.HasTakenDamageEvent += OnHasTakenDamageEvent;
+        gameEventHandler.HeroDefeatedEvent += OnHeroDefeatedEvent;
     }
 
     public void Initialise()
     {
-        _canvasController.RegisterTile(this);
+        ServiceLocator.Instance.Get<ICanvasController>().RegisterTile(this);
 
         SetName();
         SetAvatar();
@@ -72,8 +71,9 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandle
 
     public void Unload()
     {
-        GameEventHandler.GetInstance().HasTakenDamageEvent -= OnHasTakenDamageEvent;
-        GameEventHandler.GetInstance().HeroDefeatedEvent -= OnHeroDefeatedEvent;
+        GameEventHandler gameEventHandler = ServiceLocator.Instance.Get<GameEventHandler>();
+        gameEventHandler.HasTakenDamageEvent -= OnHasTakenDamageEvent;
+        gameEventHandler.HeroDefeatedEvent -= OnHeroDefeatedEvent;
     }
 
     public IActor GetActor()
@@ -127,14 +127,14 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandle
 
             if (tapTimer >= 3f)
             {
-                //TODO Use service locator
                 // info panel should not work if the BattleEndPanel is open
-                List<IPanel> openPanels = _canvasController.PanelHandler.GetOpenPanels();
+                PanelHandler panelHandler = ServiceLocator.Instance.Get<PanelHandler>();
+                List<IPanel> openPanels = panelHandler.GetOpenPanels();
                 bool endGamePanelIsOpen = openPanels.OfType<IBattleEndPanel>().Any();
 
                 if (!endGamePanelIsOpen)
                 {
-                    InfoPanelContainer panelContainer = _canvasController.GetInfoPanelContainer();
+                    InfoPanelContainer panelContainer = ServiceLocator.Instance.Get<ICanvasController>().GetInfoPanelContainer();
                     UIPanelFactory.CreateHeroInfoPanel(panelContainer, Hero);
                 }
                 
@@ -158,7 +158,7 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandle
         {
             if (Hero.CurrentHealth == 0) return;
 
-            _canvasController.OnClickHero(this);
+            ServiceLocator.Instance.Get<ICanvasController>().ActivateTile(this);
         }
 
         tapTimer = 0f;

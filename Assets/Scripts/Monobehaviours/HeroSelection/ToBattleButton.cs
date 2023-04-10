@@ -6,6 +6,8 @@ public class ToBattleButton : MonoBehaviour
 {
     [SerializeField] private Button _button;
     private HeroSelectionCanvasController _canvasController;
+    public bool IsEnabled { get; private set; } = false;
+
     public void Setup(HeroSelectionCanvasController canvasController)
     {
         if (_button == null)
@@ -26,16 +28,18 @@ public class ToBattleButton : MonoBehaviour
 
     private void OnClick()
     {
-        _canvasController.ToBattle();
+        _canvasController.ToScene(SceneType.Battle);
     }
 
     public void Enable()
     {
+        IsEnabled = true;
         _button.interactable = true;
     }
 
     public void Disable()
     {
+        IsEnabled = false;
         _button.interactable = false;
     }
 }
