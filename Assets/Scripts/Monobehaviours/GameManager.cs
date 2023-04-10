@@ -5,26 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    // We may want to turn this singleton pattern into a Service Locator
     public static GameManager Instance;
-
-    [SerializeField] public GameData _gameDataAsset;
-
-    // We may want to move these to some HeroHandler or something.
-    private Dictionary<int, IHero> _playerHeroes = new Dictionary<int, IHero>();
-    private int _numberOfBattles = 0;
-
-    // By default the PreviousScene is set to None. If we open the Battle scene directly from Unity (and not through HeroSelection), we can identify this through this property. In this case we load the Battle scene with default data.
-    public SceneType PreviousScene { get; private set; } 
 
     public void Awake()
     {
-        if (_gameDataAsset == null)
-        {
-            ConsoleLog.Error(LogCategory.General, $"Cannot find game data asset");
-        }
-
-        if(Instance != null)
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
@@ -34,8 +19,6 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        SetPreviousScene(PreviousScene);
-
         ServiceLocator.Setup();
         ServiceLocator.Instance.Register<DataHandler>(new DataHandler());
         ServiceLocator.Instance.Register<ScriptableObjectHandler>(new ScriptableObjectHandler());
@@ -43,117 +26,29 @@ public class GameManager : MonoBehaviour
         ServiceLocator.Instance.Register<GameEventHandler>(new GameEventHandler());
         ServiceLocator.Instance.Register<HeroSelectionHandler>(new HeroSelectionHandler());
         ServiceLocator.Instance.Register<PanelHandler>(new PanelHandler());
+        ServiceLocator.Instance.Register<SceneChangeHandler>(new SceneChangeHandler());
 
         DataHandler dataHandler = ServiceLocator.Instance.Get<DataHandler>();
-        _gameDataAsset = dataHandler.LoadGameData(_gameDataAsset);
-        PlayerData playerData = dataHandler.LoadPlayerData();
+        dataHandler.LoadGameData();
+        dataHandler.LoadPlayerData();
 
-        SetUpPlayerData(playerData);
-    }
-
-    public void Start()
-    {   
-       
+        if (dataHandler.PlayerData.Heroes.Count == 0) // this happens the first time we start the game
+        {
+            CreateInitialHeroes();
+        }
     }
 
     private void CreateInitialHeroes()
     {
         ConsoleLog.Log(LogCategory.Initialisation, $"Create the player's first 3 heroes");
+
+        DataHandler dataHandler = ServiceLocator.Instance.Get<DataHandler>();
         int numberOfHeroes = 3;
+
         for (int i = 0; i < numberOfHeroes; i++)
         {
-            IHero hero = HeroFactory.CreateRandomHero(_gameDataAsset.Heroes, GetPlayerHeroes().Keys.ToList());
-            _playerHeroes.Add(hero.Id, hero);
+            IHero hero = HeroFactory.CreateRandomHero(dataHandler.GameData.Heroes, dataHandler.PlayerData.Heroes.Keys.ToList());
+            dataHandler.PlayerData.Heroes.Add(hero.Id, hero);
         }
-    }
-
-    private void SetUpPlayerHeroes(PlayerData playerData)
-    {
-        // if we cannot find player data heroes, then it is the first time we load the game. In that case we will load the player's initial 3 heroes.
-        if (playerData.Heroes == null)
-        {
-            CreateInitialHeroes();
-            return;
-        }
-
-        ConsoleLog.Log(LogCategory.General, $"playerData contains {playerData.Heroes.Count} heroes");
-        for (int i = 0; i < playerData.Heroes.Count; i++)
-        {
-            PlayerHeroData playerHeroData = playerData.Heroes[i];
-            IHero hero = HeroFactory.CreateHero(playerHeroData.Id);
-            hero.UpdateStats(playerHeroData.Experience);
-            _playerHeroes.Add(hero.Id, hero);
-        }
-    }
-
-    private void SetUpPlayerData(PlayerData playerData)
-    {
-        SetNumberOfBattles(playerData.NumberOfBattles);
-
-        SetUpPlayerHeroes(playerData);
-    }
-
-    public Dictionary<int, IHero> GetPlayerHeroes()
-    {
-        return _playerHeroes;
-    }
-
-    public IHero GetHero(int id)
-    {
-        if(_playerHeroes.TryGetValue(id, out IHero hero))
-        {
-            return hero;
-        }
-        return null;
-    }
-
-    private void SetPreviousScene(SceneType sceneType)
-    {
-        PreviousScene = sceneType;
-    }
-
-    public void ToScene(SceneType sceneType)
-    {
-        switch (sceneType)
-        {
-            case SceneType.HeroSelection:
-                SetNumberOfBattles(_numberOfBattles + 1);
-                Dictionary<int, IHero> heroes = GetPlayerHeroes();
-
-                ConsoleLog.Log(LogCategory.General, $"refactor me");
-
-                if(heroes.Count < 10 && _numberOfBattles % 5 == 0)
-                {
-                    IHero hero = HeroFactory.CreateRandomHero(_gameDataAsset.Heroes, GetPlayerHeroes().Keys.ToList());
-                    _playerHeroes.Add(hero.Id, hero);
-                }
-
-                // Later move this to the victory screen. Heroes should be updated in the victory screen phase
-                foreach (KeyValuePair<int, IHero> item in heroes)
-                {
-                    IHero hero = item.Value;
-                    if (hero.CurrentHealth   == 0) continue;
-
-                    hero.UpdateStats(hero.Experience + 1);
-                }
-
-                SetPreviousScene(SceneType.Battle);
-                ServiceLocator.Instance.Get<DataHandler>().SavePlayerData(heroes, _numberOfBattles);
-                SceneManager.LoadScene("HeroSelection");
-                break;
-            case SceneType.Battle:
-                SetPreviousScene(SceneType.HeroSelection);
-                SceneManager.LoadScene("Battle");
-                break;
-            default:
-                throw new NotImplementedException("SceneType", sceneType.ToString());
-        }
-    }
-
-    private void SetNumberOfBattles(int numberOfBattles)
-    {
-        _numberOfBattles = numberOfBattles;
-
-        ConsoleLog.Log(LogCategory.General, $"Number of battles is now {_numberOfBattles}");
     }
 }

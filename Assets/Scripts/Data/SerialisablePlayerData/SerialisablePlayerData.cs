@@ -38,14 +38,15 @@ public class SerialisablePlayerData
 
     public PlayerData Deserialise()
     {
-        List<PlayerHeroData> heroes = new List<PlayerHeroData>();
+        Dictionary<int, IHero> heroes = new Dictionary<int, IHero>();
 
         for (int i = 0; i < Heroes.Count; i++)
         {
-            PlayerHeroData playerHeroData = new PlayerHeroData();
-            playerHeroData.Id = Heroes[i].Id;
-            playerHeroData.Experience = Heroes[i].Experience;
-            heroes.Add(playerHeroData);
+            SerialisablePlayerHero serialisablePlayerHero = Heroes[i];
+
+            IHero hero = HeroFactory.CreateHero(serialisablePlayerHero.Id);
+            hero.UpdateStats(serialisablePlayerHero.Experience);
+            heroes.Add(hero.Id, hero);
         }
 
         PlayerData playerData = new PlayerData();

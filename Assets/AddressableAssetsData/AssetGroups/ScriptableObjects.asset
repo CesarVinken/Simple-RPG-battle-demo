@@ -21,10 +21,6 @@ MonoBehaviour:
     m_Address: ScriptableObjects/SelectedHeroes.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: b580c93a8456afb47b09404f358ea985
-    m_Address: ScriptableObjects/GameData.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b79047341e11940498d72ce0c90c65f7, type: 2}
   m_SchemaSet:

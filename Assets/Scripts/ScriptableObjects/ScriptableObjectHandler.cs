@@ -9,7 +9,7 @@ public class ScriptableObjectHandler : IGameService
 {
     private SelectedHeroesAsset _selectedHeroesAsset;
 
-    public async Task<List<IHero>> GetSelectedHeroes()
+    public async Task<SelectedHeroesAsset> GetSelectedHeroesAsset()
     {
         if (_selectedHeroesAsset == null)
         {
@@ -22,7 +22,7 @@ public class ScriptableObjectHandler : IGameService
             }
         }
 
-        return _selectedHeroesAsset.SelectedHeroes;
+        return _selectedHeroesAsset;
     }
 
     public async Task<SelectedHeroesAsset> LoadSelectedHeroAsset()
@@ -40,8 +40,8 @@ public class ScriptableObjectHandler : IGameService
 
     private List<IHero> SelectRandomPlayerHeroes()
     {
-        // TODO Move PlayerData to scriptable object
-        List<IHero> playerHeroes = GameManager.Instance.GetPlayerHeroes().Values.ToList();
+        DataHandler dataHandler = ServiceLocator.Instance.Get<DataHandler>();
+        List<IHero> playerHeroes = dataHandler.PlayerData.Heroes.Values.ToList();
 
         if (playerHeroes.Count < 3)
         {

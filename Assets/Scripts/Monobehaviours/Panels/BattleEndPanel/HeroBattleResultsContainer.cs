@@ -15,11 +15,12 @@ public class HeroBattleResultsContainer : MonoBehaviour
         _heroBattleResults.Add(_hero2Results);
         _heroBattleResults.Add(_hero3Results);
 
-        List<IHero> heroes = await ServiceLocator.Instance.Get<ScriptableObjectHandler>().GetSelectedHeroes();
+        SelectedHeroesAsset selectedHeroesAsset = await ServiceLocator.Instance.Get<ScriptableObjectHandler>().GetSelectedHeroesAsset();
+        List<IHero> selectedHeroes = selectedHeroesAsset.SelectedHeroes;
 
-        if (heroes.Count != _heroBattleResults.Count)
+        if (selectedHeroes.Count != _heroBattleResults.Count)
         {
-            ConsoleLog.Error(LogCategory.General, $"We expected {_heroBattleResults.Count} heroes but found {heroes.Count}");
+            ConsoleLog.Error(LogCategory.General, $"We expected {_heroBattleResults.Count} heroes but found {selectedHeroes.Count}");
         }
 
         for (int i = 0; i < _heroBattleResults.Count; i++)
@@ -29,7 +30,7 @@ public class HeroBattleResultsContainer : MonoBehaviour
                 ConsoleLog.Error(LogCategory.General, $"Could not find {_heroBattleResults[i]}");
             }
 
-            _heroBattleResults[i].Setup(heroes[i]);
+            _heroBattleResults[i].Setup(selectedHeroes[i]);
         }
     }
 

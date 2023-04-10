@@ -18,7 +18,7 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandle
     [SerializeField] private Healthbar _healthbar;
 
     [SerializeField] private Sprite _avatar;
-    private float tapTimer = 0f; //TODO check if we can do something with this shared tile code
+    private float tapTimer = 0f;
     private Coroutine tapCoroutine = null;
 
     public IHero Hero { get; private set; }

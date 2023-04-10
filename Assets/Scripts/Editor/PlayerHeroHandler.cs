@@ -68,31 +68,11 @@ public class PlayerHeroHandler : EditorWindow
 
         // remove old player data
         PlayerDataResetter.Reset();
-        // generate new player data from game data
-        LoadGameDataAsset(); 
-    }
 
-    public void LoadGameDataAsset()
-    {
-        AsyncOperationHandle<GameData> handle = Addressables.LoadAssetAsync<GameData>("ScriptableObjects/GameData.asset");
-        handle.Completed += (o) =>
-        {
-            if (o.Status == AsyncOperationStatus.Succeeded)
-            {
-                GameData gameData = o.Result;
-                HandleGameDataAssetLoadingCompleted(gameData);
-            }
-            else
-            {
-                Debug.LogError($"Failed load game data asset");
-            }
-        };
-    }
-
-    private void HandleGameDataAssetLoadingCompleted(GameData gameData)
-    {
-        gameData = ServiceLocator.Instance.Get<DataHandler>().LoadGameData(gameData);
-        Dictionary<int, HeroBlueprint> allHeroes = gameData.Heroes;
+        // load game data
+        DataHandler dataHandler = ServiceLocator.Instance.Get<DataHandler>();
+        dataHandler.LoadGameData();
+        Dictionary<int, HeroBlueprint> allHeroes = dataHandler.GameData.Heroes;
 
         // generate new player data
         Dictionary<int, IHero> playerHeroes = new Dictionary<int, IHero>();
@@ -103,9 +83,11 @@ public class PlayerHeroHandler : EditorWindow
             IHero hero = HeroFactory.CreateRandomHero(allHeroes, playerHeroes.Keys.ToList());
             playerHeroes.Add(hero.Id, hero);
         }
-        int numberOfBattles = 0;
+
+        dataHandler.PlayerData.Heroes = playerHeroes;
+        dataHandler.PlayerData.NumberOfBattles = 0;
 
         // save new player data
-        ServiceLocator.Instance.Get<DataHandler>().SavePlayerData(playerHeroes, numberOfBattles);
+        dataHandler.SavePlayerData();
     }
 }

@@ -14,8 +14,6 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
 
     private Dictionary<IActor, ITile> _tilesByActor = new Dictionary<IActor, ITile>();
 
-    public SelectedHeroesAsset _selectedHeroesAsset;
-
     public void Awake()
     {
         if (_tileRow1 == null)
@@ -61,23 +59,13 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
     public void ToScene(SceneType sceneType)
     {
         Unload();
-
-        switch (sceneType)
-        {
-            case SceneType.Battle:
-                HeroSelectionHandler heroSelectionHandler = ServiceLocator.Instance.Get<HeroSelectionHandler>();
-                _selectedHeroesAsset.SelectedHeroes = heroSelectionHandler.GetSelectedHeros();
-                break;
-            default:
-                throw new NotImplementedException("SceneType", sceneType.ToString());
-        }
-
-        GameManager.Instance.ToScene(sceneType);
+        ServiceLocator.Instance.Get<SceneChangeHandler>().ChangeScene(sceneType);
     }
 
     private void CreateHeroTiles()
     {
-        List<IHero> heroes = GameManager.Instance.GetPlayerHeroes().Values.ToList();
+        DataHandler dataHandler = ServiceLocator.Instance.Get<DataHandler>();
+        List<IHero> heroes = dataHandler.PlayerData.Heroes.Values.ToList();
 
         for (int i = 0; i < heroes.Count; i++)
         {
@@ -94,12 +82,6 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
     public void RegisterTile(ITile tile)
     {
         _tilesByActor.Add(tile.GetActor(), tile);
-
-        //TODO REFACTOR
-        //if(_tilesByActor.Count == GameManager.Instance.GetPlayerHeroes().Count)
-        //{
-        //    StartCoroutine(UpdateCanvas());
-        //}
     }
 
     public ITile GetTile(IActor actor)

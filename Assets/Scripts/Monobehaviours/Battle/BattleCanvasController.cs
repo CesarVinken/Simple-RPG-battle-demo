@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class BattleCanvasController : MonoBehaviour, ICanvasController
 {
-    [SerializeField] private SpawnpointContainer _spawnpointContainer;
-
+    [SerializeField] private SpawnpointContainer _spawnpointContainer;  
     [SerializeField] private InfoPanelContainer _infoPanelContainer;
 
     private Dictionary<IActor, ITile> _tilesByActor = new Dictionary<IActor, ITile>();
@@ -29,6 +28,10 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
         {
             ConsoleLog.Error(LogCategory.General, $"Could not find _spawnpointContainer");
         }
+        if (_infoPanelContainer == null)
+        {
+            ConsoleLog.Error(LogCategory.General, $"Could not find _infoPanelContainer");
+        }
 
         _spawnpointContainer.Setup();
 
@@ -41,7 +44,8 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
     // We want initialisation to take place after we have loaded in game data
     public async void Initialise()
     {
-        List<IHero> heroesToSpawn = await ServiceLocator.Instance.Get<ScriptableObjectHandler>().GetSelectedHeroes();
+        SelectedHeroesAsset selectedHeroesAsset = await ServiceLocator.Instance.Get<ScriptableObjectHandler>().GetSelectedHeroesAsset();
+        List<IHero> heroesToSpawn = selectedHeroesAsset.SelectedHeroes;
         IEnemy enemyToSpawn = EnemyFactory.CreateRandomEnemy();
 
         _spawnpointContainer.Initialise(heroesToSpawn, enemyToSpawn);
@@ -80,7 +84,7 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
     public void ToScene(SceneType sceneType)
     {
         Unload();
-        GameManager.Instance.ToScene(sceneType);
+        ServiceLocator.Instance.Get<SceneChangeHandler>().ChangeScene(sceneType);
     }
 
     public InfoPanelContainer GetInfoPanelContainer()
@@ -159,4 +163,3 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
 
     #endregion
 }
-

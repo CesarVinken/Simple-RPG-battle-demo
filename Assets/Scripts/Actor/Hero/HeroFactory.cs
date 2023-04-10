@@ -7,7 +7,8 @@ public static class HeroFactory
 
     public static IHero CreateHero(int id)
     {
-        Dictionary<int, HeroBlueprint> heroData = GameManager.Instance._gameDataAsset.Heroes;
+        DataHandler dataHandler = ServiceLocator.Instance.Get<DataHandler>();
+        Dictionary<int, HeroBlueprint> heroData = dataHandler.GameData.Heroes;
 
         HeroBlueprint heroBlueprint = heroData[id];
         IHero hero = new Hero(heroBlueprint);
