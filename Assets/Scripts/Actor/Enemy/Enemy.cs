@@ -17,9 +17,9 @@ public class Enemy : IEnemy
         Name = enemyBlueprint.Name;
 
         Level = 1;
-        MaxHealth = 50;
+        MaxHealth = enemyBlueprint.Health;
         CurrentHealth = MaxHealth;
-        AttackPower = 10;
+        AttackPower = enemyBlueprint.AttackPower;
     }
 
     public void SetAvatar(Sprite avatar)

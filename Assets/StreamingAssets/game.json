@@ -2,15 +2,21 @@
     "Enemies": [
         {
             "Id": 0,
-            "Name": "Cofragigus"
+            "Name": "Cofragigus (weak enemy)",
+            "Health": 15,
+            "AttackPower": 10
         },
         {
             "Id": 1,
-            "Name": "Infernape"
+            "Name": "Infernape (medium enemy)",
+            "Health": 60,
+            "AttackPower": 25
         },
         {
             "Id": 2,
-            "Name": "Krookodile"
+            "Name": "Krookodile (strong enemy)",
+            "Health": 140,
+            "AttackPower": 40
         }
     ],
     "Heroes": [
