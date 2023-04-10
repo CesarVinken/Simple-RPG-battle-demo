@@ -18,9 +18,7 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile, IPointerDownHandler, 
 
     public IHero Hero { get; private set; }
     
-    private ICanvasController _canvasController;
-
-    public void Setup(IHero hero, ICanvasController canvasController)
+    public void Setup(IHero hero)
     {
         if (_selectionBorderImage == null)
         {
@@ -46,15 +44,14 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile, IPointerDownHandler, 
         Hero = hero;
         Hero.ResetHealth();
 
-        _canvasController = canvasController;
         _selectionBorderImage.enabled = false;
 
         SetTileSize();  
     }
 
     public void Initialise()
-    {       
-        _canvasController.RegisterTile(this);
+    {
+        ServiceLocator.Instance.Get<ICanvasController>().RegisterTile(this);
 
         SetName();
         SetAvatar();
@@ -117,7 +114,7 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile, IPointerDownHandler, 
 
         if (tapTimer < 3f)
         {
-            _canvasController.OnClickHero(this);
+            ServiceLocator.Instance.Get<ICanvasController>().ActivateTile(this);
         }
 
         tapTimer = 0f;
@@ -132,10 +129,8 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile, IPointerDownHandler, 
 
             if (tapTimer >= 3f)
             {
-                Debug.Log("Long tap detected");
-                //TODO Use service locator
-                InfoPanelContainer panelContainer = _canvasController.GetInfoPanelContainer();
-                UIPanelFactory.CreateHeroInfoPanel(panelContainer, Hero);
+                InfoPanelContainer infoPanelContainer = ServiceLocator.Instance.Get<ICanvasController>().GetInfoPanelContainer();
+                UIPanelFactory.CreateHeroInfoPanel(infoPanelContainer, Hero);
 
                 StopCoroutine(tapCoroutine);
             }

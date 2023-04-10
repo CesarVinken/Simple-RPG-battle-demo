@@ -38,48 +38,22 @@ public class GameManager : MonoBehaviour
 
         ServiceLocator.Setup();
         ServiceLocator.Instance.Register<DataHandler>(new DataHandler());
+        ServiceLocator.Instance.Register<ScriptableObjectHandler>(new ScriptableObjectHandler());
         ServiceLocator.Instance.Register<AttackHandler>(new AttackHandler());
         ServiceLocator.Instance.Register<GameEventHandler>(new GameEventHandler());
         ServiceLocator.Instance.Register<HeroSelectionHandler>(new HeroSelectionHandler());
         ServiceLocator.Instance.Register<PanelHandler>(new PanelHandler());
 
-    }
-
-    public void Start()
-    {   
         DataHandler dataHandler = ServiceLocator.Instance.Get<DataHandler>();
         _gameDataAsset = dataHandler.LoadGameData(_gameDataAsset);
         PlayerData playerData = dataHandler.LoadPlayerData();
 
         SetUpPlayerData(playerData);
+    }
 
-        // We need to make sure that we load all the data, and only than initialise the ui canvas controller
-        if (PreviousScene == SceneType.None) 
-        {
-            string sceneName = SceneManager.GetActiveScene().name;
-
-            if (sceneName == "HeroSelection")
-            {
-                if (HeroSelectionCanvasController.Instance == null)
-                {
-                    ConsoleLog.Error(LogCategory.General, $"Could not find the Instance of the HeroSelectionCanvasController");
-                }
-
-                HeroSelectionCanvasController.Instance.Setup();
-                HeroSelectionCanvasController.Instance.Initialise();
-            }
-            else
-            {
-                if (BattleCanvasController.Instance == null)
-                {
-                    ConsoleLog.Error(LogCategory.General, $"Could not find the Instance of the BattleCanvasController");
-                }
-
-                BattleCanvasController.Instance.Setup();
-                BattleCanvasController.Instance.Initialise();
-            }
-
-        }
+    public void Start()
+    {   
+       
     }
 
     private void CreateInitialHeroes()

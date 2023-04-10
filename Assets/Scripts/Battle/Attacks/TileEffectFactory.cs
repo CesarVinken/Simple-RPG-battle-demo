@@ -12,8 +12,7 @@ public class TileEffectFactory
         {
             ConsoleLog.Error(LogCategory.General, $"Could not find asset reference for damage value prefab");
         }
-
-        IBattleTile targetTile = BattleCanvasController.Instance.GetTile(attack.Target) as IBattleTile;
+        IBattleTile targetTile = ServiceLocator.Instance.Get<ICanvasController>().GetTile(attack.Target) as IBattleTile;
 
         if(targetTile == null)
         {

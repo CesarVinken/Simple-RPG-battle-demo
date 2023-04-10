@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ToHeroSelectionButton : MonoBehaviour
@@ -24,8 +23,6 @@ public class ToHeroSelectionButton : MonoBehaviour
 
     public void OnClick()
     {
-        //TODO Use service locator:
-        BattleCanvasController.Instance.Unload();
-        GameManager.Instance.ToScene(SceneType.HeroSelection);  
+        ServiceLocator.Instance.Get<ICanvasController>().ToScene(SceneType.HeroSelection);
     }
 }

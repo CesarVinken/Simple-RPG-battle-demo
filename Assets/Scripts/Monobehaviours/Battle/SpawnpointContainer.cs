@@ -66,20 +66,4 @@ public class SpawnpointContainer : MonoBehaviour
         EnemyTileFactory.CreateEnemyBattleTile(_enemySpawnpoint, enemy);
         _spawnpointsByActor.Add(enemy, _enemySpawnpoint);
     }
-
-    public void Register()
-    {
-
-    }
-
-    //public Transform GetActorSpawnpoint(IActor actor)
-    //{
-    //    if(_spawnpointsByActor.TryGetValue(actor, out Transform spawnpoint))
-    //    {
-    //        return spawnpoint;
-    //    }
-
-    //    ConsoleLog.Error(LogCategory.General, $"Could not find a spawnpoint for {actor.Name}");
-    //    return null;
-    //}
 }

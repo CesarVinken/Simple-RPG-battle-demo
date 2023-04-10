@@ -5,28 +5,23 @@ using UnityEngine;
 
 public class BattleCanvasController : MonoBehaviour, ICanvasController
 {
-    public static BattleCanvasController Instance;
-
     [SerializeField] private SpawnpointContainer _spawnpointContainer;
 
-    [SerializeField] private SelectedHeroes _selectedHeroesAsset;
+    //[SerializeField] private SelectedHeroes _selectedHeroesAsset;
     [SerializeField] private InfoPanelContainer _infoPanelContainer;
 
     private Dictionary<IActor, ITile> _tilesByActor = new Dictionary<IActor, ITile>();
 
     public void Awake()
     {
-        Instance = this;
+
     }
 
     private void Start()
     {
-        // We came back from the hero selection scene
-        if (GameManager.Instance.PreviousScene != SceneType.None)
-        {
-            Setup();
-            Initialise();
-        }
+        ServiceLocator.Instance.Register<ICanvasController>(this);
+        Setup();
+        Initialise();
     }
 
     public void Setup()
@@ -45,11 +40,9 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
     }
 
     // We want initialisation to take place after we have loaded in game data
-    public void Initialise()
+    public async void Initialise()
     {
-        List<IHero> heroesToSpawn = GetSelectedHeroes();
-        ConsoleLog.Warning(LogCategory.General, $"number of selected heroes: {_selectedHeroesAsset.selectedHeroes.Count}");
-
+        List<IHero> heroesToSpawn = await ServiceLocator.Instance.Get<ScriptableObjectHandler>().GetSelectedHeroes();
         IEnemy enemyToSpawn = EnemyFactory.CreateRandomEnemy();
 
         _spawnpointContainer.Initialise(heroesToSpawn, enemyToSpawn);
@@ -57,6 +50,8 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
 
     public void Unload()
     {
+        ServiceLocator.Instance.Deregister<ICanvasController>();
+
         GameEventHandler gameEventHandler = ServiceLocator.Instance.Get<GameEventHandler>();
         gameEventHandler.HeroDefeatedEvent -= OnHeroDefeatedEvent;
         gameEventHandler.EnemyDefeatedEvent -= OnEnemyDefeatedEvent;
@@ -72,28 +67,21 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
         _tilesByActor.Add(tile.GetActor(), tile);
     }
 
-    public List<IHero> GetSelectedHeroes()
+    public ITile GetTile(IActor actor)
     {
-        if(GameManager.Instance.PreviousScene == SceneType.None) // we started the battle scene directly from Unity inspector
+        if (_tilesByActor.TryGetValue(actor, out ITile tile))
         {
-            List<IHero> playerHeroes = GameManager.Instance.GetPlayerHeroes().Values.ToList();
-
-            if (playerHeroes.Count < 3)
-            {
-                ConsoleLog.Error(LogCategory.General, $"The player needs at least 3 heroes but currently has only {playerHeroes.Count}");
-            }
-
-            List<IHero> selectedHeroes = new List<IHero>();
-
-            for (int i = 0; i < 3; i++)
-            {
-                selectedHeroes.Add(playerHeroes[i]);
-            }
-
-            _selectedHeroesAsset.selectedHeroes = selectedHeroes;
+            return tile;
         }
 
-        return _selectedHeroesAsset.selectedHeroes;
+        ConsoleLog.Error(LogCategory.General, $"Could not find a tile for {actor.Name}");
+        return null;
+    }
+
+    public void ToScene(SceneType sceneType)
+    {
+        Unload();
+        GameManager.Instance.ToScene(sceneType);
     }
 
     public InfoPanelContainer GetInfoPanelContainer()
@@ -101,7 +89,7 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
         return _infoPanelContainer;
     }
 
-    public void OnClickHero(IHeroTile tile)
+    public void ActivateTile(ITile tile)
     {
         IAttack currentAttack = ServiceLocator.Instance.Get<AttackHandler>().GetCurrentAttack();
 
@@ -131,24 +119,11 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
         attackHandler.ExecutePhase(AttackPhase.Attacking);
     }
 
-    public ITile GetTile(IActor actor)
-    {
-        if (_tilesByActor.TryGetValue(actor, out ITile tile))
-        {
-            return tile;
-        }
-
-        ConsoleLog.Error(LogCategory.General, $"Could not find a tile for {actor.Name}");
-        return null;
-    }
-
     #region events
 
     public void OnEnemyDefeatedEvent(object sender, EnemyDefeatedEvent e)
     {
         PanelHandler panelHandler = ServiceLocator.Instance.Get<PanelHandler>();
-        // TODO MOVE FACTORY WORK TO PANEL HANDLER
-
         List<IPanel> openPanels = panelHandler.GetOpenPanels();
 
         for (int i = 0; i < openPanels.Count; i++)
@@ -172,7 +147,6 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
         List<IActor> aliveHeroes = _tilesByActor.Keys.Where(t => t is IHero && t.CurrentHealth > 0).ToList();
         if(aliveHeroes.Count == 0)
         {
-            // TODO MOVE FACTORY WORK TO PANEL HANDLER
             List<IPanel> openPanels = panelHandler.GetOpenPanels();
 
             for (int i = 0; i < openPanels.Count; i++)

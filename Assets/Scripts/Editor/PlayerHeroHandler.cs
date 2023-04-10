@@ -80,7 +80,7 @@ public class PlayerHeroHandler : EditorWindow
             if (o.Status == AsyncOperationStatus.Succeeded)
             {
                 GameData gameData = o.Result;
-                HandleGameDataAssedLoadingCompleted(gameData);
+                HandleGameDataAssetLoadingCompleted(gameData);
             }
             else
             {
@@ -89,7 +89,7 @@ public class PlayerHeroHandler : EditorWindow
         };
     }
 
-    private void HandleGameDataAssedLoadingCompleted(GameData gameData)
+    private void HandleGameDataAssetLoadingCompleted(GameData gameData)
     {
         gameData = ServiceLocator.Instance.Get<DataHandler>().LoadGameData(gameData);
         Dictionary<int, HeroBlueprint> allHeroes = gameData.Heroes;

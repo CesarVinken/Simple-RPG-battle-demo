@@ -39,7 +39,7 @@ public class ServiceLocator
         _services.Add(key, service);
     }
 
-    public void Unregister<T>() where T : IGameService
+    public void Deregister<T>() where T : IGameService
     {
         string key = typeof(T).Name;
         if (!_services.ContainsKey(key))

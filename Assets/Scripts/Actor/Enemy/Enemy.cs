@@ -17,7 +17,7 @@ public class Enemy : IEnemy
         Name = enemyBlueprint.Name;
 
         Level = 1;
-        MaxHealth = 100;
+        MaxHealth = 10;
         CurrentHealth = MaxHealth;
         AttackPower = 10;
     }

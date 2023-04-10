@@ -6,18 +6,17 @@ using UnityEngine.UI;
 
 public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
 {
-    public static HeroSelectionCanvasController Instance;
-
     [SerializeField] private Transform _tileRow1;
     [SerializeField] private Transform _tileRow2;
     [SerializeField] private VerticalLayoutGroup _heroTileContainerLayoutGroup;
     [SerializeField] private ToBattleButton _toBattleButton;
     [SerializeField] private InfoPanelContainer _infoPanelContainer;
 
-    private List<ITile> _tiles = new List<ITile>();
+    //private List<ITile> _tiles = new List<ITile>();
     private List<IPanel> _openPanels = new List<IPanel>();
+    private Dictionary<IActor, ITile> _tilesByActor = new Dictionary<IActor, ITile>();
 
-    public SelectedHeroes _selectedHeroesAsset;
+    public SelectedHeroesAsset _selectedHeroesAsset;
 
     public void Awake()
     {
@@ -33,19 +32,14 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
         {
             ConsoleLog.Error(LogCategory.General, $"Could not find _toBattleButton");
         }
-
-        Instance = this;
-        ServiceLocator.Instance.Get<HeroSelectionHandler>();        
     }
 
     private void Start()
     {
-        // We came back from the battle scene
-        if (GameManager.Instance.PreviousScene != SceneType.None)
-        {
-            Setup();
-            Initialise();
-        }
+        ServiceLocator.Instance.Register<ICanvasController>(this);
+
+        Setup();
+        Initialise();
     }
 
     public void Setup()
@@ -63,14 +57,24 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
 
     public void Unload()
     {
-
+        ServiceLocator.Instance.Deregister<ICanvasController>();
     }
 
-    public void ToBattle()
+    public void ToScene(SceneType sceneType)
     {
-        HeroSelectionHandler heroSelectionHandler = ServiceLocator.Instance.Get<HeroSelectionHandler>();
-        _selectedHeroesAsset.selectedHeroes = heroSelectionHandler.GetSelectedHeros();
-        GameManager.Instance.ToScene(SceneType.Battle);
+        Unload();
+
+        switch (sceneType)
+        {
+            case SceneType.Battle:
+                HeroSelectionHandler heroSelectionHandler = ServiceLocator.Instance.Get<HeroSelectionHandler>();
+                _selectedHeroesAsset.SelectedHeroes = heroSelectionHandler.GetSelectedHeros();
+                break;
+            default:
+                throw new NotImplementedException("SceneType", sceneType.ToString());
+        }
+
+        GameManager.Instance.ToScene(sceneType);
     }
 
     private void CreateHeroTiles()
@@ -84,11 +88,6 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
         }
     }
 
-    public ToBattleButton GetToBattleButton()
-    {
-        return _toBattleButton;
-    }
-
     public InfoPanelContainer GetInfoPanelContainer()
     {
         return _infoPanelContainer;
@@ -96,12 +95,24 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
 
     public void RegisterTile(ITile tile)
     {
-        _tiles.Add(tile);
+        _tilesByActor.Add(tile.GetActor(), tile);
 
-        if(_tiles.Count == GameManager.Instance.GetPlayerHeroes().Count)
+        //TODO REFACTOR
+        if(_tilesByActor.Count == GameManager.Instance.GetPlayerHeroes().Count)
         {
             StartCoroutine(UpdateCanvas());
         }
+    }
+
+    public ITile GetTile(IActor actor)
+    {
+        if (_tilesByActor.TryGetValue(actor, out ITile tile))
+        {
+            return tile;
+        }
+
+        ConsoleLog.Error(LogCategory.General, $"Could not find a tile for {actor.Name}");
+        return null;
     }
 
     // There is a Unity bug that tends to mix up the width of the vertical layout group.
@@ -115,7 +126,7 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
         Canvas.ForceUpdateCanvases();
     }
 
-    public void OnClickHero(IHeroTile tile)
+    public void ActivateTile(ITile tile)
     {
         if(!(tile is HeroSelectionTile))
         {
@@ -124,5 +135,6 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
 
         HeroSelectionHandler heroSelectionHandler = ServiceLocator.Instance.Get<HeroSelectionHandler>();
         heroSelectionHandler.HandleTileSelection(tile as HeroSelectionTile);
+        heroSelectionHandler.HandleToBattleButton(_toBattleButton);
     }
 }

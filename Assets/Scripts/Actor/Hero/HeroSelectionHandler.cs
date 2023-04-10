@@ -21,24 +21,25 @@ public class HeroSelectionHandler : IGameService
         tile.Select();
     }
 
+    public void HandleToBattleButton(ToBattleButton toBattleButton)
+    {
+        if (_selectedTiles.Count == 3)
+        {
+            toBattleButton.Enable();
+        }
+        else if (toBattleButton.IsEnabled)
+        {
+            toBattleButton.Disable();
+        }
+    }
+
     public void AddToSelectedTiles(HeroSelectionTile tile)
     {
         _selectedTiles.Add(tile);
-        if (_selectedTiles.Count == 3)
-        {
-            ToBattleButton button = HeroSelectionCanvasController.Instance.GetToBattleButton();
-            button.Enable();
-        }
     }
 
     public void RemoveFromSelectedTiles(HeroSelectionTile tile)
     {
-        if (_selectedTiles.Count == 3)
-        {
-            ToBattleButton button = HeroSelectionCanvasController.Instance.GetToBattleButton();
-            button.Disable();
-        }
-
         _selectedTiles.Remove(tile);
     }
 

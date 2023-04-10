@@ -13,11 +13,10 @@ public class EnemyBattleTile : MonoBehaviour, IEnemyBattleTile
     [SerializeField] private Healthbar _healthbar;
 
     [SerializeField] private Sprite _avatarSprite;
-    private ICanvasController _canvasController;
 
     public IEnemy Enemy { get; private set; }
 
-    public void Setup(IEnemy enemy, ICanvasController canvasController)
+    public void Setup(IEnemy enemy)
     {
         if (_backgroundImage == null)
         {
@@ -45,7 +44,6 @@ public class EnemyBattleTile : MonoBehaviour, IEnemyBattleTile
             ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find _healthbar");
         }
 
-        _canvasController = canvasController;
         Enemy = enemy;
 
         _healthbar.Setup();
@@ -60,7 +58,7 @@ public class EnemyBattleTile : MonoBehaviour, IEnemyBattleTile
         SetName();
         SetAvatar();
 
-        _canvasController.RegisterTile(this);
+        ServiceLocator.Instance.Get<ICanvasController>().RegisterTile(this);
         _healthbar.Initialise(Enemy);
     }
 

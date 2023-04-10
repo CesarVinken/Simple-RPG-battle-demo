@@ -22,9 +22,8 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandle
     private Coroutine tapCoroutine = null;
 
     public IHero Hero { get; private set; }
-    private ICanvasController _canvasController;
 
-    public void Setup(IHero hero, ICanvasController canvasController)
+    public void Setup(IHero hero)
     {
         if (_backgroundImage == null)
         {
@@ -51,7 +50,6 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandle
             ConsoleLog.Error(LogCategory.Initialisation, $"Cannot find name text");
         }
 
-        _canvasController = canvasController;
         Hero = hero;
 
         _healthbar.Setup();
@@ -63,7 +61,7 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandle
 
     public void Initialise()
     {
-        _canvasController.RegisterTile(this);
+        ServiceLocator.Instance.Get<ICanvasController>().RegisterTile(this);
 
         SetName();
         SetAvatar();
@@ -136,7 +134,7 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandle
 
                 if (!endGamePanelIsOpen)
                 {
-                    InfoPanelContainer panelContainer = _canvasController.GetInfoPanelContainer();
+                    InfoPanelContainer panelContainer = ServiceLocator.Instance.Get<ICanvasController>().GetInfoPanelContainer();
                     UIPanelFactory.CreateHeroInfoPanel(panelContainer, Hero);
                 }
                 
@@ -160,7 +158,7 @@ public class HeroBattleTile : MonoBehaviour, IHeroBattleTile, IPointerDownHandle
         {
             if (Hero.CurrentHealth == 0) return;
 
-            _canvasController.OnClickHero(this);
+            ServiceLocator.Instance.Get<ICanvasController>().ActivateTile(this);
         }
 
         tapTimer = 0f;
