@@ -12,8 +12,6 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
     [SerializeField] private ToBattleButton _toBattleButton;
     [SerializeField] private InfoPanelContainer _infoPanelContainer;
 
-    //private List<ITile> _tiles = new List<ITile>();
-    private List<IPanel> _openPanels = new List<IPanel>();
     private Dictionary<IActor, ITile> _tilesByActor = new Dictionary<IActor, ITile>();
 
     public SelectedHeroesAsset _selectedHeroesAsset;
@@ -98,10 +96,10 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
         _tilesByActor.Add(tile.GetActor(), tile);
 
         //TODO REFACTOR
-        if(_tilesByActor.Count == GameManager.Instance.GetPlayerHeroes().Count)
-        {
-            StartCoroutine(UpdateCanvas());
-        }
+        //if(_tilesByActor.Count == GameManager.Instance.GetPlayerHeroes().Count)
+        //{
+        //    StartCoroutine(UpdateCanvas());
+        //}
     }
 
     public ITile GetTile(IActor actor)
@@ -113,17 +111,6 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
 
         ConsoleLog.Error(LogCategory.General, $"Could not find a tile for {actor.Name}");
         return null;
-    }
-
-    // There is a Unity bug that tends to mix up the width of the vertical layout group.
-    // This function works around this by forcing a refresh of the width. That way the tiles are put in the right position
-    private IEnumerator UpdateCanvas()
-    {
-        yield return null;
-        _heroTileContainerLayoutGroup.enabled = false;
-        yield return null;
-        _heroTileContainerLayoutGroup.enabled = true;
-        Canvas.ForceUpdateCanvases();
     }
 
     public void ActivateTile(ITile tile)

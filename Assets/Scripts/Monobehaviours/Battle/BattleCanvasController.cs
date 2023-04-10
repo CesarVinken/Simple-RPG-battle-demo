@@ -7,7 +7,6 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
 {
     [SerializeField] private SpawnpointContainer _spawnpointContainer;
 
-    //[SerializeField] private SelectedHeroes _selectedHeroesAsset;
     [SerializeField] private InfoPanelContainer _infoPanelContainer;
 
     private Dictionary<IActor, ITile> _tilesByActor = new Dictionary<IActor, ITile>();

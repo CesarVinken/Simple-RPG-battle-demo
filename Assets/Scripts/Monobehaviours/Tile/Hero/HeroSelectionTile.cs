@@ -79,11 +79,12 @@ public class HeroSelectionTile : MonoBehaviour, IHeroTile, IPointerDownHandler, 
 
     private void SetTileSize()
     {
-        RectTransform parentRect = transform.parent.GetComponent<RectTransform>();
+        Transform containerTransform = transform.parent.parent;
+        float containerWidth = containerTransform.GetComponent<RectTransform>().rect.width;
         RectTransform rectTransform = GetComponent<RectTransform>();
 
-        rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, parentRect.sizeDelta.x / 5f);
-        rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, parentRect.sizeDelta.x / 5f);
+        rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, containerWidth / 5f);
+        rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, containerWidth / 5f);
     }
 
     private async void SetAvatar()

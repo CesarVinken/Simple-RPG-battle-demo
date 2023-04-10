@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public static class HeroFactory
 {
@@ -10,7 +9,6 @@ public static class HeroFactory
     {
         Dictionary<int, HeroBlueprint> heroData = GameManager.Instance._gameDataAsset.Heroes;
 
-        ConsoleLog.Log(LogCategory.General, $"game data contains {GameManager.Instance._gameDataAsset.Heroes.Count} heroes");
         HeroBlueprint heroBlueprint = heroData[id];
         IHero hero = new Hero(heroBlueprint);
         return hero;
