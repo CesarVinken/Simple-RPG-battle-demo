@@ -3,7 +3,7 @@
 This project contains a small RPG demo consisting of 2 scenes. In the selection scene the player can pick 3 heroes to go to battle with. In the battle scene, the player can fight an enemy in turnbased RPG style. 
 
 ## Platform
-- The game currently works in Unity and on Android devices (I have no access to iOS).
+- The game currently works in Unity and on Android devices (tested on a Galaxy A51 device). I have no access to iOS.
 - The project uses Unity version 2021.3.18f1.
 
 ## How to play in Unity
@@ -29,7 +29,7 @@ This project contains a small RPG demo consisting of 2 scenes. In the selection 
 - Free "60+ Free Character Portraits With Modular Background" asset pack from the Unity Asset Store for hero avatars
 - Free Pokemon images for enemy avatars
 
-## Some remarks 
+## Other remarks 
 - I tried to use names in the documentation. For example, Experience instead of XP.
 - Currently, the player data only records the Id of their heroes and how much Experience the hero has. With the current game rules there is no reason to record other attributes in the saved data, as they are all solely based on the hero's XP.
 - I intended to create functionality to easily test battles against enemies with different strengths, using scriptabnle objects or a editor extension. Unfortunately I did not have the time to implement this. In order to test against different enemy stats, please adjust the enemy's attributes in Scripts/Actor/Enemy/Enemy.cs
