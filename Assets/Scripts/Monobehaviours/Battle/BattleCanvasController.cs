@@ -54,6 +54,7 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
     public void Unload()
     {
         ServiceLocator.Instance.Deregister<ICanvasController>();
+        ServiceLocator.Instance.Get<AttackHandler>().ClearCurrentAttack();
 
         GameEventHandler gameEventHandler = ServiceLocator.Instance.Get<GameEventHandler>();
         gameEventHandler.HeroDefeatedEvent -= OnHeroDefeatedEvent;
@@ -63,6 +64,8 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
         {
             item.Value.Unload();
         }
+
+        ServiceLocator.Instance.Get<PanelHandler>().ClearOpenPanels();
     }
 
     public void RegisterTile(ITile tile)
@@ -126,13 +129,7 @@ public class BattleCanvasController : MonoBehaviour, ICanvasController
 
     public void OnEnemyDefeatedEvent(object sender, EnemyDefeatedEvent e)
     {
-        PanelHandler panelHandler = ServiceLocator.Instance.Get<PanelHandler>();
-        List<IPanel> openPanels = panelHandler.GetOpenPanels();
-
-        for (int i = 0; i < openPanels.Count; i++)
-        {
-            openPanels[i].Deregister();
-        }
+        ServiceLocator.Instance.Get<PanelHandler>().ClearOpenPanels();
 
         UIPanelFactory.CreateBattleEndPanel(transform, true);
     }

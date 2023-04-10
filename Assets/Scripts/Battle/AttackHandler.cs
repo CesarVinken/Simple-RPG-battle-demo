@@ -7,6 +7,11 @@ public class AttackHandler : IGameService
     private IAttack _attack;
     private static readonly System.Random _random = new System.Random();
 
+    public void ClearCurrentAttack()
+    {
+        _attack = null;
+    }
+
     public void SetAttack(IAttack attack)
     {
         _attack = attack;

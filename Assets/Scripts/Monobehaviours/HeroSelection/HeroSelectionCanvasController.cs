@@ -43,9 +43,9 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
         _toBattleButton.Setup(this);
     }
 
-    // We want initialisation to take place after we have loaded in game data
     public void Initialise()
     {
+        ResetSelectedTiles();
         CreateHeroTiles();
 
         _toBattleButton.Initialise();
@@ -93,6 +93,12 @@ public class HeroSelectionCanvasController : MonoBehaviour, ICanvasController
 
         ConsoleLog.Error(LogCategory.General, $"Could not find a tile for {actor.Name}");
         return null;
+    }
+
+    private void ResetSelectedTiles()
+    {
+        HeroSelectionHandler heroSelectionHandler = ServiceLocator.Instance.Get<HeroSelectionHandler>();
+        heroSelectionHandler.ResetSelectedTiles();
     }
 
     public void ActivateTile(ITile tile)

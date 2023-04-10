@@ -15,7 +15,7 @@ MonoBehaviour:
   m_GroupName: Avatars
   m_Data:
     m_SerializedData: []
-  m_GUID: 8c1a43b07f9873e45b8ff9601bb59ab5
+  m_GUID: 668fa0d300bef4a45874fd36025b3b0c
   m_SerializeEntries:
   - m_GUID: e9212f8dde9d20840916a76c39b3d827
     m_Address: Heroes/0.png
@@ -152,4 +152,6 @@ MonoBehaviour:
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b79047341e11940498d72ce0c90c65f7, type: 2}
   m_SchemaSet:
-    m_Schemas: []
+    m_Schemas:
+    - {fileID: 11400000, guid: afc505b3171a4f5409cf1dee38f8ed49, type: 2}
+    - {fileID: 11400000, guid: fe58e48f884411c4aa70655edf54330a, type: 2}

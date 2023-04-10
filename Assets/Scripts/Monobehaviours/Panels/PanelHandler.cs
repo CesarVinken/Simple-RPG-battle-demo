@@ -19,4 +19,12 @@ public class PanelHandler : IGameService
     {
         return _openPanels;
     }
+
+    public void ClearOpenPanels()
+    {
+        for (int i = 0; i < _openPanels.Count; i++)
+        {
+            _openPanels[i].Deregister();
+        }
+    }
 }

@@ -21,6 +21,11 @@ public class HeroSelectionHandler : IGameService
         tile.Select();
     }
 
+    public void ResetSelectedTiles()
+    {
+        _selectedTiles.Clear();
+    }
+
     public void HandleToBattleButton(ToBattleButton toBattleButton)
     {
         if (_selectedTiles.Count == 3)

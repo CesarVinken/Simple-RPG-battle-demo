@@ -39,6 +39,7 @@ public class DataHandler : IGameService
         {
             ConsoleLog.Log(LogCategory.General, $"Could not find any saved player data and created new data.");
             PlayerData = new PlayerData();
+            return;
         }
 
         ConsoleLog.Log(LogCategory.General, $"Loaded data for {serialisablePlayerData.Heroes.Count} player heros");

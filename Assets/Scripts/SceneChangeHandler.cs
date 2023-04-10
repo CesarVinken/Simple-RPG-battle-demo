@@ -50,8 +50,6 @@ public class SceneChangeHandler : IGameService
     private void IncrementNumberOfBattles(DataHandler dataHandler)
     {
         dataHandler.PlayerData.NumberOfBattles++;
-
-        ConsoleLog.Log(LogCategory.General, $"Number of battles is now {dataHandler.PlayerData.NumberOfBattles}");
     }
 
     private void UpdatePlayerStats(DataHandler dataHandler)
