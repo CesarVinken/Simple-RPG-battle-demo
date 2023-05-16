@@ -1,4 +1,4 @@
-# Gram Games RPG Game Challenge
+# Simple RPG battle demo for mobile
 
 This project contains a small RPG demo consisting of 2 scenes. In the selection scene the player can pick 3 heroes to go to battle with. In the battle scene, the player can fight an enemy in turnbased RPG style. 
 
